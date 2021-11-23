@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
  */
 public class FileUtils {
 
-    private static final String TAG = VMLog.getTag(FileUtils.class);
+    private static final String TAG = FileUtils.class.getSimpleName();
 
     public static String getStringFromAssets(Context context, String name) {
         try {
