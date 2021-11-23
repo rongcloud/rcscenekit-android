@@ -1,10 +1,10 @@
-# Android Kit 文档
+# Android Scene Kit 文档
 
 ## Kit项目结构
 
 - `CoreKit` ：Kit的基础库，主要负责初始化Kit，网络加载Json文件或本地 Json 文件等，优先下载远端配置，远端拉取失败或者未配置 AppKey 的情况下采用本地配置。
 - `ChatRoomKit` ：语聊房 Kit，封装了消息列表、底部工具栏、输入框等。
-- `MusicControlKit` ：背景音乐 Kit
+- `MusicControlKit` ：背景音乐 Kit (进行中...)
 
 ## KitConfig.json 可配置项说明
 
