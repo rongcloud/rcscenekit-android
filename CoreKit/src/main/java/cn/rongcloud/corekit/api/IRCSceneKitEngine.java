@@ -5,7 +5,7 @@ import android.content.Context;
 /**
  * Created by hugo on 2021/11/15
  */
-public interface IRCKitEngine {
+public interface IRCSceneKitEngine {
 
     void installKit(ICoreKitInit... kit);
 

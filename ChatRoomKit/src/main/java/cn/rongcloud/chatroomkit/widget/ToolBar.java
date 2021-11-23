@@ -26,7 +26,7 @@ import cn.rongcloud.chatroomkit.bean.ToolBarBean;
 import cn.rongcloud.chatroomkit.manager.AudioPlayManager;
 import cn.rongcloud.chatroomkit.manager.AudioRecordManager;
 import cn.rongcloud.chatroomkit.utils.PermissionCheckUtil;
-import cn.rongcloud.corekit.api.RCKitEngine;
+import cn.rongcloud.corekit.api.RCSceneKitEngine;
 import cn.rongcloud.corekit.utils.GlideUtil;
 import cn.rongcloud.corekit.utils.UiUtils;
 import cn.rongcloud.corekit.utils.VMLog;
@@ -109,7 +109,7 @@ public class ToolBar extends ConstraintLayout {
         rvAction = (RecyclerView) findViewById(R.id.rv_action);
         ivRecord = (ImageView) findViewById(R.id.iv_record);
 
-        toolBarBean = RCKitEngine.getInstance().getKitConfig(ToolBarBean.class);
+        toolBarBean = RCSceneKitEngine.getInstance().getKitConfig(ToolBarBean.class);
         if (toolBarBean == null) {
             VMLog.e(TAG, "initView failed : toolBarBean is null");
             return;

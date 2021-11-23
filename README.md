@@ -210,9 +210,9 @@ public class MyApplication extends Application {
         app = this;
 
         // 注册使用的 kit，可以传入多个 Kit
-        RCKitEngine.getInstance().installKit(ChatRoomKitInit.getInstance());
+        RCSceneKitEngine.getInstance().installKit(ChatRoomKitInit.getInstance());
         // 初始化 Kit，优先根据 appkey 从远端下载配置，不成功采用默认配置
-        RCKitEngine.getInstance().initWithAppKey(this, "appkey");
+        RCSceneKitEngine.getInstance().initWithAppKey(this, "appkey");
     }
 }
 ```

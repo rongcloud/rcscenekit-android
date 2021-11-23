@@ -33,7 +33,7 @@ import cn.rongcloud.chatroomkit.api.OnMessageContentClickListener;
 import cn.rongcloud.chatroomkit.bean.MessageViewBean;
 import cn.rongcloud.chatroomkit.cache.MessageList;
 import cn.rongcloud.chatroomkit.manager.AudioPlayManager;
-import cn.rongcloud.corekit.api.RCKitEngine;
+import cn.rongcloud.corekit.api.RCSceneKitEngine;
 import cn.rongcloud.corekit.bean.Argb;
 import cn.rongcloud.corekit.bean.Corner;
 import cn.rongcloud.corekit.utils.UiUtils;
@@ -69,7 +69,7 @@ public class MessageView extends FrameLayout {
         // init view
         rvMessage = (RecyclerView) findViewById(R.id.rv_message);
 
-        messageViewBean = RCKitEngine.getInstance().getKitConfig(MessageViewBean.class);
+        messageViewBean = RCSceneKitEngine.getInstance().getKitConfig(MessageViewBean.class);
         if (messageViewBean == null) {
             VMLog.e(TAG, "initView failed : messageViewBean is null");
             return;

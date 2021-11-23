@@ -13,7 +13,7 @@ import java.util.Map;
 
 import cn.rongcloud.corekit.annotation.KitBean;
 import cn.rongcloud.corekit.api.ICoreKitInit;
-import cn.rongcloud.corekit.api.IRCKitEngine;
+import cn.rongcloud.corekit.api.IRCSceneKitEngine;
 import cn.rongcloud.corekit.utils.FileUtils;
 import cn.rongcloud.corekit.utils.GsonUtil;
 import cn.rongcloud.corekit.utils.VMLog;
@@ -21,16 +21,16 @@ import cn.rongcloud.corekit.utils.VMLog;
 /**
  * Created by hugo on 2021/11/15
  */
-public class RCKitEngineImpl implements IRCKitEngine {
+public class RCSceneKitEngineImpl implements IRCSceneKitEngine {
 
-    private final static String TAG = VMLog.getTag(RCKitEngineImpl.class);
+    private final static String TAG = VMLog.getTag(RCSceneKitEngineImpl.class);
 
     private final static Holder holder = new Holder();
     private final Map<String, Object> configMap = new HashMap<>();
     private final List<ICoreKitInit> coreKitInitList = new ArrayList<>();
     private JSONObject configObject = null;
 
-    public static IRCKitEngine getInstance() {
+    public static IRCSceneKitEngine getInstance() {
         return holder.instance;
     }
 
@@ -146,7 +146,7 @@ public class RCKitEngineImpl implements IRCKitEngine {
     }
 
     private static class Holder {
-        private final IRCKitEngine instance = new RCKitEngineImpl();
+        private final IRCSceneKitEngine instance = new RCSceneKitEngineImpl();
     }
 
 }

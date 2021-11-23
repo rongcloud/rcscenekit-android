@@ -16,7 +16,7 @@ import com.vanniktech.emoji.EmojiPopup;
 
 import cn.rongcloud.chatroomkit.R;
 import cn.rongcloud.chatroomkit.bean.InputBarBean;
-import cn.rongcloud.corekit.api.RCKitEngine;
+import cn.rongcloud.corekit.api.RCSceneKitEngine;
 import cn.rongcloud.corekit.utils.SoftKeyboardUtils;
 import cn.rongcloud.corekit.utils.UiUtils;
 import cn.rongcloud.corekit.utils.VMLog;
@@ -61,7 +61,7 @@ public class InputBar extends LinearLayout {
         space2 = (Space) findViewById(R.id.space2);
         tvSend = (TextView) findViewById(R.id.tv_send);
 
-        InputBarBean inputBarBean = RCKitEngine.getInstance().getKitConfig(InputBarBean.class);
+        InputBarBean inputBarBean = RCSceneKitEngine.getInstance().getKitConfig(InputBarBean.class);
         if (inputBarBean == null) {
             VMLog.e(TAG, "initView failed : inputBarBean is null");
             return;
