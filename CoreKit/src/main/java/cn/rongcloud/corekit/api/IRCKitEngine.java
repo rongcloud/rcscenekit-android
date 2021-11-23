@@ -7,7 +7,7 @@ import android.content.Context;
  */
 public interface IRCKitEngine {
 
-    void installKit(IKitCoreInit... kit);
+    void installKit(ICoreKitInit... kit);
 
     void initWithAppKey(Context context, String appKey);
 

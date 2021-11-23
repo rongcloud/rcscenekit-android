@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.rongcloud.corekit.annotation.KitBean;
-import cn.rongcloud.corekit.api.IKitCoreInit;
+import cn.rongcloud.corekit.api.ICoreKitInit;
 import cn.rongcloud.corekit.api.IRCKitEngine;
 import cn.rongcloud.corekit.utils.FileUtils;
 import cn.rongcloud.corekit.utils.GsonUtil;
@@ -27,7 +27,7 @@ public class RCKitEngineImpl implements IRCKitEngine {
 
     private final static Holder holder = new Holder();
     private final Map<String, Object> configMap = new HashMap<>();
-    private final List<IKitCoreInit> kitCoreInitList = new ArrayList<>();
+    private final List<ICoreKitInit> coreKitInitList = new ArrayList<>();
     private JSONObject configObject = null;
 
     public static IRCKitEngine getInstance() {
@@ -40,13 +40,13 @@ public class RCKitEngineImpl implements IRCKitEngine {
      * @param kit 要注册的kit
      */
     @Override
-    public void installKit(IKitCoreInit... kit) {
+    public void installKit(ICoreKitInit... kit) {
         if (kit == null) {
             return;
         }
-        for (IKitCoreInit iKitCoreInit : kit) {
-            if (!kitCoreInitList.contains(iKitCoreInit)) {
-                kitCoreInitList.add(iKitCoreInit);
+        for (ICoreKitInit iCoreKitInit : kit) {
+            if (!coreKitInitList.contains(iCoreKitInit)) {
+                coreKitInitList.add(iCoreKitInit);
             }
         }
     }
@@ -140,7 +140,7 @@ public class RCKitEngineImpl implements IRCKitEngine {
      * 初始化子模块Kit
      */
     private void initSubKit(Context context) {
-        for (IKitCoreInit k : kitCoreInitList) {
+        for (ICoreKitInit k : coreKitInitList) {
             k.init(context);
         }
     }
