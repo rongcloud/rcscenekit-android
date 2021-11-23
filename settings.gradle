@@ -1,0 +1,5 @@
+rootProject.name = "RCSceneKit"
+include ':app'
+include ':ChatRoomKit'
+include ':CoreKit'
+include ':MusicControlKit'
