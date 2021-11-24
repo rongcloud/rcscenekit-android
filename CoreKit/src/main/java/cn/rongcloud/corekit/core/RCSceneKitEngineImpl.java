@@ -23,7 +23,7 @@ import cn.rongcloud.corekit.utils.VMLog;
  */
 public class RCSceneKitEngineImpl implements IRCSceneKitEngine {
 
-    private final static String TAG = VMLog.getTag(RCSceneKitEngineImpl.class);
+    private final static String TAG = RCSceneKitEngineImpl.class.getSimpleName();
 
     private final static Holder holder = new Holder();
     private final Map<String, Object> configMap = new HashMap<>();

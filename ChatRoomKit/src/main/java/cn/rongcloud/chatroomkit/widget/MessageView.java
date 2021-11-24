@@ -45,7 +45,7 @@ import cn.rongcloud.corekit.widget.SpaceItemDecoration;
  * Created by hugo on 2021/11/12
  */
 public class MessageView extends FrameLayout {
-    private final static String TAG = VMLog.getTag(MessageView.class);
+    private final static String TAG = MessageView.class.getSimpleName();
     MessageViewBean messageViewBean;
     MessageAdapter adapter;
     OnMessageContentClickListener onMessageContentClickListener;

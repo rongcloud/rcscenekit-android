@@ -14,7 +14,7 @@ import java.util.List;
 
 public class GsonUtil {
 
-    private final static String TAG = VMLog.getTag(GsonUtil.class);
+    private final static String TAG = GsonUtil.class.getSimpleName();
     private final static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss:SSS";
     private final static Gson gson = new GsonBuilder().setDateFormat(DATE_FORMAT).create();
 

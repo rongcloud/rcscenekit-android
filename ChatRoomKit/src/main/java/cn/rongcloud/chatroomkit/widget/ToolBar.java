@@ -36,7 +36,7 @@ import cn.rongcloud.corekit.utils.VMLog;
  * Created by hugo on 2021/11/12
  */
 public class ToolBar extends ConstraintLayout {
-    private final static String TAG = VMLog.getTag(ToolBar.class);
+    private final static String TAG = ToolBar.class.getSimpleName();
     private LinearLayout llChat;
     private TextView tvChat;
     private RecyclerView rvAction;
