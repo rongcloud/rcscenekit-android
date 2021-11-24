@@ -255,7 +255,7 @@ ChatRoomView chatRoomView = findViewById(R.id.chat_room_view);
 `ChatRoomView` 内部包含三个自定义 View，通过 ChatRoomView 提供的 api 可以操作其中的数据及 UI
 
 - MessageView 展示消息列表
-- TooBar 底部功能栏
+- ToolBar 底部功能栏
 - InputBar 输入框
 
 ![alt(height=300)](./imgs/pic_1.jpeg)
@@ -552,4 +552,7 @@ chatRoomView.setInputBarListener(new InputBar.InputBarListener() {
 });
 ```
 
+## 其他
+
+如有任何疑问请提交issue
 
