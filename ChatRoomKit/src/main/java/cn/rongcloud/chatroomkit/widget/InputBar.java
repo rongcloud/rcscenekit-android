@@ -26,7 +26,7 @@ import cn.rongcloud.corekit.utils.VMLog;
  * Created by hugo on 2021/11/12
  */
 public class InputBar extends LinearLayout {
-    private final static String TAG = VMLog.getTag(InputBar.class);
+    private final static String TAG = InputBar.class.getSimpleName();
     private EmojiEditText etInput;
     private Space space1;
     private ImageView ivEmoji;

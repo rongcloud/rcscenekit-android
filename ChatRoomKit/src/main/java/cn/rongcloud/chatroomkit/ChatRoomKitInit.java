@@ -12,7 +12,7 @@ import cn.rongcloud.corekit.utils.VMLog;
  * Created by hugo on 2021/11/18
  */
 public class ChatRoomKitInit implements ICoreKitInit {
-    private static final String TAG = VMLog.getTag(ChatRoomKitInit.class);
+    private static final String TAG = ChatRoomKitInit.class.getSimpleName();
 
     private static Holder holder = new Holder();
 
