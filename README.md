@@ -258,6 +258,8 @@ ChatRoomView chatRoomView = findViewById(R.id.chat_room_view);
 - TooBar 底部功能栏
 - InputBar 输入框
 
+![alt(height=300)](./imgs/pic_1.jpeg)
+
 #### MessageView 相关设置和监听
 
 1. 构建富文本消息体，实现 `IRCChatroomMessage ` 接口，示例如下:
