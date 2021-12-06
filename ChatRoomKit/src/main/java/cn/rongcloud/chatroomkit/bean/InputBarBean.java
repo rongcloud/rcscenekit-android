@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 import cn.rongcloud.corekit.annotation.KitBean;
-import cn.rongcloud.corekit.bean.Argb;
-import cn.rongcloud.corekit.bean.Insets;
+import cn.rongcloud.corekit.bean.RCColor;
+import cn.rongcloud.corekit.bean.RCInsets;
 
 /**
  * Created by hugo on 2021/11/12
@@ -14,11 +14,11 @@ import cn.rongcloud.corekit.bean.Insets;
 @KitBean(parseKey = "InputBar")
 public class InputBarBean implements Serializable {
     @SerializedName("backgroundColor")
-    private Argb backgroundColor;
+    private RCColor backgroundColor;
     @SerializedName("contentInsets")
-    private Insets contentInsets;
+    private RCInsets contentInsets;
     @SerializedName("inputBackgroundColor")
-    private Argb inputBackgroundColor;
+    private RCColor inputBackgroundColor;
     @SerializedName("inputCorner")
     private Integer inputCorner;
     @SerializedName("inputMinHeight")
@@ -28,37 +28,37 @@ public class InputBarBean implements Serializable {
     @SerializedName("inputTextSize")
     private Integer inputTextSize;
     @SerializedName("inputTextColor")
-    private Argb inputTextColor;
+    private RCColor inputTextColor;
     @SerializedName("inputHint")
     private String inputHint;
     @SerializedName("inputHintColor")
-    private Argb inputHintColor;
+    private RCColor inputHintColor;
     @SerializedName("inputInsets")
-    private Insets inputInsets;
+    private RCInsets inputInsets;
     @SerializedName("emojiEnable")
     private Boolean emojiEnable;
 
-    public Argb getBackgroundColor() {
+    public RCColor getBackgroundColor() {
         return backgroundColor;
     }
 
-    public void setBackgroundColor(Argb backgroundColor) {
+    public void setBackgroundColor(RCColor backgroundColor) {
         this.backgroundColor = backgroundColor;
     }
 
-    public Insets getContentInsets() {
+    public RCInsets getContentInsets() {
         return contentInsets;
     }
 
-    public void setContentInsets(Insets contentInsets) {
+    public void setContentInsets(RCInsets contentInsets) {
         this.contentInsets = contentInsets;
     }
 
-    public Argb getInputBackgroundColor() {
+    public RCColor getInputBackgroundColor() {
         return inputBackgroundColor;
     }
 
-    public void setInputBackgroundColor(Argb inputBackgroundColor) {
+    public void setInputBackgroundColor(RCColor inputBackgroundColor) {
         this.inputBackgroundColor = inputBackgroundColor;
     }
 
@@ -94,11 +94,11 @@ public class InputBarBean implements Serializable {
         this.inputTextSize = inputTextSize;
     }
 
-    public Argb getInputTextColor() {
+    public RCColor getInputTextColor() {
         return inputTextColor;
     }
 
-    public void setInputTextColor(Argb inputTextColor) {
+    public void setInputTextColor(RCColor inputTextColor) {
         this.inputTextColor = inputTextColor;
     }
 
@@ -110,19 +110,19 @@ public class InputBarBean implements Serializable {
         this.inputHint = inputHint;
     }
 
-    public Argb getInputHintColor() {
+    public RCColor getInputHintColor() {
         return inputHintColor;
     }
 
-    public void setInputHintColor(Argb inputHintColor) {
+    public void setInputHintColor(RCColor inputHintColor) {
         this.inputHintColor = inputHintColor;
     }
 
-    public Insets getInputInsets() {
+    public RCInsets getInputInsets() {
         return inputInsets;
     }
 
-    public void setInputInsets(Insets inputInsets) {
+    public void setInputInsets(RCInsets inputInsets) {
         this.inputInsets = inputInsets;
     }
 

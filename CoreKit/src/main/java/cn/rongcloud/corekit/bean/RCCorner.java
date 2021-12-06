@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by hugo on 2021/11/16
  */
-public class Corner implements Serializable {
+public class RCCorner implements Serializable {
 
     @SerializedName("topLeft")
     private Integer topLeft;
@@ -18,10 +18,10 @@ public class Corner implements Serializable {
     @SerializedName("bottomRight")
     private Integer bottomRight;
 
-    public Corner() {
+    public RCCorner() {
     }
 
-    public Corner(Integer topLeft, Integer topRight, Integer bottomLeft, Integer bottomRight) {
+    public RCCorner(Integer topLeft, Integer topRight, Integer bottomLeft, Integer bottomRight) {
         this.topLeft = topLeft;
         this.topRight = topRight;
         this.bottomLeft = bottomLeft;

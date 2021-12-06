@@ -16,8 +16,8 @@ import cn.rongcloud.chatroomkit.api.OnMessageContentClickListener;
 import cn.rongcloud.chatroomkit.bean.MessageItem;
 import cn.rongcloud.chatroomkit.utils.MessageContentUtils;
 import cn.rongcloud.chatroomkit.widget.CenterAlignImageSpan;
-import cn.rongcloud.corekit.bean.Argb;
-import cn.rongcloud.corekit.bean.Corner;
+import cn.rongcloud.corekit.bean.RCColor;
+import cn.rongcloud.corekit.bean.RCCorner;
 import cn.rongcloud.corekit.utils.UiUtils;
 import cn.rongcloud.kitdemo.MyApplication;
 import cn.rongcloud.kitdemo.R;
@@ -60,24 +60,24 @@ public class RCChatroomMessage implements IRCChatroomMessage {
      * @return 返回气泡背景颜色，返回 null 采用默认配置
      */
     @Override
-    public Argb bubbleColor() {
-        return new Argb(0.5f, 100, 100, 100);
+    public RCColor bubbleColor() {
+        return new RCColor(0.5f, 100, 100, 100);
     }
 
     /**
      * @return 返回气泡文字颜色，返回 null 采用默认配置
      */
     @Override
-    public Argb bubbleTextColor() {
-        return new Argb(0.7f, 255, 255, 255);
+    public RCColor bubbleTextColor() {
+        return new RCColor(0.7f, 255, 255, 255);
     }
 
     /**
      * @return 返回气泡圆角，返回 null 采用默认配置
      */
     @Override
-    public Corner bubbleCorner() {
-        return new Corner(0, 15, 15, 15);
+    public RCCorner bubbleCorner() {
+        return new RCCorner(0, 15, 15, 15);
     }
 
     /**

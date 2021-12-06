@@ -7,10 +7,12 @@ import androidx.annotation.IntRange;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by hugo on 2021/11/16
  */
-public class Argb {
+public class RCColor implements Serializable {
 
     @SerializedName("red")
     private Integer red;
@@ -21,13 +23,13 @@ public class Argb {
     @SerializedName("alpha")
     private float alpha;
 
-    public Argb() {
+    public RCColor() {
     }
 
-    public Argb(@FloatRange(from = 0f, to = 1f) float alpha,
-                @IntRange(from = 0, to = 255) Integer red,
-                @IntRange(from = 0, to = 255) Integer green,
-                @IntRange(from = 0, to = 255) Integer blue) {
+    public RCColor(@FloatRange(from = 0f, to = 1f) float alpha,
+                   @IntRange(from = 0, to = 255) Integer red,
+                   @IntRange(from = 0, to = 255) Integer green,
+                   @IntRange(from = 0, to = 255) Integer blue) {
         this.alpha = alpha;
         this.red = red;
         this.green = green;

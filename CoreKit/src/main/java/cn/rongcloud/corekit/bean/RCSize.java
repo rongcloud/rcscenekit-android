@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by hugo on 2021/11/15
  */
-public class Size implements Serializable {
+public class RCSize implements Serializable {
 
     @SerializedName("width")
     private Integer width;

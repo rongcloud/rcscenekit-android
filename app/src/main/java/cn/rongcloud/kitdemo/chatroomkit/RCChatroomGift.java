@@ -23,8 +23,8 @@ import cn.rongcloud.chatroomkit.api.IRCChatroomMessage;
 import cn.rongcloud.chatroomkit.api.OnMessageContentClickListener;
 import cn.rongcloud.chatroomkit.bean.MessageItem;
 import cn.rongcloud.chatroomkit.utils.MessageContentUtils;
-import cn.rongcloud.corekit.bean.Argb;
-import cn.rongcloud.corekit.bean.Corner;
+import cn.rongcloud.corekit.bean.RCColor;
+import cn.rongcloud.corekit.bean.RCCorner;
 import io.rong.imlib.MessageTag;
 import io.rong.imlib.model.MessageContent;
 
@@ -238,17 +238,17 @@ public class RCChatroomGift extends MessageContent implements IRCChatroomMessage
     }
 
     @Override
-    public Argb bubbleColor() {
-        return new Argb(0.5f, 232, 33, 14);
+    public RCColor bubbleColor() {
+        return new RCColor(0.5f, 232, 33, 14);
     }
 
     @Override
-    public Argb bubbleTextColor() {
-        return new Argb(0.8f, 232, 255, 0);
+    public RCColor bubbleTextColor() {
+        return new RCColor(0.8f, 232, 255, 0);
     }
 
     @Override
-    public Corner bubbleCorner() {
+    public RCCorner bubbleCorner() {
         return null;
     }
 

@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by hugo on 2021/11/15
  */
-public class Insets implements Serializable {
+public class RCInsets implements Serializable {
 
     @SerializedName("left")
     private Integer left;

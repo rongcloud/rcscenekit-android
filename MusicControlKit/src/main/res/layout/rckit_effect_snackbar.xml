@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="54dp"
+    android:background="@color/transparent"
+    tools:background="#234">
+
+    <cn.rongcloud.corekit.widget.RealtimeBlurView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:radius="6dp"
+        app:realtimeBlurRadius="14dp"
+        app:realtimeOverlayColor="#1AFFFFFF" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_effect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:itemCount="15"
+        tools:listitem="@layout/rckit_item_effect" />
+</androidx.constraintlayout.widget.ConstraintLayout>

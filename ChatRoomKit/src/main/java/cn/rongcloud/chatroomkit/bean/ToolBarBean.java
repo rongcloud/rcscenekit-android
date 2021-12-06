@@ -7,9 +7,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import cn.rongcloud.corekit.annotation.KitBean;
-import cn.rongcloud.corekit.bean.Argb;
-import cn.rongcloud.corekit.bean.Insets;
-import cn.rongcloud.corekit.bean.Size;
+import cn.rongcloud.corekit.bean.RCColor;
+import cn.rongcloud.corekit.bean.RCInsets;
+import cn.rongcloud.corekit.bean.RCSize;
 
 /**
  * Created by hugo on 2021/11/12
@@ -18,21 +18,21 @@ import cn.rongcloud.corekit.bean.Size;
 public class ToolBarBean implements Serializable {
 
     @SerializedName("backgroundColor")
-    private Argb backgroundColor;
+    private RCColor backgroundColor;
     @SerializedName("contentInsets")
-    private Insets contentInsets;
+    private RCInsets contentInsets;
     @SerializedName("chatButtonTitle")
     private String chatButtonTitle;
     @SerializedName("chatButtonSize")
-    private Size chatButtonSize;
+    private RCSize chatButtonSize;
     @SerializedName("chatButtonInsets")
-    private Insets chatButtonInsets;
+    private RCInsets chatButtonInsets;
     @SerializedName("chatButtonTextColor")
-    private Argb chatButtonTextColor;
+    private RCColor chatButtonTextColor;
     @SerializedName("chatButtonTextSize")
     private Integer chatButtonTextSize;
     @SerializedName("chatButtonBackgroundColor")
-    private Argb chatButtonBackgroundColor;
+    private RCColor chatButtonBackgroundColor;
     @SerializedName("chatButtonBackgroundCorner")
     private Integer chatButtonBackgroundCorner;
     @SerializedName("recordButtonEnable")
@@ -46,19 +46,19 @@ public class ToolBarBean implements Serializable {
     @SerializedName("buttonArray")
     private List<ActionButton> buttonArray;
 
-    public Argb getBackgroundColor() {
+    public RCColor getBackgroundColor() {
         return backgroundColor;
     }
 
-    public void setBackgroundColor(Argb backgroundColor) {
+    public void setBackgroundColor(RCColor backgroundColor) {
         this.backgroundColor = backgroundColor;
     }
 
-    public Insets getContentInsets() {
+    public RCInsets getContentInsets() {
         return contentInsets;
     }
 
-    public void setContentInsets(Insets contentInsets) {
+    public void setContentInsets(RCInsets contentInsets) {
         this.contentInsets = contentInsets;
     }
 
@@ -70,27 +70,27 @@ public class ToolBarBean implements Serializable {
         this.chatButtonTitle = chatButtonTitle;
     }
 
-    public Size getChatButtonSize() {
+    public RCSize getChatButtonSize() {
         return chatButtonSize;
     }
 
-    public void setChatButtonSize(Size chatButtonSize) {
+    public void setChatButtonSize(RCSize chatButtonSize) {
         this.chatButtonSize = chatButtonSize;
     }
 
-    public Insets getChatButtonInsets() {
+    public RCInsets getChatButtonInsets() {
         return chatButtonInsets;
     }
 
-    public void setChatButtonInsets(Insets chatButtonInsets) {
+    public void setChatButtonInsets(RCInsets chatButtonInsets) {
         this.chatButtonInsets = chatButtonInsets;
     }
 
-    public Argb getChatButtonTextColor() {
+    public RCColor getChatButtonTextColor() {
         return chatButtonTextColor;
     }
 
-    public void setChatButtonTextColor(Argb chatButtonTextColor) {
+    public void setChatButtonTextColor(RCColor chatButtonTextColor) {
         this.chatButtonTextColor = chatButtonTextColor;
     }
 
@@ -102,11 +102,11 @@ public class ToolBarBean implements Serializable {
         this.chatButtonTextSize = chatButtonTextSize;
     }
 
-    public Argb getChatButtonBackgroundColor() {
+    public RCColor getChatButtonBackgroundColor() {
         return chatButtonBackgroundColor;
     }
 
-    public void setChatButtonBackgroundColor(Argb chatButtonBackgroundColor) {
+    public void setChatButtonBackgroundColor(RCColor chatButtonBackgroundColor) {
         this.chatButtonBackgroundColor = chatButtonBackgroundColor;
     }
 

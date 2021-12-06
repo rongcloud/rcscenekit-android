@@ -34,8 +34,8 @@ import cn.rongcloud.chatroomkit.bean.MessageViewBean;
 import cn.rongcloud.chatroomkit.cache.MessageList;
 import cn.rongcloud.chatroomkit.manager.AudioPlayManager;
 import cn.rongcloud.corekit.api.RCSceneKitEngine;
-import cn.rongcloud.corekit.bean.Argb;
-import cn.rongcloud.corekit.bean.Corner;
+import cn.rongcloud.corekit.bean.RCColor;
+import cn.rongcloud.corekit.bean.RCCorner;
 import cn.rongcloud.corekit.utils.UiUtils;
 import cn.rongcloud.corekit.utils.VMLog;
 import cn.rongcloud.corekit.widget.SpaceItemDecoration;
@@ -229,7 +229,7 @@ public class MessageView extends FrameLayout {
             tvMessage.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
-        private void setBackground(Argb argb, Corner corner) {
+        private void setBackground(RCColor argb, RCCorner corner) {
             if (argb == null) {
                 argb = messageViewBean.getDefaultBubbleColor();
             }
@@ -242,7 +242,7 @@ public class MessageView extends FrameLayout {
             tvMessage.setBackground(UiUtils.createRectangleDrawable(argb.getColor(), 0, 0, corner.getRadius()));
         }
 
-        private void setMessageTextColor(Argb argb) {
+        private void setMessageTextColor(RCColor argb) {
             if (argb == null) {
                 argb = messageViewBean.getDefaultBubbleTextColor();
             }
@@ -331,7 +331,7 @@ public class MessageView extends FrameLayout {
             return AudioPlayManager.getInstance().isPlaying() && TextUtils.equals(path, AudioPlayManager.getInstance().getPlayingUri().toString());
         }
 
-        private void setBackground(Argb argb, Corner corner) {
+        private void setBackground(RCColor argb, RCCorner corner) {
             if (argb == null) {
                 argb = messageViewBean.getDefaultBubbleColor();
             }
@@ -344,7 +344,7 @@ public class MessageView extends FrameLayout {
             llMessage.setBackground(UiUtils.createRectangleDrawable(argb.getColor(), 0, 0, corner.getRadius()));
         }
 
-        private void setMessageTextColor(Argb argb) {
+        private void setMessageTextColor(RCColor argb) {
             if (argb == null) {
                 argb = messageViewBean.getDefaultBubbleTextColor();
             }
