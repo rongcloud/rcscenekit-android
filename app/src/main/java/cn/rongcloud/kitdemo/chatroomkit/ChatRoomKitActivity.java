@@ -36,7 +36,6 @@ public class ChatRoomKitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chatroomkit);
 
         ChatRoomView chatRoomView = findViewById(R.id.chat_room_view);
-
         // 设置InputBar监听
         chatRoomView.setInputBarListener(new InputBar.InputBarListener() {
             @Override
