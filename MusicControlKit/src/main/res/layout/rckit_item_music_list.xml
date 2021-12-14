@@ -4,16 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="64dp"
-    android:paddingStart="23dp"
-    android:paddingEnd="15dp"
     tools:background="#345">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_guide_start"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_begin="23dp" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/civ_theme"
         android:layout_width="48dp"
         android:layout_height="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/gl_guide_start"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -31,9 +37,9 @@
         android:id="@+id/tv_music_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
         android:ellipsize="end"
         android:maxLines="1"
+        android:paddingStart="12dp"
         android:singleLine="true"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
@@ -51,6 +57,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
+        android:paddingStart="12dp"
         android:singleLine="true"
         android:textColor="#B3FFFFFF"
         android:textSize="12sp"
@@ -66,6 +73,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
+        android:paddingStart="12dp"
         android:singleLine="true"
         android:textColor="#B3FFFFFF"
         android:textSize="9sp"
@@ -103,17 +111,26 @@
         android:layout_height="24dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/gl_guide_end"
         app:layout_constraintTop_toTopOf="parent"
         app:line_color="@color/rckit_color_primary" />
 
-    <View
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_guide_end"
         android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_end="15dp" />
+
+    <View
+        android:id="@+id/v_separator"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginStart="6dp"
+        android:layout_marginStart="77dp"
         android:background="#03FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/civ_theme" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

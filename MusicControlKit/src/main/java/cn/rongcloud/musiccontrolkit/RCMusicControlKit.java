@@ -13,27 +13,27 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.DefaultRefreshFooterCreator;
 import com.scwang.smart.refresh.layout.listener.DefaultRefreshHeaderCreator;
 
-import cn.rongcloud.corekit.api.ICoreKitInit;
+import cn.rongcloud.corekit.core.RCKitInit;
 import cn.rongcloud.corekit.utils.VMLog;
+import cn.rongcloud.musiccontrolkit.bean.MusicControlKitConfig;
 
 /**
- * Created by hugo on 2021/11/23
+ * Created by gyn on 2021/11/23
  */
-public class MusicControlKitInit implements ICoreKitInit {
+public class RCMusicControlKit extends RCKitInit<MusicControlKitConfig> {
 
-    private static final String TAG = MusicControlKitInit.class.getSimpleName();
+    private static final String TAG = RCMusicControlKit.class.getSimpleName();
 
-    private static Holder holder = new Holder();
+    private final static Holder holder = new Holder();
 
-    public static MusicControlKitInit getInstance() {
+    public static RCMusicControlKit getInstance() {
         return holder.instance;
     }
 
-    private boolean enableRefreshAndLoadMore;
-
     @Override
     public void init(Context context) {
-        setEnableRefreshAndLoadMore(true);
+        super.init(context);
+        // 设置加载更多等逻辑
         setSmartRefreshLayoutHeader(new DefaultRefreshHeaderCreator() {
             @NonNull
             @Override
@@ -51,12 +51,9 @@ public class MusicControlKitInit implements ICoreKitInit {
         VMLog.d(TAG, TAG + " has init");
     }
 
-    public boolean isEnableRefreshAndLoadMore() {
-        return enableRefreshAndLoadMore;
-    }
-
-    public void setEnableRefreshAndLoadMore(boolean enableRefreshAndLoadMore) {
-        this.enableRefreshAndLoadMore = enableRefreshAndLoadMore;
+    @Override
+    public String getKitConfigName() {
+        return "MusicControlKit";
     }
 
     /**
@@ -78,6 +75,6 @@ public class MusicControlKitInit implements ICoreKitInit {
     }
 
     private static class Holder {
-        private MusicControlKitInit instance = new MusicControlKitInit();
+        private RCMusicControlKit instance = new RCMusicControlKit();
     }
 }

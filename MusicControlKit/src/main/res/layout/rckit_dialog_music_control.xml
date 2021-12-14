@@ -27,7 +27,7 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_tab"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
+            android:layout_height="match_parent"
             android:background="#00000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +35,6 @@
             app:tabGravity="fill"
             app:tabIndicatorFullWidth="false"
             app:tabIndicatorHeight="0dp"
-            app:tabMaxWidth="51dp"
             app:tabPaddingEnd="15dp"
             app:tabPaddingStart="0dp"
             app:tabRippleColor="@null" />

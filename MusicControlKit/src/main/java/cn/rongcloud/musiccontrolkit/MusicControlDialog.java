@@ -16,22 +16,26 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.rongcloud.corekit.base.BaseBottomSheetDialog;
+import cn.rongcloud.corekit.base.RCBottomSheetDialog;
+import cn.rongcloud.corekit.bean.RCAttribute;
+import cn.rongcloud.corekit.bean.RCInsets;
+import cn.rongcloud.corekit.bean.RCSize;
+import cn.rongcloud.corekit.utils.UiUtils;
 import cn.rongcloud.corekit.widget.RealtimeBlurView;
+import cn.rongcloud.musiccontrolkit.bean.MusicControlKitConfig;
+import cn.rongcloud.musiccontrolkit.bean.MusicToolbarConfig;
+import cn.rongcloud.musiccontrolkit.bean.SoundEffectConfig;
 import cn.rongcloud.musiccontrolkit.fragment.MusicAddFragment;
 import cn.rongcloud.musiccontrolkit.fragment.MusicControlFragment;
 import cn.rongcloud.musiccontrolkit.fragment.MusicListFragment;
-import cn.rongcloud.musiccontrolkit.iinterface.OnMusicDataSourceListener;
-import cn.rongcloud.musiccontrolkit.iinterface.OnMusicOperateListener;
-import cn.rongcloud.musiccontrolkit.iinterface.OnMusicPlayerListener;
 import cn.rongcloud.musiccontrolkit.iinterface.OnSwitchPageListener;
 import cn.rongcloud.musiccontrolkit.widget.EffectSnackBar;
 
 /**
- * Created by hugo on 2021/11/23
+ * Created by gyn on 2021/11/23
  */
-public class MusicControlDialog extends BaseBottomSheetDialog implements OnSwitchPageListener {
-
+public class MusicControlDialog extends RCBottomSheetDialog<MusicControlKitConfig> implements OnSwitchPageListener {
+    public static final String TAG = MusicControlDialog.class.getSimpleName();
     private RealtimeBlurView rbvTop;
     private ConstraintLayout clTop;
     private TabLayout tlTab;
@@ -39,17 +43,22 @@ public class MusicControlDialog extends BaseBottomSheetDialog implements OnSwitc
     private ViewPager2 vpMusic;
     private ImageView ivEffect;
     private View space;
-    private List<Fragment> fragmentList = new ArrayList<>();
+    private final List<Fragment> fragmentList = new ArrayList<>();
     private TabLayoutMediator tabLayoutMediator;
     private EffectSnackBar effectSnackBar;
 
-    public MusicControlDialog(OnMusicDataSourceListener onMusicDataSourceListener, OnMusicOperateListener onMusicOperateListener, OnMusicPlayerListener onMusicPlayerListener) {
-        super(R.layout.rckit_dialog_music_control);
-        MusicEngine.getInstance().setListener(onMusicDataSourceListener, onMusicOperateListener, onMusicPlayerListener);
+    @Override
+    public int setLayoutId() {
+        return R.layout.rckit_dialog_music_control;
     }
 
     @Override
-    protected void initView() {
+    public MusicControlKitConfig getKitConfig() {
+        return RCMusicControlKit.getInstance().getKitConfig();
+    }
+
+    @Override
+    public void initView() {
         rbvTop = (RealtimeBlurView) getView().findViewById(R.id.rbv_top);
         clTop = (ConstraintLayout) getView().findViewById(R.id.cl_top);
         tlTab = (TabLayout) getView().findViewById(R.id.tl_tab);
@@ -57,42 +66,88 @@ public class MusicControlDialog extends BaseBottomSheetDialog implements OnSwitc
         vpMusic = (ViewPager2) getView().findViewById(R.id.vp_music);
         ivEffect = (ImageView) getView().findViewById(R.id.iv_effect);
         space = getView().findViewById(R.id.spacer);
-
-        fragmentList.add(MusicListFragment.getInstance(this));
-        fragmentList.add(MusicAddFragment.getInstance());
-        fragmentList.add(MusicControlFragment.getInstance());
-        MusicFragmentAdapter adapter = new MusicFragmentAdapter(this);
-        vpMusic.setAdapter(adapter);
-        vpMusic.setUserInputEnabled(false);
-
-        int[] icons = new int[]{R.drawable.rckit_tab_music_list_selector, R.drawable.rckit_tab_music_add_selector, R.drawable.rckit_tab_music_control_selector};
-        ImageView imageView;
-        List<ImageView> iconList = new ArrayList<>();
-        for (int icon : icons) {
-            imageView = new ImageView(getContext());
-            imageView.setImageResource(icon);
-            iconList.add(imageView);
-        }
-        if (tabLayoutMediator == null) {
-            tabLayoutMediator = new TabLayoutMediator(tlTab, vpMusic, (tab, position) -> tab.setCustomView(iconList.get(position)));
-            tabLayoutMediator.attach();
-        }
-
-        ivEffect.setOnClickListener(v -> {
-            if (effectSnackBar == null) {
-                effectSnackBar = EffectSnackBar.make((ViewGroup) getView());
-            }
-            if (effectSnackBar.isShown()) {
-                ivEffect.setSelected(false);
-                effectSnackBar.dismiss();
-            } else {
-                ivEffect.setSelected(true);
-                effectSnackBar.show();
-            }
-        });
         space.setOnClickListener(v -> {
             dismiss();
         });
+    }
+
+    @Override
+    public void initConfig(MusicControlKitConfig musicControlKitConfig) {
+        MusicToolbarConfig toolbarBean = musicControlKitConfig.getMusicToolbar();
+        if (toolbarBean != null) {
+            // toolbar
+            rbvTop.setBlurRadius(toolbarBean.isBlurEnable() ? UiUtils.dp2px(14) : 0);
+            rbvTop.setOverlayColor(toolbarBean.getBackgroundColor().getColor());
+            UiUtils.setPadding(clTop, toolbarBean.getContentInsets());
+            UiUtils.setViewSize(clTop, toolbarBean.getSize());
+            // 添加显示的页面
+            fragmentList.clear();
+            fragmentList.add(MusicListFragment.getInstance(this));
+            fragmentList.add(MusicAddFragment.getInstance());
+            if (toolbarBean.getMusicControlEnable()) {
+                fragmentList.add(MusicControlFragment.getInstance());
+            }
+            MusicFragmentAdapter adapter = new MusicFragmentAdapter(this);
+            vpMusic.setAdapter(adapter);
+            vpMusic.setUserInputEnabled(false);
+//            vpMusic.setSaveEnabled(false);
+
+            int[] icons = new int[]{R.drawable.rckit_tab_music_list_selector, R.drawable.rckit_tab_music_add_selector, R.drawable.rckit_tab_music_control_selector};
+            ImageView imageView;
+
+            List<ImageView> iconList = new ArrayList<>();
+            for (int i = 0; i < fragmentList.size(); i++) {
+                imageView = new ImageView(getContext());
+                UiUtils.setViewSize(imageView, toolbarBean.getTabSize());
+                UiUtils.setSelectorImage(imageView, toolbarBean.getTabItem(i), icons[i], RCMusicControlKit.getInstance().getAssetsPath());
+                iconList.add(imageView);
+            }
+            if (tabLayoutMediator == null) {
+                RCInsets insets = new RCInsets();
+                insets.setRight(toolbarBean.getSpacing());
+                tabLayoutMediator = new TabLayoutMediator(tlTab, vpMusic, (tab, position) -> {
+                    tab.setCustomView(iconList.get(position));
+                    UiUtils.setPadding(tab.view, insets);
+                });
+                tabLayoutMediator.attach();
+            }
+
+            if (toolbarBean.getSoundEffectEnable()) {
+                ivEffect.setVisibility(View.VISIBLE);
+                ivEffect.setOnClickListener(v -> {
+                    if (effectSnackBar == null) {
+                        effectSnackBar = EffectSnackBar.make((ViewGroup) getView(), null);
+                    }
+                    if (effectSnackBar.isShown()) {
+                        ivEffect.setSelected(false);
+                        effectSnackBar.dismiss();
+                    } else {
+                        ivEffect.setSelected(true);
+                        effectSnackBar.show();
+                    }
+                });
+                UiUtils.setSelectorImage(ivEffect, toolbarBean.getLastTab(), R.drawable.rckit_tab_music_effect_selector, RCMusicControlKit.getInstance().getAssetsPath());
+            } else {
+                ivEffect.setVisibility(View.INVISIBLE);
+            }
+        }
+        RCAttribute contentAttribute = musicControlKitConfig.getContentAttribute();
+        if (contentAttribute != null) {
+            rbvBottom.setOverlayColor(contentAttribute.getBackground().getColor());
+            rbvBottom.setBlurRadius(contentAttribute.isBlurEnable() ? UiUtils.dp2px(14) : 0);
+            UiUtils.setViewSize(vpMusic, contentAttribute.getSize());
+        }
+
+        SoundEffectConfig effectConfig = musicControlKitConfig.getSoundEffect();
+        if (effectConfig != null) {
+            if (effectSnackBar == null) {
+                effectSnackBar = EffectSnackBar.make((ViewGroup) getView(), effectConfig);
+            }
+            RCSize size = new RCSize();
+            size.setWidth(effectConfig.getSize().getWidth());
+            size.setHeight(effectConfig.getSize().getHeight() + 5);
+            UiUtils.setViewSize(space, size);
+        }
     }
 
     @Override
@@ -124,6 +179,4 @@ public class MusicControlDialog extends BaseBottomSheetDialog implements OnSwitc
             return fragmentList.size();
         }
     }
-
-
 }

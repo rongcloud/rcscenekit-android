@@ -10,9 +10,11 @@ import java.util.Objects;
 import cn.rongcloud.corekit.utils.GsonUtil;
 
 /**
- * Created by hugo on 2021/11/24
+ * Created by gyn on 2021/11/24
  */
 public class Music implements Serializable {
+    private static final String UPLOAD_ID = "UPLOAD_ID";
+    private static final Music uploadItem = new Music();
     /**
      * 音乐服务器地址
      */
@@ -153,6 +155,13 @@ public class Music implements Serializable {
         return loadState == LoadState.LOADING;
     }
 
+    public static Music getUploadMusic() {
+        uploadItem.setMusicId(UPLOAD_ID);
+        uploadItem.setMusicName("本地上传");
+        uploadItem.setLoadState(LoadState.UN_LOAD);
+        return uploadItem;
+    }
+
     public enum LoadState {
         /**
          * 正在下载
@@ -166,5 +175,9 @@ public class Music implements Serializable {
          * 未下载
          */
         UN_LOAD
+    }
+
+    public boolean isUploadMusicItem() {
+        return TextUtils.equals(musicId, UPLOAD_ID);
     }
 }

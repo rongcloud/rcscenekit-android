@@ -8,6 +8,7 @@
     tools:background="#234">
 
     <cn.rongcloud.corekit.widget.RealtimeBlurView
+        android:id="@+id/rbv_effect"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:radius="6dp"

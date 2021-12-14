@@ -9,7 +9,7 @@ import java.util.List;
 import cn.rongcloud.musiccontrolkit.bean.Music;
 
 /**
- * Created by hugo on 2021/11/24
+ * Created by gyn on 2021/11/24
  */
 public class MusicDiffCallback extends DiffUtil.Callback {
 

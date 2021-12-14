@@ -18,7 +18,7 @@ import java.util.Random;
 import cn.rongcloud.musiccontrolkit.R;
 
 /**
- * Created by hugo on 2021/11/24
+ * Created by gyn on 2021/11/24
  */
 public class MusicPlayingView extends View {
 
@@ -69,6 +69,10 @@ public class MusicPlayingView extends View {
         for (int i = 0; i < columnNum; i++) {
             rectList.add(new RectF());
         }
+    }
+
+    public void setLineColor(int color) {
+        mPaint.setColor(color);
     }
 
     private void refreshHeight(Integer height) {

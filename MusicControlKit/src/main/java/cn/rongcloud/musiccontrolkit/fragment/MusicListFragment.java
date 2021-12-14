@@ -4,11 +4,14 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Guideline;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,30 +25,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.rongcloud.corekit.api.DataCallback;
-import cn.rongcloud.corekit.base.BaseFragment;
+import cn.rongcloud.corekit.base.RCFragment;
 import cn.rongcloud.corekit.utils.GlideUtil;
 import cn.rongcloud.corekit.utils.ListUtil;
+import cn.rongcloud.corekit.utils.UiUtils;
 import cn.rongcloud.corekit.utils.VMLog;
-import cn.rongcloud.musiccontrolkit.MusicControlKitInit;
-import cn.rongcloud.musiccontrolkit.MusicEngine;
 import cn.rongcloud.musiccontrolkit.R;
+import cn.rongcloud.musiccontrolkit.RCMusicControlEngine;
+import cn.rongcloud.musiccontrolkit.RCMusicControlKit;
 import cn.rongcloud.musiccontrolkit.bean.Music;
+import cn.rongcloud.musiccontrolkit.bean.MusicControlKitConfig;
+import cn.rongcloud.musiccontrolkit.bean.MusicItemConfig;
+import cn.rongcloud.musiccontrolkit.bean.MusicListConfig;
 import cn.rongcloud.musiccontrolkit.iinterface.OnSwitchPageListener;
 import cn.rongcloud.musiccontrolkit.widget.MusicPlayingView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by hugo on 2021/11/24
+ * Created by gyn on 2021/11/24
  */
-public class MusicListFragment extends BaseFragment {
+public class MusicListFragment extends RCFragment<MusicControlKitConfig> {
     private static final String TAG = MusicListFragment.class.getSimpleName();
     private final OnSwitchPageListener onSwitchPageListener;
+    private FrameLayout flRoot;
     private RecyclerView rvMusicList;
     private LinearLayout llEmpty;
     private TextView tvAddMusic;
     private MusicListAdapter adapter;
     private List<Music> musicList = new ArrayList<>();
     private SmartRefreshLayout srlRefresh;
+    private MusicListConfig musicListConfig;
+    private MusicItemConfig itemConfig;
 
     public MusicListFragment(OnSwitchPageListener onSwitchPageListener) {
         this.onSwitchPageListener = onSwitchPageListener;
@@ -61,7 +71,13 @@ public class MusicListFragment extends BaseFragment {
     }
 
     @Override
+    public MusicControlKitConfig getKitConfig() {
+        return RCMusicControlKit.getInstance().getKitConfig();
+    }
+
+    @Override
     public void initView() {
+        flRoot = getLayout().findViewById(R.id.fl_root);
         rvMusicList = getLayout().findViewById(R.id.rv_music_list);
         srlRefresh = getLayout().findViewById(R.id.srl_refresh);
         llEmpty = getLayout().findViewById(R.id.ll_empty);
@@ -69,10 +85,6 @@ public class MusicListFragment extends BaseFragment {
 
         adapter = new MusicListAdapter();
         rvMusicList.setAdapter(adapter);
-
-        boolean enableRefreshAndLoadMore = MusicControlKitInit.getInstance().isEnableRefreshAndLoadMore();
-        srlRefresh.setEnableLoadMore(enableRefreshAndLoadMore);
-        srlRefresh.setEnableRefresh(enableRefreshAndLoadMore);
 
         srlRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
@@ -85,31 +97,40 @@ public class MusicListFragment extends BaseFragment {
                 refreshData();
             }
         });
-
         tvAddMusic.setOnClickListener(v -> {
             if (onSwitchPageListener != null) {
                 onSwitchPageListener.onSwitch(1);
             }
         });
+    }
 
+    @Override
+    public void initConfig(MusicControlKitConfig musicControlKitConfig) {
+        musicListConfig = musicControlKitConfig.getMusicList();
+        if (musicListConfig != null) {
+            srlRefresh.setEnableLoadMore(musicListConfig.isLoadMoreEnable());
+            srlRefresh.setEnableRefresh(musicListConfig.isRefreshEnable());
+            flRoot.setBackgroundColor(musicListConfig.getBackgroundColor().getColor());
+            itemConfig = musicListConfig.getMusicItem();
+        }
         refreshData();
         listenMusicListChanged();
     }
 
     private void refreshData() {
-        MusicEngine.getInstance().onLoadMusicList(new DataCallback<List<Music>>() {
+        RCMusicControlEngine.getInstance().onLoadMusicList(new DataCallback<List<Music>>() {
             @Override
             public void onResult(List<Music> musicList) {
-                MusicEngine.getInstance().setMusicList(musicList);
+                RCMusicControlEngine.getInstance().setMusicList(musicList);
             }
         });
     }
 
     private void loadMoreData() {
-        MusicEngine.getInstance().onLoadMoreMusicList(new DataCallback<List<Music>>() {
+        RCMusicControlEngine.getInstance().onLoadMoreMusicList(new DataCallback<List<Music>>() {
             @Override
             public void onResult(List<Music> musicList) {
-                MusicEngine.getInstance().addMusicList(musicList);
+                RCMusicControlEngine.getInstance().addMusicList(musicList);
             }
         });
     }
@@ -118,7 +139,7 @@ public class MusicListFragment extends BaseFragment {
      * 监听音乐列表变化刷新UI
      */
     private void listenMusicListChanged() {
-        MusicEngine.getInstance().musicListObserve().observe(this, new Observer<List<Music>>() {
+        RCMusicControlEngine.getInstance().musicListObserve().observe(this, new Observer<List<Music>>() {
             @Override
             public void onChanged(List<Music> list) {
                 VMLog.e(TAG, "music list changed :" + list.size() + Thread.currentThread());
@@ -137,19 +158,13 @@ public class MusicListFragment extends BaseFragment {
                 srlRefresh.finishLoadMore();
             }
         });
-        MusicEngine.getInstance().playingObserve().observe(this, new Observer<Boolean>() {
+        RCMusicControlEngine.getInstance().playingObserve().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
                 VMLog.e(TAG, "music playing changed :" + aBoolean);
                 adapter.notifyDataSetChanged();
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-//        MusicListManager.getInstance().refresh();
     }
 
     class MusicListAdapter extends RecyclerView.Adapter<MusicItemViewHolder> {
@@ -181,6 +196,11 @@ public class MusicListFragment extends BaseFragment {
         private ImageView ivTop;
         private ImageView ivDel;
         private MusicPlayingView mpvPlaying;
+        private View separator;
+        private Guideline glGuideStart;
+        private Guideline glGuideEnd;
+
+        private int highlightColor = 0;
 
         public MusicItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -192,6 +212,36 @@ public class MusicListFragment extends BaseFragment {
             ivTop = (ImageView) itemView.findViewById(R.id.iv_top);
             ivDel = (ImageView) itemView.findViewById(R.id.iv_del);
             mpvPlaying = (MusicPlayingView) itemView.findViewById(R.id.mpv_playing);
+            separator = itemView.findViewById(R.id.v_separator);
+            glGuideStart = itemView.findViewById(R.id.gl_guide_start);
+            glGuideEnd = itemView.findViewById(R.id.gl_guide_end);
+            initConfig();
+        }
+
+        private void initConfig() {
+            if (itemConfig != null) {
+                UiUtils.setViewSize(itemView, itemConfig.getSize());
+
+                glGuideStart.setGuidelineBegin(UiUtils.dp2px(itemConfig.getContentInsets().getLeft()));
+                glGuideEnd.setGuidelineEnd(UiUtils.dp2px(itemConfig.getContentInsets().getRight()));
+
+                UiUtils.setViewSize(civTheme, itemConfig.getCoverSize());
+                UiUtils.setTextAttribute(tvMusicName, itemConfig.getTitleAttribute());
+                UiUtils.setTextAttribute(tvAuthor, itemConfig.getContentAttribute());
+                UiUtils.setTextAttribute(tvSize, itemConfig.getSizeAttribute());
+                if (itemConfig.getSeparatorAttribute() != null) {
+                    UiUtils.setViewSize(separator, itemConfig.getSeparatorAttribute().getSize());
+                    separator.setBackgroundColor(itemConfig.getSeparatorAttribute().getBackground().getColor());
+                    ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) separator.getLayoutParams();
+                    params.leftMargin = UiUtils.dp2px(itemConfig.getSeparatorAttribute().getInsets().getLeft());
+                    params.rightMargin = UiUtils.dp2px(itemConfig.getSeparatorAttribute().getInsets().getRight());
+                    separator.setLayoutParams(params);
+                }
+                UiUtils.setImageAttribute(ivTop, itemConfig.getTopIconAttribute(), R.drawable.rckit_ic_music_top, RCMusicControlKit.getInstance().getAssetsPath());
+                UiUtils.setImageAttribute(ivDel, itemConfig.getDeleteIconAttribute(), R.drawable.rckit_ic_music_del, RCMusicControlKit.getInstance().getAssetsPath());
+                highlightColor = itemConfig.getHighlightColor().getColor();
+                mpvPlaying.setLineColor(highlightColor);
+            }
         }
 
         public void initView(Music music) {
@@ -199,17 +249,16 @@ public class MusicListFragment extends BaseFragment {
             tvMusicName.setText(music.getMusicName());
             tvAuthor.setText(music.getAuthor());
             tvSize.setText(getSizeString(music.getSize()));
-            boolean isPlayingMusic = MusicEngine.getInstance().isPlayingMusic(music);
-            if (isPlayingMusic && MusicEngine.getInstance().isPlaying()) {
+            boolean isPlayingMusic = RCMusicControlEngine.getInstance().isPlayingMusic(music);
+            if (isPlayingMusic && RCMusicControlEngine.getInstance().isPlaying()) {
                 ivTop.setVisibility(View.GONE);
                 ivDel.setVisibility(View.GONE);
                 mpvPlaying.setVisibility(View.VISIBLE);
                 ivPlay.setImageResource(R.drawable.rckit_ic_music_pause_cover);
                 mpvPlaying.start();
-                int color = getResources().getColor(R.color.rckit_color_primary);
-                tvMusicName.setTextColor(color);
-                tvAuthor.setTextColor(color);
-                tvSize.setTextColor(color);
+                tvMusicName.setTextColor(highlightColor);
+                tvAuthor.setTextColor(highlightColor);
+                tvSize.setTextColor(highlightColor);
             } else {
                 ivTop.setVisibility(View.VISIBLE);
                 ivDel.setVisibility(View.VISIBLE);
@@ -222,13 +271,13 @@ public class MusicListFragment extends BaseFragment {
                 tvSize.setTextColor(color);
             }
             itemView.setOnClickListener(v -> {
-                MusicEngine.getInstance().toggleMusic(music);
+                RCMusicControlEngine.getInstance().toggleMusic(music);
             });
             ivTop.setOnClickListener(v -> {
-                MusicEngine.getInstance().topMusic(music);
+                RCMusicControlEngine.getInstance().topMusic(music);
             });
             ivDel.setOnClickListener(v -> {
-                MusicEngine.getInstance().deleteMusic(music);
+                RCMusicControlEngine.getInstance().deleteMusic(music);
             });
         }
 

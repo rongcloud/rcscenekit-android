@@ -83,6 +83,13 @@ public interface OnMusicDataSourceListener {
     void onDownloadMusic(Music music, DataCallback<Music> dataCallback);
 
     /**
+     * 从本地选择文件
+     *
+     * @param music 返回uri
+     */
+    void onSelectMusicFromLocal(Music music);
+
+    /**
      * 加载气氛列表
      *
      * @param dataCallback 数据回调

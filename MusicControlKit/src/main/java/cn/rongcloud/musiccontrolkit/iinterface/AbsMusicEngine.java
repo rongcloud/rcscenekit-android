@@ -9,182 +9,184 @@ import cn.rongcloud.musiccontrolkit.bean.MusicCategory;
 import cn.rongcloud.musiccontrolkit.bean.MusicControl;
 
 /**
- * Created by hugo on 2021/12/1
+ * Created by gyn on 2021/12/1
  */
-public abstract class AbsMusicEngine implements OnMusicDataSourceListener, OnMusicPlayerListener, OnMusicOperateListener {
-    private OnMusicDataSourceListener onMusicDataSourceListener;
-    private OnMusicOperateListener onMusicOperateListener;
-    private OnMusicPlayerListener onMusicPlayerListener;
+public abstract class AbsMusicEngine implements RCMusicKitListener {
+    private RCMusicKitListener rcMusicKitListener;
 
-    public void setListener(OnMusicDataSourceListener onMusicDataSourceListener, OnMusicOperateListener onMusicOperateListener, OnMusicPlayerListener onMusicPlayerListener) {
-        this.onMusicDataSourceListener = onMusicDataSourceListener;
-        this.onMusicOperateListener = onMusicOperateListener;
-        this.onMusicPlayerListener = onMusicPlayerListener;
+    public void setListener(RCMusicKitListener rcMusicKitListener) {
+        this.rcMusicKitListener = rcMusicKitListener;
     }
 
     @Override
     public void onLoadMusicList(DataCallback<List<Music>> dataCallback) {
-        if (onMusicDataSourceListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicDataSourceListener.onLoadMusicList(dataCallback);
+        rcMusicKitListener.onLoadMusicList(dataCallback);
     }
 
     @Override
     public void onLoadMoreMusicList(DataCallback<List<Music>> dataCallback) {
-        if (onMusicDataSourceListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicDataSourceListener.onLoadMoreMusicList(dataCallback);
+        rcMusicKitListener.onLoadMoreMusicList(dataCallback);
     }
 
     @Override
     public void onLoadMusicCategory(DataCallback<List<MusicCategory>> dataCallback) {
-        if (onMusicDataSourceListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicDataSourceListener.onLoadMusicCategory(dataCallback);
+        rcMusicKitListener.onLoadMusicCategory(dataCallback);
     }
 
     @Override
     public void onLoadMusicListByCategory(String category, DataCallback<List<Music>> dataCallback) {
-        if (onMusicDataSourceListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicDataSourceListener.onLoadMusicListByCategory(category, dataCallback);
+        rcMusicKitListener.onLoadMusicListByCategory(category, dataCallback);
     }
 
     @Override
     public void onLoadMoreMusicListByCategory(String category, DataCallback<List<Music>> dataCallback) {
-        if (onMusicDataSourceListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicDataSourceListener.onLoadMoreMusicListByCategory(category, dataCallback);
+        rcMusicKitListener.onLoadMoreMusicListByCategory(category, dataCallback);
     }
 
     @Override
     public void onSearchMusic(String keywords, DataCallback<List<Music>> dataCallback) {
-        if (onMusicDataSourceListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicDataSourceListener.onSearchMusic(keywords, dataCallback);
+        rcMusicKitListener.onSearchMusic(keywords, dataCallback);
     }
 
     @Override
     public void onLoadMusicControl(DataCallback<MusicControl> dataCallback) {
-        if (onMusicDataSourceListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicDataSourceListener.onLoadMusicControl(dataCallback);
+        rcMusicKitListener.onLoadMusicControl(dataCallback);
     }
 
     @Override
     public void onLoadMusicDetail(Music music, DataCallback<Music> dataCallback) {
-        if (onMusicDataSourceListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicDataSourceListener.onLoadMusicDetail(music, dataCallback);
+        rcMusicKitListener.onLoadMusicDetail(music, dataCallback);
     }
 
     @Override
     public void onLoadEffectList(DataCallback<List<Effect>> dataCallback) {
-        if (onMusicDataSourceListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicDataSourceListener.onLoadEffectList(dataCallback);
+        rcMusicKitListener.onLoadEffectList(dataCallback);
     }
 
     @Override
     public void onTopMusic(Music fromMusic, Music downToMusic) {
-        if (onMusicOperateListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicOperateListener.onTopMusic(fromMusic, downToMusic);
+        rcMusicKitListener.onTopMusic(fromMusic, downToMusic);
     }
 
     @Override
     public void onDeleteMusic(Music music) {
-        if (onMusicOperateListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicOperateListener.onDeleteMusic(music);
+        rcMusicKitListener.onDeleteMusic(music);
     }
 
     @Override
     public void onDownloadMusic(Music music, DataCallback<Music> dataCallback) {
-        if (onMusicDataSourceListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicDataSourceListener.onDownloadMusic(music, dataCallback);
+        rcMusicKitListener.onDownloadMusic(music, dataCallback);
+    }
+
+    @Override
+    public void onSelectMusicFromLocal(Music music) {
+        if (rcMusicKitListener == null) {
+            return;
+        }
+        rcMusicKitListener.onSelectMusicFromLocal(music);
     }
 
     @Override
     public void onLocalVolumeChanged(int localVolume) {
-        if (onMusicPlayerListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicPlayerListener.onLocalVolumeChanged(localVolume);
+        rcMusicKitListener.onLocalVolumeChanged(localVolume);
     }
 
     @Override
     public void onRemoteVolumeChanged(int remoteVolume) {
-        if (onMusicPlayerListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicPlayerListener.onRemoteVolumeChanged(remoteVolume);
+        rcMusicKitListener.onRemoteVolumeChanged(remoteVolume);
     }
 
     @Override
     public void onMicVolumeChanged(int micVolume) {
-        if (onMusicPlayerListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicPlayerListener.onMicVolumeChanged(micVolume);
+        rcMusicKitListener.onMicVolumeChanged(micVolume);
     }
 
     @Override
     public void onEarsBackEnableChanged(boolean earsBackEnable) {
-        if (onMusicPlayerListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicPlayerListener.onEarsBackEnableChanged(earsBackEnable);
+        rcMusicKitListener.onEarsBackEnableChanged(earsBackEnable);
     }
 
     @Override
     public void onStartMixingWithMusic(Music music) {
-        if (onMusicPlayerListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicPlayerListener.onStartMixingWithMusic(music);
+        rcMusicKitListener.onStartMixingWithMusic(music);
     }
 
     @Override
     public void onResumeMixingWithMusic(Music music) {
-        if (onMusicPlayerListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicPlayerListener.onResumeMixingWithMusic(music);
+        rcMusicKitListener.onResumeMixingWithMusic(music);
     }
 
     @Override
     public void onPauseMixingWithMusic(Music music) {
-        if (onMusicPlayerListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicPlayerListener.onPauseMixingWithMusic(music);
+        rcMusicKitListener.onPauseMixingWithMusic(music);
     }
 
     @Override
     public void onPlayEffect(Effect effect) {
-        if (onMusicPlayerListener == null) {
+        if (rcMusicKitListener == null) {
             return;
         }
-        onMusicPlayerListener.onPlayEffect(effect);
+        rcMusicKitListener.onPlayEffect(effect);
     }
 
     public void release() {
-        onMusicPlayerListener = null;
-        onMusicDataSourceListener = null;
-        onMusicOperateListener = null;
+        rcMusicKitListener = null;
     }
 }

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * Created by hugo on 2021/11/26
+ * Created by gyn on 2021/11/26
  */
 public class Effect implements Serializable {
     @SerializedName("filePath")

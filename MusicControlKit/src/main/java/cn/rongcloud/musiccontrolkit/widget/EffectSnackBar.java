@@ -15,30 +15,36 @@ import java.util.List;
 
 import cn.rongcloud.corekit.api.DataCallback;
 import cn.rongcloud.corekit.utils.UiUtils;
+import cn.rongcloud.corekit.widget.RealtimeBlurView;
 import cn.rongcloud.corekit.widget.SpaceItemDecoration;
-import cn.rongcloud.musiccontrolkit.MusicEngine;
 import cn.rongcloud.musiccontrolkit.R;
+import cn.rongcloud.musiccontrolkit.RCMusicControlEngine;
 import cn.rongcloud.musiccontrolkit.bean.Effect;
+import cn.rongcloud.musiccontrolkit.bean.SoundEffectConfig;
 
 /**
- * Created by hugo on 2021/11/29
+ * Created by gyn on 2021/11/29
  */
 public class EffectSnackBar extends BaseTransientBottomBar<EffectSnackBar> {
 
     private RecyclerView rvEffect;
+    private RealtimeBlurView rbvEffect;
     private List<Effect> effectList = new ArrayList<>();
     private Effect currentEffect;
     private EffectAdapter adapter;
+    private SoundEffectConfig soundEffectConfig;
 
     public EffectSnackBar(@NonNull ViewGroup parent, @NonNull View content,
-                          @NonNull com.google.android.material.snackbar.ContentViewCallback contentViewCallback) {
+                          @NonNull com.google.android.material.snackbar.ContentViewCallback contentViewCallback, SoundEffectConfig soundEffectConfig) {
         super(parent, content, contentViewCallback);
         initView();
+        initConfig(soundEffectConfig);
+        this.soundEffectConfig = soundEffectConfig;
     }
 
-    public static EffectSnackBar make(ViewGroup parent) {
+    public static EffectSnackBar make(ViewGroup parent, SoundEffectConfig soundEffectConfig) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rckit_effect_snackbar, parent, false);
-        EffectSnackBar effectSnackBar = new EffectSnackBar(parent, view, new EffectCallback());
+        EffectSnackBar effectSnackBar = new EffectSnackBar(parent, view, new EffectCallback(), soundEffectConfig);
         effectSnackBar.getView().setPadding(0, 0, 0, 0);
         effectSnackBar.getView().setBackgroundResource(R.color.transparent);
         effectSnackBar.setDuration(LENGTH_INDEFINITE);
@@ -58,12 +64,11 @@ public class EffectSnackBar extends BaseTransientBottomBar<EffectSnackBar> {
     }
 
     private void initView() {
+        rbvEffect = getView().findViewById(R.id.rbv_effect);
         rvEffect = (RecyclerView) getView().findViewById(R.id.rv_effect);
         adapter = new EffectAdapter();
         rvEffect.setAdapter(adapter);
-        int space = UiUtils.dp2px(getContext(), 7);
-        rvEffect.addItemDecoration(new SpaceItemDecoration(space, 0, space * 2, space * 2));
-        MusicEngine.getInstance().onLoadEffectList(new DataCallback<List<Effect>>() {
+        RCMusicControlEngine.getInstance().onLoadEffectList(new DataCallback<List<Effect>>() {
             @Override
             public void onResult(List<Effect> effects) {
                 if (effects != null && effects.size() > 0) {
@@ -73,6 +78,19 @@ public class EffectSnackBar extends BaseTransientBottomBar<EffectSnackBar> {
                 }
             }
         });
+    }
+
+    private void initConfig(SoundEffectConfig effectConfig) {
+        if (effectConfig == null) {
+            return;
+        }
+        UiUtils.setViewSize(getView(), effectConfig.getSize());
+        rbvEffect.setOverlayColor(effectConfig.getBackgroundColor().getColor());
+        rbvEffect.setBlurRadius(effectConfig.isBlurEnable() ? UiUtils.dp2px(14) : 0);
+        rbvEffect.setCornerRadius(UiUtils.dp2px(effectConfig.getCorner().getRadius()));
+        UiUtils.setPadding(rvEffect, effectConfig.getContentInsets());
+        int space = UiUtils.dp2px(effectConfig.getItemSpace());
+        rvEffect.addItemDecoration(new SpaceItemDecoration(space / 2, 0, -space / 2, -space / 2));
     }
 
     static class EffectCallback implements com.google.android.material.snackbar.ContentViewCallback {
@@ -112,6 +130,13 @@ public class EffectSnackBar extends BaseTransientBottomBar<EffectSnackBar> {
         public EffectViewHolder(@NonNull View itemView) {
             super(itemView);
             tvEffect = (TextView) itemView.findViewById(R.id.tv_effect);
+            initConfig();
+        }
+
+        private void initConfig() {
+            if (soundEffectConfig != null && soundEffectConfig.getEffectAttribute() != null) {
+                UiUtils.setTextAttribute(tvEffect, soundEffectConfig.getEffectAttribute());
+            }
         }
 
         public void setEffect(Effect effect) {
@@ -119,7 +144,7 @@ public class EffectSnackBar extends BaseTransientBottomBar<EffectSnackBar> {
             tvEffect.setSelected(effect.equals(currentEffect));
             tvEffect.setOnClickListener(v -> {
                 currentEffect = effect;
-                MusicEngine.getInstance().onPlayEffect(effect);
+                RCMusicControlEngine.getInstance().onPlayEffect(effect);
                 adapter.notifyDataSetChanged();
             });
         }

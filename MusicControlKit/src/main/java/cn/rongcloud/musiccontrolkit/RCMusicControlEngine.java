@@ -1,23 +1,32 @@
 package cn.rongcloud.musiccontrolkit;
 
+import android.content.Context;
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.text.TextUtils;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import cn.rongcloud.corekit.api.RCSceneKitEngine;
 import cn.rongcloud.corekit.utils.ListUtil;
+import cn.rongcloud.corekit.utils.RealPathFromUriUtils;
 import cn.rongcloud.corekit.utils.VMLog;
 import cn.rongcloud.musiccontrolkit.bean.Music;
 import cn.rongcloud.musiccontrolkit.iinterface.AbsMusicEngine;
+import cn.rongcloud.musiccontrolkit.iinterface.RCMusicKitListener;
 
 /**
- * Created by hugo on 2021/12/1
+ * Created by gyn on 2021/12/1
  * 音乐列表控制类
  */
-public class MusicEngine extends AbsMusicEngine {
-    private static final String TAG = MusicEngine.class.getSimpleName();
+public class RCMusicControlEngine extends AbsMusicEngine {
+    private static final String TAG = RCMusicControlEngine.class.getSimpleName();
     private static final Holder holder = new Holder();
 
     /**
@@ -37,7 +46,9 @@ public class MusicEngine extends AbsMusicEngine {
      */
     private MutableLiveData<List<String>> musicIdListLiveData;
 
-    public MusicEngine() {
+    private MusicControlDialog musicControlDialog;
+
+    public RCMusicControlEngine() {
         musicListLiveData = new MutableLiveData<>();
         playingLiveData = new MutableLiveData<>();
         musicIdListLiveData = new MutableLiveData<>();
@@ -46,8 +57,14 @@ public class MusicEngine extends AbsMusicEngine {
     /**
      * @return 音乐列表单例
      */
-    public static MusicEngine getInstance() {
+    public static RCMusicControlEngine getInstance() {
         return holder.instance;
+    }
+
+    public void showDialog(FragmentManager fragmentManager, RCMusicKitListener rcMusicKitListener) {
+        setListener(rcMusicKitListener);
+        musicControlDialog = new MusicControlDialog();
+        musicControlDialog.show(fragmentManager, MusicControlDialog.TAG);
     }
 
     /**
@@ -306,7 +323,43 @@ public class MusicEngine extends AbsMusicEngine {
         return null;
     }
 
+    public Music parseLocalMusic(Uri uri) {
+        if (uri == null) {
+            return null;
+        }
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        try {
+            Context context = RCSceneKitEngine.getInstance().getContext();
+            mmr.setDataSource(context, uri);
+            String title = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+            VMLog.d(TAG, "title:" + title);
+            String album = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
+            VMLog.d(TAG, "album:" + album);
+            String artist = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+            VMLog.d(TAG, "artist:" + artist);
+            String duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION); // 播放时长单位为毫秒
+            VMLog.d(TAG, "duration:" + duration);
+            // 图片，可以通过BitmapFactory.decodeByteArray转换为bitmap图片
+//            byte[] pic = mmr.getEmbeddedPicture();
+            String path = RealPathFromUriUtils.getRealPathFromUri(context, uri);
+            VMLog.d(TAG, "path:" + path);
+
+            Music music = new Music();
+            music.setMusicId(UUID.randomUUID().toString());
+            music.setMusicName(title);
+            music.setLoadState(Music.LoadState.LOADED);
+            music.setPath(path);
+            music.setAlbumName(album);
+            music.setAuthor(artist);
+            music.setSize(new File(path).length());
+            return music;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private static class Holder {
-        private MusicEngine instance = new MusicEngine();
+        private RCMusicControlEngine instance = new RCMusicControlEngine();
     }
 }

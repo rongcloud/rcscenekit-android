@@ -1,5 +1,9 @@
 package cn.rongcloud.musiccontrolkit.fragment;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -9,7 +13,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Guideline;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,24 +26,41 @@ import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import cn.rongcloud.corekit.api.DataCallback;
-import cn.rongcloud.corekit.base.BaseFragment;
+import cn.rongcloud.corekit.base.RCFragment;
 import cn.rongcloud.corekit.utils.GlideUtil;
 import cn.rongcloud.corekit.utils.ListUtil;
-import cn.rongcloud.musiccontrolkit.MusicControlKitInit;
-import cn.rongcloud.musiccontrolkit.MusicEngine;
+import cn.rongcloud.corekit.utils.UiUtils;
 import cn.rongcloud.musiccontrolkit.R;
+import cn.rongcloud.musiccontrolkit.RCMusicControlEngine;
+import cn.rongcloud.musiccontrolkit.RCMusicControlKit;
 import cn.rongcloud.musiccontrolkit.bean.Music;
+import cn.rongcloud.musiccontrolkit.bean.MusicAddConfig;
+import cn.rongcloud.musiccontrolkit.bean.MusicControlKitConfig;
+import cn.rongcloud.musiccontrolkit.bean.MusicItemConfig;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by hugo on 2021/11/24
+ * Created by gyn on 2021/11/24
  */
-public class MusicAddListFragment extends BaseFragment {
+public class MusicAddListFragment extends RCFragment<MusicControlKitConfig> {
     private static final String CATEGORY_ID = "CATEGORY_ID";
     private static final String IS_SEARCH = "IS_SEARCH";
+    private final ActivityResultLauncher mLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result != null
+                                && result.getData() != null
+                                && result.getData().getData() != null) {
+                            Uri uri = result.getData().getData();
+                            Music music = RCMusicControlEngine.getInstance().parseLocalMusic(uri);
+                            RCMusicControlEngine.getInstance().onSelectMusicFromLocal(music);
+                        }
+                    });
     private RecyclerView rvMusicList;
     private ImageView emptyImageView;
     private MusicListAdapter adapter;
@@ -43,7 +68,27 @@ public class MusicAddListFragment extends BaseFragment {
     private boolean isSearch;
     private List<Music> musicList = new ArrayList<>();
     private SmartRefreshLayout srlRefresh;
-
+    private final ActivityResultLauncher permissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
+                boolean allOk = true;
+                for (String item : result.keySet()) {
+                    try {
+                        boolean bOK = result.get(item);
+                        if (!bOK) {
+                            allOk = false;
+                            break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (allOk) {
+                    launchFilePick();
+                }
+            });
+    private ConstraintLayout clRoot;
+    private MusicAddConfig musicAddConfig;
+    private MusicItemConfig itemConfig;
 
     public static MusicAddListFragment getInstance(String categoryId) {
         Bundle bundle = new Bundle();
@@ -67,9 +112,15 @@ public class MusicAddListFragment extends BaseFragment {
     }
 
     @Override
+    public MusicControlKitConfig getKitConfig() {
+        return RCMusicControlKit.getInstance().getKitConfig();
+    }
+
+    @Override
     public void initView() {
         categoryId = getArguments().getString(CATEGORY_ID, "");
         isSearch = getArguments().getBoolean(IS_SEARCH, false);
+        clRoot = getLayout().findViewById(R.id.cl_root);
         rvMusicList = getLayout().findViewById(R.id.rv_music_list);
         srlRefresh = getLayout().findViewById(R.id.srl_refresh);
         emptyImageView = getLayout().findViewById(R.id.iv_empty);
@@ -79,10 +130,6 @@ public class MusicAddListFragment extends BaseFragment {
             srlRefresh.setEnableLoadMore(false);
             srlRefresh.setEnableRefresh(false);
         } else {
-            boolean enableRefreshAndLoadMore = MusicControlKitInit.getInstance().isEnableRefreshAndLoadMore();
-            srlRefresh.setEnableLoadMore(enableRefreshAndLoadMore);
-            srlRefresh.setEnableRefresh(enableRefreshAndLoadMore);
-
             srlRefresh.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
                 @Override
                 public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
@@ -94,14 +141,31 @@ public class MusicAddListFragment extends BaseFragment {
                     refreshData();
                 }
             });
+        }
+    }
+
+    @Override
+    public void initConfig(MusicControlKitConfig musicControlKitConfig) {
+        musicAddConfig = musicControlKitConfig.getMusicAdd();
+        if (musicAddConfig != null) {
+            if (isSearch) {
+                srlRefresh.setEnableLoadMore(false);
+                srlRefresh.setEnableRefresh(false);
+            } else {
+                srlRefresh.setEnableLoadMore(musicAddConfig.isLoadMoreEnable());
+                srlRefresh.setEnableRefresh(musicAddConfig.isRefreshEnable());
+            }
+            clRoot.setBackgroundColor(musicAddConfig.getBackgroundColor().getColor());
+            itemConfig = musicAddConfig.getMusicItem();
+        }
+        if (!isSearch) {
             refreshData();
         }
-
         listenerMusicList();
     }
 
     private void listenerMusicList() {
-        MusicEngine.getInstance().musicIdListObserve().observe(this, new Observer<List<String>>() {
+        RCMusicControlEngine.getInstance().musicIdListObserve().observe(this, new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> strings) {
                 checkIsInMusicList(musicList);
@@ -111,7 +175,7 @@ public class MusicAddListFragment extends BaseFragment {
     }
 
     private void refreshData() {
-        MusicEngine.getInstance().onLoadMusicListByCategory(categoryId, new DataCallback<List<Music>>() {
+        RCMusicControlEngine.getInstance().onLoadMusicListByCategory(categoryId, new DataCallback<List<Music>>() {
             @Override
             public void onResult(List<Music> musicList) {
                 setMusicList(musicList);
@@ -120,7 +184,7 @@ public class MusicAddListFragment extends BaseFragment {
     }
 
     private void loadMoreData() {
-        MusicEngine.getInstance().onLoadMoreMusicListByCategory(categoryId, new DataCallback<List<Music>>() {
+        RCMusicControlEngine.getInstance().onLoadMoreMusicListByCategory(categoryId, new DataCallback<List<Music>>() {
             @Override
             public void onResult(List<Music> musicList) {
                 addMusicList(musicList);
@@ -142,6 +206,11 @@ public class MusicAddListFragment extends BaseFragment {
         if (musicList != null) {
             this.musicList.addAll(checkIsInMusicList(musicList));
         }
+        if (musicAddConfig != null && musicAddConfig.isUploadMusicEnable() && !isSearch) {
+            Music music = Music.getUploadMusic();
+            this.musicList.remove(music);
+            this.musicList.add(music);
+        }
         adapter.notifyDataSetChanged();
         srlRefresh.finishRefresh();
         srlRefresh.finishLoadMore();
@@ -150,7 +219,7 @@ public class MusicAddListFragment extends BaseFragment {
     private List<Music> checkIsInMusicList(List<Music> musicList) {
         if (musicList != null) {
             for (Music music : musicList) {
-                if (MusicEngine.getInstance().isInMusicList(music.getMusicId())) {
+                if (RCMusicControlEngine.getInstance().isInMusicList(music.getMusicId())) {
                     music.setLoadState(Music.LoadState.LOADED);
                 } else if (music.isLoaded()) {
                     music.setLoadState(Music.LoadState.UN_LOAD);
@@ -158,6 +227,27 @@ public class MusicAddListFragment extends BaseFragment {
             }
         }
         return musicList;
+    }
+
+    private void launchFilePick() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, new ArrayList<String>().addAll(
+                Arrays.asList("audio/x-mpeg",
+                        "audio/aac",
+                        "audio/mp4a-latm",
+                        "audio/x-wav",
+                        "audio/ogg",
+                        "audio/3gpp")));
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        if (mLauncher != null) {
+            mLauncher.launch(intent);
+        }
+    }
+
+    private void requestStoragePermission() {
+        permissionLauncher.launch(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE});
     }
 
     class MusicListAdapter extends RecyclerView.Adapter<MusicItemViewHolder> {
@@ -186,6 +276,9 @@ public class MusicAddListFragment extends BaseFragment {
         private TextView tvSize;
         private ImageView ivAdd;
         private ProgressBar pbLoad;
+        private View separator;
+        private Guideline glGuideStart;
+        private Guideline glGuideEnd;
 
         public MusicItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -195,9 +288,54 @@ public class MusicAddListFragment extends BaseFragment {
             tvSize = (TextView) itemView.findViewById(R.id.tv_size);
             ivAdd = (ImageView) itemView.findViewById(R.id.iv_add);
             pbLoad = itemView.findViewById(R.id.pb_load);
+            separator = itemView.findViewById(R.id.v_separator);
+            glGuideStart = itemView.findViewById(R.id.gl_guide_start);
+            glGuideEnd = itemView.findViewById(R.id.gl_guide_end);
+            initConfig();
+        }
+
+        private void initConfig() {
+            if (itemConfig != null) {
+                UiUtils.setViewSize(itemView, itemConfig.getSize());
+
+                glGuideStart.setGuidelineBegin(UiUtils.dp2px(itemConfig.getContentInsets().getLeft()));
+                glGuideEnd.setGuidelineEnd(UiUtils.dp2px(itemConfig.getContentInsets().getRight()));
+
+                UiUtils.setViewSize(civTheme, itemConfig.getCoverSize());
+                UiUtils.setTextAttribute(tvMusicName, itemConfig.getTitleAttribute());
+                UiUtils.setTextAttribute(tvAuthor, itemConfig.getContentAttribute());
+                UiUtils.setTextAttribute(tvSize, itemConfig.getSizeAttribute());
+                if (itemConfig.getSeparatorAttribute() != null) {
+                    UiUtils.setViewSize(separator, itemConfig.getSeparatorAttribute().getSize());
+                    separator.setBackgroundColor(itemConfig.getSeparatorAttribute().getBackground().getColor());
+                    ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) separator.getLayoutParams();
+                    params.leftMargin = UiUtils.dp2px(itemConfig.getSeparatorAttribute().getInsets().getLeft());
+                    params.rightMargin = UiUtils.dp2px(itemConfig.getSeparatorAttribute().getInsets().getRight());
+                    separator.setLayoutParams(params);
+                }
+                UiUtils.setImageAttribute(ivAdd, itemConfig.getAddIconAttribute(), R.drawable.rckit_ic_music_add_selector, RCMusicControlKit.getInstance().getAssetsPath());
+                UiUtils.setViewSize(pbLoad, itemConfig.getAddIconAttribute().getSize());
+                UiUtils.setPadding(pbLoad, itemConfig.getAddIconAttribute().getInsets());
+                pbLoad.setIndeterminateTintList(ColorStateList.valueOf(itemConfig.getHighlightColor().getColor()));
+            }
         }
 
         private void initView(Music music) {
+            if (music.isUploadMusicItem()) {
+                civTheme.setImageResource(R.drawable.rckit_ic_music_upload);
+                tvMusicName.setText(music.getMusicName());
+                tvAuthor.setVisibility(View.GONE);
+                tvSize.setVisibility(View.GONE);
+                pbLoad.setVisibility(View.INVISIBLE);
+                ivAdd.setVisibility(View.VISIBLE);
+                ivAdd.setSelected(false);
+                ivAdd.setOnClickListener(v -> {
+                    requestStoragePermission();
+                });
+                return;
+            }
+            tvAuthor.setVisibility(View.VISIBLE);
+            tvSize.setVisibility(View.VISIBLE);
             GlideUtil.loadImage(civTheme, music.getCoverUrl(), R.drawable.rckit_ic_music_cover);
             tvMusicName.setText(music.getMusicName());
             tvAuthor.setText(music.getAuthor());
@@ -214,7 +352,7 @@ public class MusicAddListFragment extends BaseFragment {
                 if (music.isUnLoad()) {
                     music.setLoadState(Music.LoadState.LOADING);
                     adapter.notifyDataSetChanged();
-                    MusicEngine.getInstance().onLoadMusicDetail(music, new DataCallback<Music>() {
+                    RCMusicControlEngine.getInstance().onLoadMusicDetail(music, new DataCallback<Music>() {
                         @Override
                         public void onResult(Music m) {
                             if (m == null) {
@@ -224,7 +362,7 @@ public class MusicAddListFragment extends BaseFragment {
                             }
                             music.setFileUrl(m.getFileUrl());
                             if (!TextUtils.isEmpty(music.getFileUrl())) {
-                                MusicEngine.getInstance().onDownloadMusic(music, new DataCallback<Music>() {
+                                RCMusicControlEngine.getInstance().onDownloadMusic(music, new DataCallback<Music>() {
                                     @Override
                                     public void onResult(Music m) {
                                         if (m == null) {

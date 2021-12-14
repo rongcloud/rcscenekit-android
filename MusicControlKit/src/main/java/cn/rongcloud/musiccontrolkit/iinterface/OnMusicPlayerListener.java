@@ -4,7 +4,7 @@ import cn.rongcloud.musiccontrolkit.bean.Effect;
 import cn.rongcloud.musiccontrolkit.bean.Music;
 
 /**
- * Created by hugo on 2021/11/26
+ * Created by gyn on 2021/11/26
  */
 public interface OnMusicPlayerListener {
     /**
