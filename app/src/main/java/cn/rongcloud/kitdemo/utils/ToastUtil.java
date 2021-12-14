@@ -5,7 +5,7 @@ import android.widget.Toast;
 import cn.rongcloud.kitdemo.MyApplication;
 
 /**
- * Created by hugo on 2021/12/1
+ * Created by gyn on 2021/12/1
  */
 public class ToastUtil {
     public static void show(String msg) {

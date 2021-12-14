@@ -28,14 +28,12 @@ import cn.rongcloud.corekit.utils.ListUtil;
 import cn.rongcloud.corekit.utils.VMLog;
 import cn.rongcloud.kitdemo.MyApplication;
 import cn.rongcloud.kitdemo.utils.ToastUtil;
-import cn.rongcloud.musiccontrolkit.MusicEngine;
+import cn.rongcloud.musiccontrolkit.RCMusicControlEngine;
 import cn.rongcloud.musiccontrolkit.bean.Effect;
 import cn.rongcloud.musiccontrolkit.bean.Music;
 import cn.rongcloud.musiccontrolkit.bean.MusicCategory;
 import cn.rongcloud.musiccontrolkit.bean.MusicControl;
-import cn.rongcloud.musiccontrolkit.iinterface.OnMusicDataSourceListener;
-import cn.rongcloud.musiccontrolkit.iinterface.OnMusicOperateListener;
-import cn.rongcloud.musiccontrolkit.iinterface.OnMusicPlayerListener;
+import cn.rongcloud.musiccontrolkit.iinterface.RCMusicKitListener;
 import cn.rongcloud.rtc.api.IAudioEffectManager;
 import cn.rongcloud.rtc.api.RCRTCAudioMixer;
 import cn.rongcloud.rtc.api.RCRTCAudioMixer.MixingState;
@@ -45,11 +43,11 @@ import cn.rongcloud.rtc.api.callback.RCRTCAudioMixingStateChangeListener;
 import okhttp3.Response;
 
 /**
- * Created by hugo on 2021/11/25
+ * Created by gyn on 2021/11/25
  * 音乐混音管理类，用户可以自己根据业务逻辑处理，
  * 这里是个例子
  */
-public class MusicControlManager extends RCRTCAudioMixingStateChangeListener implements OnMusicDataSourceListener, OnMusicOperateListener, OnMusicPlayerListener {
+public class MusicControlManager extends RCRTCAudioMixingStateChangeListener implements RCMusicKitListener {
     private static final String TAG = MusicControlManager.class.getSimpleName();
     private static MusicControlManager instance;
     private static MusicControl musicControl;
@@ -78,7 +76,7 @@ public class MusicControlManager extends RCRTCAudioMixingStateChangeListener imp
                 //调用startMix方法时，传入的loopCount > 0，并且loopCount次数的混音已经完成
 
                 // 这里自动混音下一首
-                MusicEngine.getInstance().playNextMusic();
+                RCMusicControlEngine.getInstance().playNextMusic();
             } else if (reason == MixingStateReason.ONE_LOOP_COMPLETED) {
                 //调用startMix方法时，传入的loopCount < 0（无限循环）或 > 1，混音完成一次。接下来会继续自动开始下一次混音。
             } else if (reason == MixingStateReason.STOPPED_BY_USER) {
@@ -112,7 +110,7 @@ public class MusicControlManager extends RCRTCAudioMixingStateChangeListener imp
     public void onLoadMusicList(DataCallback<List<Music>> dataCallback) {
         VMLog.d(TAG, "onLoadMusicList");
         // 先获取已在播放列表的歌曲，没有的话网络获取或本地获取，根据自己业务逻辑处理
-        List<Music> oldMusicList = MusicEngine.getInstance().getMusicList();
+        List<Music> oldMusicList = RCMusicControlEngine.getInstance().getMusicList();
         if (ListUtil.isNotEmpty(oldMusicList)) {
             dataCallback.onResult(oldMusicList);
         } else {
@@ -299,6 +297,19 @@ public class MusicControlManager extends RCRTCAudioMixingStateChangeListener imp
     }
 
     /**
+     * 本地选择音频文件后,解析uri后得到的Music
+     *
+     * @param music 返回music
+     */
+    @Override
+    public void onSelectMusicFromLocal(Music music) {
+        if (music == null) {
+            return;
+        }
+        musicLoadFinished(music, music.getPath(), null);
+    }
+
+    /**
      * 音乐文件下载完之后的操作处理，用户可以根据需求自定义
      *
      * @param music
@@ -315,17 +326,19 @@ public class MusicControlManager extends RCRTCAudioMixingStateChangeListener imp
                 // 下载完成后刷新当前列表
                 music.setPath(musicPath);
                 music.setLoadState(Music.LoadState.LOADED);
-                dataCallback.onResult(music);
+                if (dataCallback != null) {
+                    dataCallback.onResult(music);
+                }
 
                 // 下载完成后根据自己业务逻辑处理，这里假设是播放列表为空，则添加到播放列表且自动播放，不为空则不播放
-                boolean isEmpty = ListUtil.isEmpty(MusicEngine.getInstance().getMusicList());
+                boolean isEmpty = ListUtil.isEmpty(RCMusicControlEngine.getInstance().getMusicList());
 
                 // 如果播放列表为空则自动播放
                 if (isEmpty) {
-                    MusicEngine.getInstance().playMusic(music);
+                    RCMusicControlEngine.getInstance().playMusic(music);
                 } else {
                     // 添加到播放列表
-                    MusicEngine.getInstance().addMusic(music);
+                    RCMusicControlEngine.getInstance().addMusic(music);
                 }
                 // 音乐列表缓存到本地
                 saveMusicListToCache();
@@ -379,7 +392,7 @@ public class MusicControlManager extends RCRTCAudioMixingStateChangeListener imp
      */
     private void saveMusicListToCache() {
         VMLog.e(TAG, "saveMusicListToCache");
-        MusicLocalCache.getInstance().saveMusicList(MusicEngine.getInstance().getMusicList());
+        MusicLocalCache.getInstance().saveMusicList(RCMusicControlEngine.getInstance().getMusicList());
     }
 
     private void saveMusicControlToCache() {
@@ -422,9 +435,10 @@ public class MusicControlManager extends RCRTCAudioMixingStateChangeListener imp
     @Override
     public void onStartMixingWithMusic(Music music) {
         VMLog.d(TAG, "onStartMixingWithMusic:" + (music == null ? null : music.getMusicId()));
+        VMLog.d(TAG, "onStartMixingWithMusic:" + GsonUtil.obj2Json(music));
         if (music == null || TextUtils.isEmpty(music.getPath()) || !new File(music.getPath()).exists()) {
             ToastUtil.show("本地音乐已删除，请重新添加");
-            MusicEngine.getInstance().deleteMusic(music);
+            RCMusicControlEngine.getInstance().deleteMusic(music);
             return;
         }
         RCRTCAudioMixer.getInstance()

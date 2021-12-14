@@ -20,18 +20,17 @@ import cn.rongcloud.kitdemo.MyApplication;
 import cn.rongcloud.kitdemo.R;
 import cn.rongcloud.kitdemo.utils.ToastUtil;
 import cn.rongcloud.musiccontrolkit.MusicControlDialog;
-import cn.rongcloud.musiccontrolkit.MusicEngine;
+import cn.rongcloud.musiccontrolkit.RCMusicControlEngine;
 import cn.rongcloud.voiceroom.api.RCVoiceRoomEngine;
 import cn.rongcloud.voiceroom.api.callback.RCVoiceRoomCallback;
 import cn.rongcloud.voiceroom.model.RCVoiceRoomInfo;
 
 /**
- * Created by hugo on 2021/11/25
+ * Created by gyn on 2021/11/25
  */
 public class MusicControlKitActivity extends AppCompatActivity {
 
     private static final String TAG = MusicControlKitActivity.class.getSimpleName();
-    // 假定用户id,房间名，房间id都是下面的值
     private Button btnCreate;
     private Button btnJoin;
     private Button btnShow;
@@ -74,8 +73,7 @@ public class MusicControlKitActivity extends AppCompatActivity {
         });
         // 音乐列表的弹框
         btnShow.setOnClickListener(v -> {
-            dialog = new MusicControlDialog(MusicControlManager.getInstance(), MusicControlManager.getInstance(), MusicControlManager.getInstance());
-            dialog.show(getSupportFragmentManager(), TAG);
+            RCMusicControlEngine.getInstance().showDialog(getSupportFragmentManager(), MusicControlManager.getInstance());
         });
 
         btnExit.setOnClickListener(v -> {
@@ -192,6 +190,7 @@ public class MusicControlKitActivity extends AppCompatActivity {
             public void onError(int i, String s) {
                 logError("上麦失败", i, s);
                 ToastUtil.show("上麦失败，请退出页面重试");
+                leaveRoom();
             }
         });
     }
@@ -219,7 +218,7 @@ public class MusicControlKitActivity extends AppCompatActivity {
      */
     private void leaveRoom() {
         // 可以销毁
-        MusicEngine.getInstance().release();
+        RCMusicControlEngine.getInstance().release();
         RCVoiceRoomEngine.getInstance().leaveRoom(new RCVoiceRoomCallback() {
             @Override
             public void onSuccess() {

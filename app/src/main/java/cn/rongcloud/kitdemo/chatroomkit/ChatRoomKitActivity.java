@@ -22,7 +22,7 @@ import cn.rongcloud.chatroomkit.widget.ToolBar;
 import cn.rongcloud.kitdemo.R;
 
 /**
- * Created by hugo on 2021/11/23
+ * Created by gyn on 2021/11/23
  */
 public class ChatRoomKitActivity extends AppCompatActivity {
 

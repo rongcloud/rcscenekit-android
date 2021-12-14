@@ -33,7 +33,7 @@ import io.rong.imlib.model.MessageContent;
  * 通过消息发送
  * 人到人送礼物
  *
- * @author hugo
+ * @author gyn
  * @Date 2021/06/17
  */
 @MessageTag(value = "RC:Chatroom:Gift")

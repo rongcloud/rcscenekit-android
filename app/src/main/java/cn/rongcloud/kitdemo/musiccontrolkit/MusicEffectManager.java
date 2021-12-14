@@ -7,7 +7,7 @@ import java.util.List;
 import cn.rongcloud.musiccontrolkit.bean.Effect;
 
 /**
- * Created by hugo on 2021/11/29
+ * Created by gyn on 2021/11/29
  * 音乐氛围的管理类，这里在本地 assets 中固定了几个，
  * 用户可以根据需求从网络下载或者替换自己音乐
  */

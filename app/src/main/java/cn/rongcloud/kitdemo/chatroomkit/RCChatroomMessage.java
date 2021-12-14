@@ -23,7 +23,7 @@ import cn.rongcloud.kitdemo.MyApplication;
 import cn.rongcloud.kitdemo.R;
 
 /**
- * Created by hugo on 2021/11/19
+ * Created by gyn on 2021/11/19
  */
 public class RCChatroomMessage implements IRCChatroomMessage {
     /**
@@ -99,7 +99,7 @@ public class RCChatroomMessage implements IRCChatroomMessage {
             // 可以添加带icon的富文本
             SpannableString iconString = new SpannableString("  ");
             Drawable drawable = ContextCompat.getDrawable(MyApplication.app, R.drawable.ic_creator);
-            int iconSize = UiUtils.dp2px(MyApplication.app, 11);
+            int iconSize = UiUtils.dp2px(11);
             drawable.setBounds(0, 0, iconSize, iconSize);
             iconString.setSpan(new CenterAlignImageSpan(drawable), 0, 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             messageItemList.add(new MessageItem<>(iconString));

@@ -16,7 +16,7 @@ import cn.rongcloud.corekit.bean.RCColor;
 import cn.rongcloud.corekit.bean.RCCorner;
 
 /**
- * Created by hugo on 2021/11/19
+ * Created by gyn on 2021/11/19
  */
 public class RCChatroomVoice implements IRCChatroomVoiceMessage {
     /**

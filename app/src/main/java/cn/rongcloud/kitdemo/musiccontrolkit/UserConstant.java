@@ -1,7 +1,8 @@
 package cn.rongcloud.kitdemo.musiccontrolkit;
 
 /**
- * Created by hugo on 2021/12/2
+ * Created by gyn on 2021/12/2
+ * 模拟2个语聊房账号
  */
 public class UserConstant {
 

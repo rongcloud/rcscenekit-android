@@ -14,7 +14,7 @@ import cn.rongcloud.musiccontrolkit.bean.Music;
 import cn.rongcloud.musiccontrolkit.bean.MusicControl;
 
 /**
- * Created by hugo on 2021/11/30
+ * Created by gyn on 2021/11/30
  * 音乐列表缓存类，用户可以从服务端获取，
  * 这里存本地模拟服务端获取
  */
