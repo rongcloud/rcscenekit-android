@@ -128,18 +128,7 @@ public class RealtimeBlurView extends View {
         rightBottomRadius = a.getDimensionPixelOffset(R.styleable.RCKitRealtimeBlurView_right_bottom_radius, 0);
         leftBottomRadius = a.getDimensionPixelOffset(R.styleable.RCKitRealtimeBlurView_left_bottom_radius, 0);
 
-        if (0 == leftTopRadius) {
-            leftTopRadius = radius;
-        }
-        if (0 == rightTopRadius) {
-            rightTopRadius = radius;
-        }
-        if (0 == rightBottomRadius) {
-            rightBottomRadius = radius;
-        }
-        if (0 == leftBottomRadius) {
-            leftBottomRadius = radius;
-        }
+        setCornerRadius(radius);
 
         a.recycle();
 
@@ -213,6 +202,23 @@ public class RealtimeBlurView extends View {
             mDirty = true;
             invalidate();
         }
+    }
+
+    public void setCornerRadius(float radius) {
+        this.radius = radius;
+        if (0 == leftTopRadius) {
+            leftTopRadius = radius;
+        }
+        if (0 == rightTopRadius) {
+            rightTopRadius = radius;
+        }
+        if (0 == rightBottomRadius) {
+            rightBottomRadius = radius;
+        }
+        if (0 == leftBottomRadius) {
+            leftBottomRadius = radius;
+        }
+        invalidate();
     }
 
     public void setDownsampleFactor(float factor) {

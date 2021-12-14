@@ -9,10 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import cn.rongcloud.corekit.api.IViewInit;
+import cn.rongcloud.corekit.utils.VMLog;
+
 /**
- * Created by hugo on 2021/11/24
+ * Created by gyn on 2021/11/24
  */
-public abstract class BaseFragment extends Fragment implements IBase {
+public abstract class RCFragment<T> extends Fragment implements IViewInit<T> {
 
     private View layout;
 
@@ -28,20 +31,21 @@ public abstract class BaseFragment extends Fragment implements IBase {
         super.onViewCreated(view, savedInstanceState);
         initView();
         initListener();
+        checkData(getKitConfig());
+    }
+
+    private void checkData(T t) {
+        if (t == null) {
+            VMLog.e("RCConstraintLayout", "initData failed: t is null");
+            return;
+        }
+        initConfig(t);
     }
 
     public View getLayout() {
         return layout;
     }
 
-    @Override
-    public abstract int setLayoutId();
-
-    @Override
-    public abstract void initView();
-
-
-    @Override
     public void initListener() {
 
     }

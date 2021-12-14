@@ -10,53 +10,55 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * Created by hugo on 2021/11/16
+ * Created by gyn on 2021/11/16
  */
 public class RCColor implements Serializable {
 
     @SerializedName("red")
-    private Integer red;
+    private int red;
     @SerializedName("green")
-    private Integer green;
+    private int green;
     @SerializedName("blue")
-    private Integer blue;
+    private int blue;
     @SerializedName("alpha")
     private float alpha;
+
+    private int color = -1;
 
     public RCColor() {
     }
 
     public RCColor(@FloatRange(from = 0f, to = 1f) float alpha,
-                   @IntRange(from = 0, to = 255) Integer red,
-                   @IntRange(from = 0, to = 255) Integer green,
-                   @IntRange(from = 0, to = 255) Integer blue) {
+                   @IntRange(from = 0, to = 255) int red,
+                   @IntRange(from = 0, to = 255) int green,
+                   @IntRange(from = 0, to = 255) int blue) {
         this.alpha = alpha;
         this.red = red;
         this.green = green;
         this.blue = blue;
     }
 
-    public Integer getRed() {
+    public int getRed() {
         return red;
     }
 
-    public void setRed(Integer red) {
+    public void setRed(int red) {
         this.red = red;
     }
 
-    public Integer getGreen() {
+    public int getGreen() {
         return green;
     }
 
-    public void setGreen(Integer green) {
+    public void setGreen(int green) {
         this.green = green;
     }
 
-    public Integer getBlue() {
+    public int getBlue() {
         return blue;
     }
 
-    public void setBlue(Integer blue) {
+    public void setBlue(int blue) {
         this.blue = blue;
     }
 
@@ -69,6 +71,9 @@ public class RCColor implements Serializable {
     }
 
     public int getColor() {
-        return Color.argb((int) (alpha * 255.0f + 0.5f), red, green, blue);
+        if (color == -1) {
+            color = Color.argb((int) (alpha * 255.0f + 0.5f), red, green, blue);
+        }
+        return color;
     }
 }

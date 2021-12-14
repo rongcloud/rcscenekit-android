@@ -1,22 +1,27 @@
 package cn.rongcloud.corekit.utils;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -24,31 +29,36 @@ import com.bumptech.glide.request.transition.Transition;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.rongcloud.corekit.api.RCSceneKitEngine;
+import cn.rongcloud.corekit.bean.RCAttribute;
+import cn.rongcloud.corekit.bean.RCDrawable;
+import cn.rongcloud.corekit.bean.RCDrawableSelector;
+import cn.rongcloud.corekit.bean.RCFont;
+import cn.rongcloud.corekit.bean.RCImage;
 import cn.rongcloud.corekit.bean.RCImageSelector;
 import cn.rongcloud.corekit.bean.RCInsets;
+import cn.rongcloud.corekit.bean.RCSize;
 
 /**
- * Created by hugo on 2021/11/15
+ * Created by gyn on 2021/11/15
  */
 public class UiUtils {
 
     /**
-     * @param context 上下文
-     * @param dp      dp值
+     * @param dp dp值
      * @return px
      */
-    public static int dp2px(Context context, int dp) {
-        float density = context.getResources().getDisplayMetrics().density;
+    public static int dp2px(int dp) {
+        float density = RCSceneKitEngine.getInstance().getContext().getResources().getDisplayMetrics().density;
         return (int) (dp * density + 0.5f);
     }
 
     /**
-     * @param context 上下文
-     * @param px      px值
+     * @param px px值
      * @return dp
      */
-    public static int px2dp(Context context, int px) {
-        float density = context.getResources().getDisplayMetrics().density;
+    public static int px2dp(int px) {
+        float density = RCSceneKitEngine.getInstance().getContext().getResources().getDisplayMetrics().density;
         return (int) ((px / density + 0.5f));
     }
 
@@ -75,6 +85,45 @@ public class UiUtils {
         } catch (Exception e) {
             return new GradientDrawable();
         }
+    }
+
+    public static GradientDrawable createDrawable(RCDrawable drawable) {
+        try {
+            GradientDrawable radiusBg = new GradientDrawable();
+            //设置Shape类型
+            switch (drawable.getShape()) {
+                case 0:
+                    radiusBg.setShape(GradientDrawable.RECTANGLE);
+                    break;
+                case 1:
+                    radiusBg.setShape(GradientDrawable.OVAL);
+                    break;
+                case 2:
+                    radiusBg.setShape(GradientDrawable.LINE);
+                    break;
+                case 3:
+                    radiusBg.setShape(GradientDrawable.RING);
+                    break;
+            }
+            //设置填充颜色
+            radiusBg.setColor(drawable.getColor().getColor());
+            //设置线条粗心和颜色,px
+            radiusBg.setStroke(dp2px(drawable.getStrokeWidth()), drawable.getStrokeColor().getColor());
+            //设置圆角角度,如果每个角度都一样,则使用此方法
+            float[] radius = drawable.getCorner().getRadiusArray();
+            radiusBg.setCornerRadii(new float[]{radius[0], radius[0], radius[1], radius[1], radius[2], radius[2], radius[3], radius[3]});
+            return radiusBg;
+        } catch (Exception e) {
+            return new GradientDrawable();
+        }
+    }
+
+    public static void setDrawable(View view, RCDrawable drawable) {
+        view.setBackground(createDrawable(drawable));
+    }
+
+    public static void setDrawableSelector(View view, RCDrawableSelector drawableSelector) {
+        view.setBackground(drawableSelector.getDrawable());
     }
 
     /**
@@ -111,8 +160,11 @@ public class UiUtils {
      * @param insets
      */
     public static void setPadding(View view, RCInsets insets) {
+        if (view == null || insets == null) {
+            return;
+        }
         Context context = view.getContext();
-        view.setPadding(dp2px(context, insets.getLeft()), dp2px(context, insets.getTop()), dp2px(context, insets.getRight()), dp2px(context, insets.getBottom()));
+        view.setPadding(dp2px(insets.getLeft()), dp2px(insets.getTop()), dp2px(insets.getRight()), dp2px(insets.getBottom()));
     }
 
     /**
@@ -191,7 +243,7 @@ public class UiUtils {
      * @param selector   RCSelector
      * @param defaultRes 失败后默认选择器
      */
-    public static void setSelectorBg(View view, RCImageSelector selector, @DrawableRes int defaultRes) {
+    public static void setSelectorBg(View view, RCImageSelector selector, @DrawableRes int defaultRes, String assetsPath) {
         if (selector == null) {
             view.setBackgroundResource(defaultRes);
             return;
@@ -201,11 +253,11 @@ public class UiUtils {
             return;
         }
         StateListDrawable drawable = new StateListDrawable();
-        GlideUtil.loadBitmap(view.getContext(), selector.getSelect().getUrl(), new CustomTarget<Drawable>() {
+        GlideUtil.loadBitmap(view.getContext(), selector.getSelect().getUrl(assetsPath), new CustomTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                 drawable.addState(new int[]{android.R.attr.state_selected}, resource);
-                GlideUtil.loadBitmap(view.getContext(), selector.getNormal().getUrl(), new CustomTarget<Drawable>() {
+                GlideUtil.loadBitmap(view.getContext(), selector.getNormal().getUrl(assetsPath), new CustomTarget<Drawable>() {
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         drawable.addState(new int[]{}, resource);
@@ -234,8 +286,15 @@ public class UiUtils {
      * @param selector   RCSelector
      * @param defaultRes 失败后默认选择器
      */
-    public static void setSelectorImage(ImageView view, RCImageSelector selector, @DrawableRes int defaultRes) {
+    public static void setSelectorImage(ImageView view, RCImageSelector selector, @DrawableRes int defaultRes, String assetsPath) {
+        if (view == null) {
+            return;
+        }
         if (selector == null) {
+            view.setImageResource(defaultRes);
+            return;
+        }
+        if (TextUtils.isEmpty(assetsPath)) {
             view.setImageResource(defaultRes);
             return;
         }
@@ -244,11 +303,11 @@ public class UiUtils {
             return;
         }
         StateListDrawable drawable = new StateListDrawable();
-        GlideUtil.loadBitmap(view.getContext(), selector.getSelect().getUrl(), new CustomTarget<Drawable>() {
+        GlideUtil.loadBitmap(view.getContext(), selector.getSelect().getUrl(assetsPath), new CustomTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                 drawable.addState(new int[]{android.R.attr.state_selected}, resource);
-                GlideUtil.loadBitmap(view.getContext(), selector.getNormal().getUrl(), new CustomTarget<Drawable>() {
+                GlideUtil.loadBitmap(view.getContext(), selector.getNormal().getUrl(assetsPath), new CustomTarget<Drawable>() {
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         drawable.addState(new int[]{}, resource);
@@ -268,5 +327,165 @@ public class UiUtils {
                 view.setImageResource(defaultRes);
             }
         });
+    }
+
+    public static void setImage(ImageView view, RCImage image, @DrawableRes int defaultRes, String assetsPath) {
+        if (view == null) {
+            return;
+        }
+        if (image == null) {
+            view.setImageResource(defaultRes);
+            return;
+        }
+        if (TextUtils.isEmpty(assetsPath)) {
+            view.setImageResource(defaultRes);
+            return;
+        }
+        GlideUtil.loadImage(view, image.getUrl(assetsPath), defaultRes);
+    }
+
+    public static void setViewSize(View view, RCSize size) {
+        if (view == null || size == null) {
+            return;
+        }
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+        int with;
+        if (size.getWidth() == -1 || size.getWidth() == -2) {
+            with = size.getWidth();
+        } else {
+            with = dp2px(size.getWidth());
+        }
+        int height;
+        if (size.getHeight() == -1 || size.getHeight() == -2) {
+            height = size.getWidth();
+        } else {
+            height = dp2px(size.getHeight());
+        }
+        if (params == null) {
+            params = new ViewGroup.LayoutParams(with, height);
+        } else {
+            params.width = with;
+            params.height = height;
+        }
+        view.setLayoutParams(params);
+    }
+
+    public static void setTextAttribute(TextView view, RCAttribute attribute) {
+        if (view == null || attribute == null) {
+            return;
+        }
+        if (!TextUtils.isEmpty(attribute.getText())) {
+            view.setText(attribute.getText());
+        }
+        if (attribute.getInsets() != null) {
+            setPadding(view, attribute.getInsets());
+        }
+        if (attribute.getSize() != null) {
+            setViewSize(view, attribute.getSize());
+        }
+        if (attribute.getBackground() != null) {
+            view.setBackgroundColor(attribute.getBackground().getColor());
+        }
+        if (attribute.getTextColor() != null) {
+            view.setTextColor(attribute.getTextColor().getColor());
+        }
+        if (attribute.getFont() != null) {
+            setTextFont(view, attribute.getFont());
+        }
+        if (attribute.getHintColor() != null) {
+            view.setHintTextColor(attribute.getHintColor().getColor());
+        }
+        if (!TextUtils.isEmpty(attribute.getHintText())) {
+            view.setHint(attribute.getHintText());
+        }
+        if (attribute.getColorSelector() != null) {
+            view.setTextColor(attribute.getColorSelector().getColor());
+        }
+        if (attribute.getDrawableSelector() != null) {
+            setDrawableSelector(view, attribute.getDrawableSelector());
+        }
+        if (attribute.getDrawable() != null) {
+            setDrawable(view, attribute.getDrawable());
+        }
+    }
+
+    public static void setTextFont(TextView view, RCFont rcFont) {
+        if (view == null || rcFont == null) {
+            return;
+        }
+        view.setTextSize(rcFont.getSize());
+        view.getPaint().setFakeBoldText(rcFont.isBold());
+    }
+
+    public static void setImageAttribute(ImageView view, RCAttribute attribute, @DrawableRes int defaultRes, String assetsPath) {
+        if (view == null || attribute == null) {
+            return;
+        }
+        if (attribute.getSize() != null) {
+            setViewSize(view, attribute.getSize());
+        }
+        if (attribute.getInsets() != null) {
+            setPadding(view, attribute.getInsets());
+        }
+        if (attribute.getBackground() != null) {
+            view.setBackgroundColor(attribute.getBackground().getColor());
+        }
+        if (attribute.getBackgroundSelector() != null) {
+            view.setBackground(attribute.getBackgroundSelector().getDrawable());
+        }
+        if (attribute.getImageSelector() != null) {
+            setSelectorImage(view, attribute.getImageSelector(), defaultRes, assetsPath);
+        }
+        if (attribute.getImage() != null) {
+            setImage(view, attribute.getImage(), defaultRes, assetsPath);
+        }
+        if (attribute.getDrawableSelector() != null) {
+            setDrawableSelector(view, attribute.getDrawableSelector());
+        }
+        if (attribute.getDrawable() != null) {
+            setDrawable(view, attribute.getDrawable());
+        }
+    }
+
+    public static void setMargin(View view, RCInsets insets) {
+        if (view == null || insets == null) {
+            return;
+        }
+        Context context = view.getContext();
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+        if (params instanceof ViewGroup.MarginLayoutParams) {
+            ((ViewGroup.MarginLayoutParams) params).leftMargin = dp2px(insets.getLeft());
+            ((ViewGroup.MarginLayoutParams) params).topMargin = dp2px(insets.getTop());
+            ((ViewGroup.MarginLayoutParams) params).rightMargin = dp2px(insets.getRight());
+            ((ViewGroup.MarginLayoutParams) params).bottomMargin = dp2px(insets.getBottom());
+            view.setLayoutParams(params);
+        }
+    }
+
+    public static void setSwitchColor(SwitchCompat view, int thumbColor, int trackColor, int tintColor) {
+        if (view == null) {
+            return;
+        }
+        // set the thumb color
+        DrawableCompat.setTintList(view.getThumbDrawable(), new ColorStateList(
+                new int[][]{
+                        new int[]{android.R.attr.state_checked},
+                        new int[]{}
+                },
+                new int[]{
+                        tintColor,
+                        thumbColor
+                }));
+
+        // set the track color
+        DrawableCompat.setTintList(view.getTrackDrawable(), new ColorStateList(
+                new int[][]{
+                        new int[]{android.R.attr.state_checked},
+                        new int[]{}
+                },
+                new int[]{
+                        tintColor,
+                        trackColor
+                }));
     }
 }

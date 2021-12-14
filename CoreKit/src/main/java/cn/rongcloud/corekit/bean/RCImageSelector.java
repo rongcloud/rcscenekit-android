@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * Created by hugo on 2021/12/3
+ * Created by gyn on 2021/12/3
  * example:
  * UiUtils.setSelectorImage(imageView, new RCImageSelector(new RCImage("", ""), new RCImage("", "")), R.drawable.rckit_ic_music_add_selector);
  */

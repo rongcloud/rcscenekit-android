@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 
 /**
- * Created by hugo on 2021/11/22
+ * Created by gyn on 2021/11/22
  */
 public class GlideUtil {
 

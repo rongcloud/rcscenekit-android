@@ -5,14 +5,14 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * Created by hugo on 2021/12/3
+ * Created by gyn on 2021/12/3
  */
-class RCAttribute implements Serializable {
+public class RCAttribute implements Serializable {
 
     @SerializedName("textColor")
     private RCColor textColor;
-    @SerializedName("textSize")
-    private Integer textSize;
+    @SerializedName("font")
+    private RCFont font;
     @SerializedName("text")
     private String text;
     @SerializedName("hintColor")
@@ -27,12 +27,22 @@ class RCAttribute implements Serializable {
     private RCImageSelector imageSelector;
     @SerializedName("colorSelector")
     private RCColorSelector colorSelector;
+    @SerializedName("fontSelector")
+    private RCFontSelector fontSelector;
+    @SerializedName("backgroundSelector")
+    private RCColorSelector backgroundSelector;
+    @SerializedName("drawableSelector")
+    private RCDrawableSelector drawableSelector;
     @SerializedName("size")
     private RCSize size;
     @SerializedName("insets")
     private RCInsets insets;
     @SerializedName("image")
     private RCImage image;
+    @SerializedName("blurEnable")
+    private boolean blurEnable;
+    @SerializedName("drawable")
+    private RCDrawable drawable;
 
     public RCColor getTextColor() {
         return textColor;
@@ -40,14 +50,6 @@ class RCAttribute implements Serializable {
 
     public void setTextColor(RCColor textColor) {
         this.textColor = textColor;
-    }
-
-    public Integer getTextSize() {
-        return textSize;
-    }
-
-    public void setTextSize(Integer textSize) {
-        this.textSize = textSize;
     }
 
     public String getText() {
@@ -128,5 +130,53 @@ class RCAttribute implements Serializable {
 
     public void setImage(RCImage image) {
         this.image = image;
+    }
+
+    public boolean isBlurEnable() {
+        return blurEnable;
+    }
+
+    public void setBlurEnable(boolean blurEnable) {
+        this.blurEnable = blurEnable;
+    }
+
+    public RCColorSelector getBackgroundSelector() {
+        return backgroundSelector;
+    }
+
+    public void setBackgroundSelector(RCColorSelector backgroundSelector) {
+        this.backgroundSelector = backgroundSelector;
+    }
+
+    public RCFontSelector getFontSelector() {
+        return fontSelector;
+    }
+
+    public void setFontSelector(RCFontSelector fontSelector) {
+        this.fontSelector = fontSelector;
+    }
+
+    public RCFont getFont() {
+        return font;
+    }
+
+    public void setFont(RCFont font) {
+        this.font = font;
+    }
+
+    public RCDrawableSelector getDrawableSelector() {
+        return drawableSelector;
+    }
+
+    public void setDrawableSelector(RCDrawableSelector drawableSelector) {
+        this.drawableSelector = drawableSelector;
+    }
+
+    public RCDrawable getDrawable() {
+        return drawable;
+    }
+
+    public void setDrawable(RCDrawable drawable) {
+        this.drawable = drawable;
     }
 }

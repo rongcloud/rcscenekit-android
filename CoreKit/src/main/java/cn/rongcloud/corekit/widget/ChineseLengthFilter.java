@@ -5,7 +5,7 @@ import android.text.InputFilter;
 import android.text.Spanned;
 
 /**
- * Created by hugo on 2021/11/17
+ * Created by gyn on 2021/11/17
  */
 public class ChineseLengthFilter implements InputFilter {
 

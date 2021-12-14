@@ -16,23 +16,24 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import cn.rongcloud.corekit.R;
+import cn.rongcloud.corekit.api.IViewInit;
 import cn.rongcloud.corekit.utils.UiUtils;
 import cn.rongcloud.corekit.utils.VMLog;
 
 /**
- * Created by hugo on 2021/11/23
+ * Created by gyn on 2021/11/23
  */
-public abstract class BaseBottomSheetDialog extends BottomSheetDialogFragment {
+public abstract class RCBottomSheetDialog<T> extends BottomSheetDialogFragment implements IViewInit<T> {
 
-    private static final String TAG = BaseBottomSheetDialog.class.getSimpleName();
+    private static final String TAG = RCBottomSheetDialog.class.getSimpleName();
 
     private @LayoutRes
     int layoutId;
 
     private BottomSheetBehavior<View> mBehavior;
 
-    public BaseBottomSheetDialog(@LayoutRes int layoutId) {
-        this.layoutId = layoutId;
+    public RCBottomSheetDialog() {
+        layoutId = setLayoutId();
     }
 
     @NonNull
@@ -63,7 +64,15 @@ public abstract class BaseBottomSheetDialog extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         initView();
         initListener();
-        initData();
+        checkData(getKitConfig());
+    }
+
+    private void checkData(T t) {
+        if (t == null) {
+            VMLog.e("RCConstraintLayout", "initData failed: t is null");
+            return;
+        }
+        initConfig(t);
     }
 
     @Override
@@ -105,21 +114,9 @@ public abstract class BaseBottomSheetDialog extends BottomSheetDialogFragment {
     }
 
     /**
-     * 初始化view
-     */
-    protected abstract void initView();
-
-    /**
      * 初始化监听
      */
     protected void initListener() {
-
-    }
-
-    /**
-     * 初始化数据
-     */
-    protected void initData() {
 
     }
 }

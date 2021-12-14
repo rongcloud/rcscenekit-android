@@ -4,10 +4,11 @@ import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.File;
 import java.io.Serializable;
 
 /**
- * Created by hugo on 2021/12/3
+ * Created by gyn on 2021/12/3
  */
 public class RCImage implements Serializable {
     @SerializedName("local")
@@ -39,10 +40,10 @@ public class RCImage implements Serializable {
         this.remote = remote;
     }
 
-    public String getUrl() {
+    public String getUrl(String assetsPath) {
         if (!TextUtils.isEmpty(remote)) {
             return remote;
         }
-        return local;
+        return assetsPath + File.separator + local;
     }
 }
