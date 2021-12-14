@@ -12,7 +12,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,13 +26,15 @@ import com.vanniktech.emoji.EmojiTextView;
 import java.util.List;
 
 import cn.rongcloud.chatroomkit.R;
+import cn.rongcloud.chatroomkit.RCChatRoomKit;
 import cn.rongcloud.chatroomkit.api.IRCChatroomMessage;
 import cn.rongcloud.chatroomkit.api.IRCChatroomVoiceMessage;
 import cn.rongcloud.chatroomkit.api.OnMessageContentClickListener;
+import cn.rongcloud.chatroomkit.bean.ChatRoomKitBean;
 import cn.rongcloud.chatroomkit.bean.MessageViewBean;
 import cn.rongcloud.chatroomkit.cache.MessageList;
 import cn.rongcloud.chatroomkit.manager.AudioPlayManager;
-import cn.rongcloud.corekit.api.RCSceneKitEngine;
+import cn.rongcloud.corekit.base.RCFrameLayout;
 import cn.rongcloud.corekit.bean.RCColor;
 import cn.rongcloud.corekit.bean.RCCorner;
 import cn.rongcloud.corekit.utils.UiUtils;
@@ -42,45 +43,51 @@ import cn.rongcloud.corekit.widget.SpaceItemDecoration;
 
 
 /**
- * Created by hugo on 2021/11/12
+ * Created by gyn on 2021/11/12
  */
-public class MessageView extends FrameLayout {
+public class MessageView extends RCFrameLayout<ChatRoomKitBean> {
     private final static String TAG = MessageView.class.getSimpleName();
     MessageViewBean messageViewBean;
     MessageAdapter adapter;
     OnMessageContentClickListener onMessageContentClickListener;
     private RecyclerView rvMessage;
 
-    public MessageView(@NonNull Context context) {
-        this(context, null);
+    public MessageView(Context context) {
+        super(context);
     }
 
-    public MessageView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
+    public MessageView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
     }
 
-    public MessageView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        LayoutInflater.from(context).inflate(R.layout.rckit_message_view, this);
-        initView();
+    @Override
+    public int setLayoutId() {
+        return R.layout.rckit_message_view;
     }
 
-    private void initView() {
+    @Override
+    public ChatRoomKitBean getKitConfig() {
+        return RCChatRoomKit.getInstance().getKitConfig();
+    }
+
+    @Override
+    public void initView() {
         // init view
         rvMessage = (RecyclerView) findViewById(R.id.rv_message);
+    }
 
-        messageViewBean = RCSceneKitEngine.getInstance().getKitConfig(MessageViewBean.class);
+    @Override
+    public void initConfig(ChatRoomKitBean chatRoomKitBean) {
+        messageViewBean = chatRoomKitBean.getMessageView();
         if (messageViewBean == null) {
             VMLog.e(TAG, "initView failed : messageViewBean is null");
             return;
         }
-
         UiUtils.setPadding(this, messageViewBean.getContentInsets());
         adapter = new MessageAdapter(messageViewBean.getMaxVisibleCount());
         SpaceItemDecoration decoration = new SpaceItemDecoration(0, dp2px(messageViewBean.getBubbleSpace() / 2));
         rvMessage.addItemDecoration(decoration);
         rvMessage.setAdapter(adapter);
-
     }
 
     public void setMessages(List<IRCChatroomMessage> messageList) {
@@ -136,7 +143,7 @@ public class MessageView extends FrameLayout {
     }
 
     private int dp2px(int dp) {
-        return UiUtils.dp2px(getContext(), dp);
+        return UiUtils.dp2px(dp);
     }
 
     private class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -239,7 +246,7 @@ public class MessageView extends FrameLayout {
             if (argb == null || corner == null) {
                 return;
             }
-            tvMessage.setBackground(UiUtils.createRectangleDrawable(argb.getColor(), 0, 0, corner.getRadius()));
+            tvMessage.setBackground(UiUtils.createRectangleDrawable(argb.getColor(), 0, 0, corner.getRadiusArray()));
         }
 
         private void setMessageTextColor(RCColor argb) {
@@ -341,7 +348,7 @@ public class MessageView extends FrameLayout {
             if (argb == null || corner == null) {
                 return;
             }
-            llMessage.setBackground(UiUtils.createRectangleDrawable(argb.getColor(), 0, 0, corner.getRadius()));
+            llMessage.setBackground(UiUtils.createRectangleDrawable(argb.getColor(), 0, 0, corner.getRadiusArray()));
         }
 
         private void setMessageTextColor(RCColor argb) {

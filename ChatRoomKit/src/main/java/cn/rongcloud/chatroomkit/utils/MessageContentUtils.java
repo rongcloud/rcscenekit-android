@@ -14,7 +14,7 @@ import cn.rongcloud.chatroomkit.api.OnMessageContentClickListener;
 import cn.rongcloud.chatroomkit.bean.MessageItem;
 
 /**
- * Created by hugo on 2021/11/18
+ * Created by gyn on 2021/11/18
  */
 public class MessageContentUtils {
 

@@ -7,28 +7,35 @@ import com.vanniktech.emoji.ios.IosEmojiProvider;
 
 import java.io.File;
 
-import cn.rongcloud.corekit.api.ICoreKitInit;
+import cn.rongcloud.chatroomkit.bean.ChatRoomKitBean;
+import cn.rongcloud.corekit.core.RCKitInit;
 import cn.rongcloud.corekit.utils.FileUtils;
 import cn.rongcloud.corekit.utils.VMLog;
 
 /**
- * Created by hugo on 2021/11/18
+ * Created by gyn on 2021/11/18
  */
-public class ChatRoomKitEngine implements ICoreKitInit {
-    private static final String TAG = ChatRoomKitEngine.class.getSimpleName();
+public class RCChatRoomKit extends RCKitInit<ChatRoomKitBean> {
+    private static final String TAG = RCChatRoomKit.class.getSimpleName();
 
-    private static Holder holder = new Holder();
+    private final static Holder holder = new Holder();
     private String voicePath;
 
-    public static ChatRoomKitEngine getInstance() {
+    public static RCChatRoomKit getInstance() {
         return holder.instance;
     }
 
     @Override
     public void init(Context context) {
+        super.init(context);
         EmojiManager.install(new IosEmojiProvider());
         setVoicePath(context.getFilesDir().getAbsolutePath() + "/rckit_voice");
         VMLog.d(TAG, TAG + " has init");
+    }
+
+    @Override
+    public String getKitConfigName() {
+        return "ChatRoomKit";
     }
 
     /**
@@ -60,6 +67,6 @@ public class ChatRoomKitEngine implements ICoreKitInit {
     }
 
     private static class Holder {
-        private ChatRoomKitEngine instance = new ChatRoomKitEngine();
+        private RCChatRoomKit instance = new RCChatRoomKit();
     }
 }

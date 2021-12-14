@@ -9,7 +9,7 @@ import cn.rongcloud.corekit.bean.RCColor;
 import cn.rongcloud.corekit.bean.RCInsets;
 
 /**
- * Created by hugo on 2021/11/12
+ * Created by gyn on 2021/11/12
  */
 @KitBean(parseKey = "InputBar")
 public class InputBarBean implements Serializable {

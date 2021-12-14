@@ -10,7 +10,7 @@ import cn.rongcloud.corekit.bean.RCCorner;
 import cn.rongcloud.corekit.bean.RCInsets;
 
 /**
- * Created by hugo on 2021/11/16
+ * Created by gyn on 2021/11/16
  */
 @KitBean(parseKey = "MessageView")
 public class MessageViewBean implements Serializable {

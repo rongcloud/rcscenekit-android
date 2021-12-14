@@ -12,7 +12,7 @@ import cn.rongcloud.corekit.bean.RCInsets;
 import cn.rongcloud.corekit.bean.RCSize;
 
 /**
- * Created by hugo on 2021/11/12
+ * Created by gyn on 2021/11/12
  */
 @KitBean(parseKey = "ToolBar")
 public class ToolBarBean implements Serializable {

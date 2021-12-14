@@ -1,7 +1,7 @@
 package cn.rongcloud.chatroomkit.api;
 
 /**
- * Created by hugo on 2021/11/18
+ * Created by gyn on 2021/11/18
  */
 public interface IRCChatroomVoiceMessage extends IRCChatroomMessage {
     /**

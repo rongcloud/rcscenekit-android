@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,21 +20,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.rongcloud.chatroomkit.R;
+import cn.rongcloud.chatroomkit.RCChatRoomKit;
 import cn.rongcloud.chatroomkit.bean.ActionButton;
+import cn.rongcloud.chatroomkit.bean.ChatRoomKitBean;
 import cn.rongcloud.chatroomkit.bean.ToolBarBean;
 import cn.rongcloud.chatroomkit.manager.AudioPlayManager;
 import cn.rongcloud.chatroomkit.manager.AudioRecordManager;
 import cn.rongcloud.chatroomkit.utils.PermissionCheckUtil;
-import cn.rongcloud.corekit.api.RCSceneKitEngine;
+import cn.rongcloud.corekit.base.RCConstraintLayout;
 import cn.rongcloud.corekit.utils.GlideUtil;
 import cn.rongcloud.corekit.utils.UiUtils;
 import cn.rongcloud.corekit.utils.VMLog;
 
 
 /**
- * Created by hugo on 2021/11/12
+ * Created by gyn on 2021/11/12
  */
-public class ToolBar extends ConstraintLayout {
+public class ToolBar extends RCConstraintLayout<ChatRoomKitBean> {
     private final static String TAG = ToolBar.class.getSimpleName();
     private LinearLayout llChat;
     private TextView tvChat;
@@ -87,29 +88,40 @@ public class ToolBar extends ConstraintLayout {
         }
     };
 
-    public ToolBar(@NonNull Context context) {
-        this(context, null);
+    public ToolBar(Context context) {
+        super(context);
     }
 
-    public ToolBar(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
+    public ToolBar(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
     }
 
-    public ToolBar(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        LayoutInflater.from(context).inflate(R.layout.rckit_toolbar, this);
-        initView();
+
+    @Override
+    public int setLayoutId() {
+        return R.layout.rckit_toolbar;
     }
 
-    private void initView() {
+    @Override
+    public ChatRoomKitBean getKitConfig() {
+        return RCChatRoomKit.getInstance().getKitConfig();
+    }
+
+    @Override
+    public void initView() {
         // init view
-
         llChat = (LinearLayout) findViewById(R.id.ll_chat);
         tvChat = (TextView) findViewById(R.id.tv_chat);
         rvAction = (RecyclerView) findViewById(R.id.rv_action);
         ivRecord = (ImageView) findViewById(R.id.iv_record);
+        // action recyclerview
+        actionAdapter = new ActionAdapter();
+        rvAction.setAdapter(actionAdapter);
+    }
 
-        toolBarBean = RCSceneKitEngine.getInstance().getKitConfig(ToolBarBean.class);
+    @Override
+    public void initConfig(ChatRoomKitBean chatRoomKitBean) {
+        toolBarBean = chatRoomKitBean.getToolBar();
         if (toolBarBean == null) {
             VMLog.e(TAG, "initView failed : toolBarBean is null");
             return;
@@ -136,15 +148,12 @@ public class ToolBar extends ConstraintLayout {
         if (toolBarBean.getRecordPosition() != 0) {
             UiUtils.reverseChild(llChat);
         }
-        // action recyclerview
-        actionAdapter = new ActionAdapter();
-        rvAction.setAdapter(actionAdapter);
-        actionAdapter.setActionList(toolBarBean.getActionArray());
 
+        actionAdapter.setActionList(toolBarBean.getActionArray());
     }
 
     private int dp2px(int dp) {
-        return UiUtils.dp2px(getContext(), dp);
+        return UiUtils.dp2px(dp);
     }
 
     public void setOnClickChatButton(View.OnClickListener l) {
