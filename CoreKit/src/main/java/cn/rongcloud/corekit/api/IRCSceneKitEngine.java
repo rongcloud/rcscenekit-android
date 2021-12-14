@@ -13,7 +13,5 @@ public interface IRCSceneKitEngine {
 
     void initWithAppKey(Context context, String appKey);
 
-    <T> T getKitConfig(Class<T> c);
-
     Context getContext();
 }

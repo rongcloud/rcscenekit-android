@@ -21,9 +21,9 @@
     },
     "defaultBubbleCorner": {
       "topLeft": 0,
-      "topRight": 15,
-      "bottomLeft": 15,
-      "bottomRight": 15
+      "topRight": 6,
+      "bottomLeft": 6,
+      "bottomRight": 6
     },
     "defaultBubbleTextColor": {
       "red": 255,
@@ -84,11 +84,17 @@
     "recordMaxDuration": 60,
     "buttonArray": [
       {
-        "icon": "url1",
+        "icon": {
+          "local": "rckit_ic_toolbar_btn1.png",
+          "remote": ""
+        },
         "hasBadge": true
       },
       {
-        "icon": "url2",
+        "icon": {
+          "local": "rckit_ic_toolbar_btn2.png",
+          "remote": ""
+        },
         "hasBadge": false
       }
     ]

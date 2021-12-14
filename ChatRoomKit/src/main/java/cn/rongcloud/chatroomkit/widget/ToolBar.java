@@ -46,9 +46,41 @@ public class ToolBar extends RCConstraintLayout<ChatRoomKitBean> {
     private ToolBarBean toolBarBean;
     private OnActionClickListener onActionClickListener;
     private ActionAdapter actionAdapter;
-    private OnTouchListener onTouchListener = new OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
+
+    public ToolBar(Context context) {
+        this(context, null);
+    }
+
+    public ToolBar(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+
+    @Override
+    public int setLayoutId() {
+        return R.layout.rckit_toolbar;
+    }
+
+    @Override
+    public ChatRoomKitBean getKitConfig() {
+        return RCChatRoomKit.getInstance().getKitConfig();
+    }
+
+    @Override
+    public void initView() {
+        // init view
+        llChat = (LinearLayout) findViewById(R.id.ll_chat);
+        tvChat = (TextView) findViewById(R.id.tv_chat);
+        rvAction = (RecyclerView) findViewById(R.id.rv_action);
+        ivRecord = (ImageView) findViewById(R.id.iv_record);
+        // action recyclerview
+        actionAdapter = new ActionAdapter();
+        rvAction.setAdapter(actionAdapter);
+        setRecordOnTouchListener();
+    }
+
+    private void setRecordOnTouchListener() {
+        ivRecord.setOnTouchListener((v, event) -> {
             String[] permissions = {Manifest.permission.RECORD_AUDIO};
             if (!PermissionCheckUtil.checkPermissions(
                     v.getContext(),
@@ -85,38 +117,7 @@ public class ToolBar extends RCConstraintLayout<ChatRoomKitBean> {
                 audioRecordManager.stopRecord();
             }
             return true;
-        }
-    };
-
-    public ToolBar(Context context) {
-        super(context);
-    }
-
-    public ToolBar(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-
-    @Override
-    public int setLayoutId() {
-        return R.layout.rckit_toolbar;
-    }
-
-    @Override
-    public ChatRoomKitBean getKitConfig() {
-        return RCChatRoomKit.getInstance().getKitConfig();
-    }
-
-    @Override
-    public void initView() {
-        // init view
-        llChat = (LinearLayout) findViewById(R.id.ll_chat);
-        tvChat = (TextView) findViewById(R.id.tv_chat);
-        rvAction = (RecyclerView) findViewById(R.id.rv_action);
-        ivRecord = (ImageView) findViewById(R.id.iv_record);
-        // action recyclerview
-        actionAdapter = new ActionAdapter();
-        rvAction.setAdapter(actionAdapter);
+        });
     }
 
     @Override
@@ -144,7 +145,6 @@ public class ToolBar extends RCConstraintLayout<ChatRoomKitBean> {
         }
         audioRecordManager = new AudioRecordManager();
         audioRecordManager.setMaxVoiceDuration(toolBarBean.getRecordMaxDuration());
-        ivRecord.setOnTouchListener(onTouchListener);
         if (toolBarBean.getRecordPosition() != 0) {
             UiUtils.reverseChild(llChat);
         }
@@ -188,35 +188,6 @@ public class ToolBar extends RCConstraintLayout<ChatRoomKitBean> {
         void onClickAction(int index, String extra);
     }
 
-    private static class ActionViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView ivAction;
-        private final TextView tvBadge;
-
-        public ActionViewHolder(@NonNull View itemView) {
-            super(itemView);
-            ivAction = (ImageView) itemView.findViewById(R.id.iv_action);
-            tvBadge = (TextView) itemView.findViewById(R.id.tv_badge);
-        }
-
-        public void setActionData(ActionButton actionButton) {
-            if (actionButton.getLocalIcon() != 0) {
-                ivAction.setImageResource(actionButton.getLocalIcon());
-            } else {
-                GlideUtil.loadImage(ivAction, actionButton.getActionIcon());
-            }
-            if (actionButton.hasBadge()) {
-                tvBadge.setVisibility(VISIBLE);
-                if (actionButton.getBadgeNum() > 0) {
-                    tvBadge.setText(String.valueOf(actionButton.getBadgeNum()));
-                } else {
-                    tvBadge.setText("");
-                }
-            } else {
-                tvBadge.setVisibility(GONE);
-            }
-        }
-    }
-
     private class ActionAdapter extends RecyclerView.Adapter<ActionViewHolder> {
         private List<ActionButton> actionButtonList = new ArrayList<>();
 
@@ -246,6 +217,35 @@ public class ToolBar extends RCConstraintLayout<ChatRoomKitBean> {
         @Override
         public int getItemCount() {
             return actionButtonList.size();
+        }
+    }
+
+    private static class ActionViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView ivAction;
+        private final TextView tvBadge;
+
+        public ActionViewHolder(@NonNull View itemView) {
+            super(itemView);
+            ivAction = (ImageView) itemView.findViewById(R.id.iv_action);
+            tvBadge = (TextView) itemView.findViewById(R.id.tv_badge);
+        }
+
+        public void setActionData(ActionButton actionButton) {
+            if (actionButton.getLocalIcon() != 0) {
+                ivAction.setImageResource(actionButton.getLocalIcon());
+            } else {
+                GlideUtil.loadImage(ivAction, actionButton.getActionIcon().getUrl(RCChatRoomKit.getInstance().getAssetsPath()));
+            }
+            if (actionButton.hasBadge()) {
+                tvBadge.setVisibility(VISIBLE);
+                if (actionButton.getBadgeNum() > 0) {
+                    tvBadge.setText(String.valueOf(actionButton.getBadgeNum()));
+                } else {
+                    tvBadge.setText("");
+                }
+            } else {
+                tvBadge.setVisibility(GONE);
+            }
         }
     }
 }
