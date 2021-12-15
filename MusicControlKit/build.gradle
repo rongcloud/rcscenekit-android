@@ -29,4 +29,13 @@ android {
 
 dependencies {
     api project(path: ':CoreKit')
+
+    // CircleImageView https://github.com/hdodenhof/CircleImageView
+    api 'de.hdodenhof:circleimageview:3.1.0'
+
+    // SmartRefreshLayout
+    // https://github.com/scwang90/SmartRefreshLayout
+    api "com.scwang.smart:refresh-layout-kernel:2.0.3"
+    api "com.scwang.smart:refresh-header-classics:2.0.3"
+    api "com.scwang.smart:refresh-footer-classics:2.0.3"
 }

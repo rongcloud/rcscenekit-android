@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    tools:background="#345">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_guide_start"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_begin="23dp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/civ_theme"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/rckit_ic_music_cover"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/gl_guide_start"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tv_music_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@id/tv_author"
+        app:layout_constraintEnd_toStartOf="@id/iv_add"
+        app:layout_constraintStart_toEndOf="@id/civ_theme"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="我和我的祖国" />
+
+    <TextView
+        android:id="@+id/tv_author"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="#B3FFFFFF"
+        android:textSize="12sp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        app:layout_constraintBottom_toTopOf="@id/tv_size"
+        app:layout_constraintEnd_toEndOf="@id/tv_music_name"
+        app:layout_constraintStart_toStartOf="@id/tv_music_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_music_name"
+        tools:text="大合唱" />
+
+    <TextView
+        android:id="@+id/tv_size"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="#B3FFFFFF"
+        android:textSize="9sp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/tv_music_name"
+        app:layout_constraintStart_toStartOf="@id/tv_music_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_author"
+        tools:text="3.92M" />
+
+
+    <ImageView
+        android:id="@+id/iv_add"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="8dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/rckit_ic_music_add_selector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/gl_guide_end"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/pb_load"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="8dp"
+        android:indeterminateTint="@color/rckit_color_primary"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@id/iv_add"
+        app:layout_constraintTop_toTopOf="@id/iv_add" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_guide_end"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_end="15dp" />
+
+    <View
+        android:id="@+id/v_separator"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="77dp"
+        android:background="#03FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

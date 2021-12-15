@@ -16,6 +16,17 @@ android {
     }
 
     buildTypes {
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // hifive的配置
+            manifestPlaceholders = [
+                    HIFIVE_APPID     : "6f78321c38ee4db3bb4dae7e56d464b1",
+                    HIFIVE_SERVERCODE: "ca41ad68e8054610a2"
+            ]
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -42,7 +53,18 @@ dependencies {
     implementation project(path: ':CoreKit')
     implementation project(path: ':ChatRoomKit')
 
+    // 模拟语聊房需要的库
     implementation 'cn.rongcloud.sdk:voiceroom_lib:2.0.0'
     implementation 'cn.rongcloud.sdk:im_lib:5.1.5'
     implementation 'cn.rongcloud.sdk:rtc_lib:5.1.10'
+
+    // hifive音乐 需要的库 https://open.hifiveai.com/api/base/V4.1.2/baseClient/androidInterface/doc
+    api "io.reactivex.rxjava2:rxjava:2.2.10"
+    api fileTree(includes: ['*.jar', '*.aar'], dir: 'libs')
+    api "io.reactivex.rxjava2:rxandroid:2.1.1"
+    api "com.squareup.retrofit2:retrofit:2.6.0"
+    api "com.squareup.retrofit2:converter-gson:2.6.0"
+    api "com.squareup.retrofit2:adapter-rxjava2:2.6.0"
+    api "com.squareup.okhttp3:okhttp:4.9.0"
+    api "com.squareup.okhttp3:logging-interceptor:4.9.0"
 }

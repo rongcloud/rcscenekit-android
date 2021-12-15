@@ -5,40 +5,40 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 import cn.rongcloud.corekit.annotation.KitBean;
-import cn.rongcloud.corekit.bean.Argb;
-import cn.rongcloud.corekit.bean.Corner;
-import cn.rongcloud.corekit.bean.Insets;
+import cn.rongcloud.corekit.bean.RCColor;
+import cn.rongcloud.corekit.bean.RCCorner;
+import cn.rongcloud.corekit.bean.RCInsets;
 
 /**
- * Created by hugo on 2021/11/16
+ * Created by gyn on 2021/11/16
  */
 @KitBean(parseKey = "MessageView")
 public class MessageViewBean implements Serializable {
 
     @SerializedName("contentInsets")
-    private Insets contentInsets;
+    private RCInsets contentInsets;
     @SerializedName("maxVisibleCount")
     private Integer maxVisibleCount;
     @SerializedName("defaultBubbleColor")
-    private Argb defaultBubbleColor;
+    private RCColor defaultBubbleColor;
     @SerializedName("bubbleInsets")
-    private Insets bubbleInsets;
+    private RCInsets bubbleInsets;
     @SerializedName("defaultBubbleCorner")
-    private Corner defaultBubbleCorner;
+    private RCCorner defaultBubbleCorner;
     @SerializedName("bubbleSpace")
     private Integer bubbleSpace;
     @SerializedName("bubbleTextMaxLength")
     private Integer bubbleTextMaxLength;
     @SerializedName("defaultBubbleTextColor")
-    private Argb defaultBubbleTextColor;
+    private RCColor defaultBubbleTextColor;
     @SerializedName("voiceIconColor")
-    private Argb voiceIconColor;
+    private RCColor voiceIconColor;
 
-    public Insets getContentInsets() {
+    public RCInsets getContentInsets() {
         return contentInsets;
     }
 
-    public void setContentInsets(Insets contentInsets) {
+    public void setContentInsets(RCInsets contentInsets) {
         this.contentInsets = contentInsets;
     }
 
@@ -50,27 +50,27 @@ public class MessageViewBean implements Serializable {
         this.maxVisibleCount = maxVisibleCount;
     }
 
-    public Argb getDefaultBubbleColor() {
+    public RCColor getDefaultBubbleColor() {
         return defaultBubbleColor;
     }
 
-    public void setDefaultBubbleColor(Argb defaultBubbleColor) {
+    public void setDefaultBubbleColor(RCColor defaultBubbleColor) {
         this.defaultBubbleColor = defaultBubbleColor;
     }
 
-    public Insets getBubbleInsets() {
+    public RCInsets getBubbleInsets() {
         return bubbleInsets;
     }
 
-    public void setBubbleInsets(Insets bubbleInsets) {
+    public void setBubbleInsets(RCInsets bubbleInsets) {
         this.bubbleInsets = bubbleInsets;
     }
 
-    public Corner getDefaultBubbleCorner() {
+    public RCCorner getDefaultBubbleCorner() {
         return defaultBubbleCorner;
     }
 
-    public void setDefaultBubbleCorner(Corner defaultBubbleCorner) {
+    public void setDefaultBubbleCorner(RCCorner defaultBubbleCorner) {
         this.defaultBubbleCorner = defaultBubbleCorner;
     }
 
@@ -90,19 +90,19 @@ public class MessageViewBean implements Serializable {
         this.bubbleTextMaxLength = bubbleTextMaxLength;
     }
 
-    public Argb getDefaultBubbleTextColor() {
+    public RCColor getDefaultBubbleTextColor() {
         return defaultBubbleTextColor;
     }
 
-    public void setDefaultBubbleTextColor(Argb defaultBubbleTextColor) {
+    public void setDefaultBubbleTextColor(RCColor defaultBubbleTextColor) {
         this.defaultBubbleTextColor = defaultBubbleTextColor;
     }
 
-    public Argb getVoiceIconColor() {
+    public RCColor getVoiceIconColor() {
         return voiceIconColor;
     }
 
-    public void setVoiceIconColor(Argb voiceIconColor) {
+    public void setVoiceIconColor(RCColor voiceIconColor) {
         this.voiceIconColor = voiceIconColor;
     }
 }

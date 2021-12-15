@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="RCKitBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="RCKitBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/RCKitBottomSheetStyle</item>
+    </style>
+
+    <declare-styleable name="RCKitRealtimeBlurView">
+        <attr name="realtimeBlurRadius" format="dimension" />
+        <attr name="realtimeDownsampleFactor" format="float" />
+        <attr name="realtimeOverlayColor" format="color" />
+
+        <attr name="radius" format="dimension" />
+        <attr name="left_top_radius" format="float" />
+        <attr name="right_top_radius" format="float" />
+        <attr name="right_bottom_radius" format="float" />
+        <attr name="left_bottom_radius" format="float" />
+    </declare-styleable>
+</resources>

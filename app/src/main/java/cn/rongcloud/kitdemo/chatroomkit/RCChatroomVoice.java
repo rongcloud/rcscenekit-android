@@ -12,11 +12,11 @@ import cn.rongcloud.chatroomkit.api.IRCChatroomVoiceMessage;
 import cn.rongcloud.chatroomkit.api.OnMessageContentClickListener;
 import cn.rongcloud.chatroomkit.bean.MessageItem;
 import cn.rongcloud.chatroomkit.utils.MessageContentUtils;
-import cn.rongcloud.corekit.bean.Argb;
-import cn.rongcloud.corekit.bean.Corner;
+import cn.rongcloud.corekit.bean.RCColor;
+import cn.rongcloud.corekit.bean.RCCorner;
 
 /**
- * Created by hugo on 2021/11/19
+ * Created by gyn on 2021/11/19
  */
 public class RCChatroomVoice implements IRCChatroomVoiceMessage {
     /**
@@ -46,17 +46,17 @@ public class RCChatroomVoice implements IRCChatroomVoiceMessage {
     }
 
     @Override
-    public Argb bubbleColor() {
+    public RCColor bubbleColor() {
         return null;
     }
 
     @Override
-    public Argb bubbleTextColor() {
+    public RCColor bubbleTextColor() {
         return null;
     }
 
     @Override
-    public Corner bubbleCorner() {
+    public RCCorner bubbleCorner() {
         return null;
     }
 

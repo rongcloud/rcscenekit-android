@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="#FF0">
+
+    <cn.rongcloud.corekit.widget.RealtimeBlurView
+        android:id="@+id/rbv_top"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/cl_top"
+        app:layout_constraintTop_toTopOf="@id/cl_top"
+        app:realtimeBlurRadius="14dp"
+        app:realtimeOverlayColor="#29FFFFFF" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingStart="23dp"
+        android:paddingEnd="23dp"
+        app:layout_constraintBottom_toTopOf="@id/vp_music"
+        tools:background="#678">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#00000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabGravity="fill"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicatorHeight="0dp"
+            app:tabPaddingEnd="15dp"
+            app:tabPaddingStart="0dp"
+            app:tabRippleColor="@null" />
+
+        <ImageView
+            android:id="@+id/iv_effect"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/rckit_tab_music_effect_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <cn.rongcloud.corekit.widget.RealtimeBlurView
+        android:id="@+id/rbv_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/vp_music"
+        app:layout_constraintTop_toTopOf="@id/vp_music"
+        app:realtimeBlurRadius="14dp"
+        app:realtimeOverlayColor="#1AFFFFFF"
+        tools:background="#F0F" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp_music"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:background="#456" />
+
+    <View
+        android:id="@+id/spacer"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toTopOf="@id/cl_top" />
+</androidx.constraintlayout.widget.ConstraintLayout>

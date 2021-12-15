@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,21 +20,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.rongcloud.chatroomkit.R;
+import cn.rongcloud.chatroomkit.RCChatRoomKit;
 import cn.rongcloud.chatroomkit.bean.ActionButton;
+import cn.rongcloud.chatroomkit.bean.ChatRoomKitBean;
 import cn.rongcloud.chatroomkit.bean.ToolBarBean;
 import cn.rongcloud.chatroomkit.manager.AudioPlayManager;
 import cn.rongcloud.chatroomkit.manager.AudioRecordManager;
 import cn.rongcloud.chatroomkit.utils.PermissionCheckUtil;
-import cn.rongcloud.corekit.api.RCSceneKitEngine;
+import cn.rongcloud.corekit.base.RCConstraintLayout;
 import cn.rongcloud.corekit.utils.GlideUtil;
 import cn.rongcloud.corekit.utils.UiUtils;
 import cn.rongcloud.corekit.utils.VMLog;
 
 
 /**
- * Created by hugo on 2021/11/12
+ * Created by gyn on 2021/11/12
  */
-public class ToolBar extends ConstraintLayout {
+public class ToolBar extends RCConstraintLayout<ChatRoomKitBean> {
     private final static String TAG = ToolBar.class.getSimpleName();
     private LinearLayout llChat;
     private TextView tvChat;
@@ -45,9 +46,41 @@ public class ToolBar extends ConstraintLayout {
     private ToolBarBean toolBarBean;
     private OnActionClickListener onActionClickListener;
     private ActionAdapter actionAdapter;
-    private OnTouchListener onTouchListener = new OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
+
+    public ToolBar(Context context) {
+        this(context, null);
+    }
+
+    public ToolBar(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+
+    @Override
+    public int setLayoutId() {
+        return R.layout.rckit_toolbar;
+    }
+
+    @Override
+    public ChatRoomKitBean getKitConfig() {
+        return RCChatRoomKit.getInstance().getKitConfig();
+    }
+
+    @Override
+    public void initView() {
+        // init view
+        llChat = (LinearLayout) findViewById(R.id.ll_chat);
+        tvChat = (TextView) findViewById(R.id.tv_chat);
+        rvAction = (RecyclerView) findViewById(R.id.rv_action);
+        ivRecord = (ImageView) findViewById(R.id.iv_record);
+        // action recyclerview
+        actionAdapter = new ActionAdapter();
+        rvAction.setAdapter(actionAdapter);
+        setRecordOnTouchListener();
+    }
+
+    private void setRecordOnTouchListener() {
+        ivRecord.setOnTouchListener((v, event) -> {
             String[] permissions = {Manifest.permission.RECORD_AUDIO};
             if (!PermissionCheckUtil.checkPermissions(
                     v.getContext(),
@@ -84,32 +117,12 @@ public class ToolBar extends ConstraintLayout {
                 audioRecordManager.stopRecord();
             }
             return true;
-        }
-    };
-
-    public ToolBar(@NonNull Context context) {
-        this(context, null);
+        });
     }
 
-    public ToolBar(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public ToolBar(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        LayoutInflater.from(context).inflate(R.layout.rckit_toolbar, this);
-        initView();
-    }
-
-    private void initView() {
-        // init view
-
-        llChat = (LinearLayout) findViewById(R.id.ll_chat);
-        tvChat = (TextView) findViewById(R.id.tv_chat);
-        rvAction = (RecyclerView) findViewById(R.id.rv_action);
-        ivRecord = (ImageView) findViewById(R.id.iv_record);
-
-        toolBarBean = RCSceneKitEngine.getInstance().getKitConfig(ToolBarBean.class);
+    @Override
+    public void initConfig(ChatRoomKitBean chatRoomKitBean) {
+        toolBarBean = chatRoomKitBean.getToolBar();
         if (toolBarBean == null) {
             VMLog.e(TAG, "initView failed : toolBarBean is null");
             return;
@@ -132,19 +145,15 @@ public class ToolBar extends ConstraintLayout {
         }
         audioRecordManager = new AudioRecordManager();
         audioRecordManager.setMaxVoiceDuration(toolBarBean.getRecordMaxDuration());
-        ivRecord.setOnTouchListener(onTouchListener);
         if (toolBarBean.getRecordPosition() != 0) {
             UiUtils.reverseChild(llChat);
         }
-        // action recyclerview
-        actionAdapter = new ActionAdapter();
-        rvAction.setAdapter(actionAdapter);
-        actionAdapter.setActionList(toolBarBean.getActionArray());
 
+        actionAdapter.setActionList(toolBarBean.getActionArray());
     }
 
     private int dp2px(int dp) {
-        return UiUtils.dp2px(getContext(), dp);
+        return UiUtils.dp2px(dp);
     }
 
     public void setOnClickChatButton(View.OnClickListener l) {
@@ -179,35 +188,6 @@ public class ToolBar extends ConstraintLayout {
         void onClickAction(int index, String extra);
     }
 
-    private static class ActionViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView ivAction;
-        private final TextView tvBadge;
-
-        public ActionViewHolder(@NonNull View itemView) {
-            super(itemView);
-            ivAction = (ImageView) itemView.findViewById(R.id.iv_action);
-            tvBadge = (TextView) itemView.findViewById(R.id.tv_badge);
-        }
-
-        public void setActionData(ActionButton actionButton) {
-            if (actionButton.getLocalIcon() != 0) {
-                ivAction.setImageResource(actionButton.getLocalIcon());
-            } else {
-                GlideUtil.loadImage(ivAction, actionButton.getActionIcon());
-            }
-            if (actionButton.hasBadge()) {
-                tvBadge.setVisibility(VISIBLE);
-                if (actionButton.getBadgeNum() > 0) {
-                    tvBadge.setText(String.valueOf(actionButton.getBadgeNum()));
-                } else {
-                    tvBadge.setText("");
-                }
-            } else {
-                tvBadge.setVisibility(GONE);
-            }
-        }
-    }
-
     private class ActionAdapter extends RecyclerView.Adapter<ActionViewHolder> {
         private List<ActionButton> actionButtonList = new ArrayList<>();
 
@@ -237,6 +217,35 @@ public class ToolBar extends ConstraintLayout {
         @Override
         public int getItemCount() {
             return actionButtonList.size();
+        }
+    }
+
+    private static class ActionViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView ivAction;
+        private final TextView tvBadge;
+
+        public ActionViewHolder(@NonNull View itemView) {
+            super(itemView);
+            ivAction = (ImageView) itemView.findViewById(R.id.iv_action);
+            tvBadge = (TextView) itemView.findViewById(R.id.tv_badge);
+        }
+
+        public void setActionData(ActionButton actionButton) {
+            if (actionButton.getLocalIcon() != 0) {
+                ivAction.setImageResource(actionButton.getLocalIcon());
+            } else {
+                GlideUtil.loadImage(ivAction, actionButton.getActionIcon().getUrl(RCChatRoomKit.getInstance().getAssetsPath()));
+            }
+            if (actionButton.hasBadge()) {
+                tvBadge.setVisibility(VISIBLE);
+                if (actionButton.getBadgeNum() > 0) {
+                    tvBadge.setText(String.valueOf(actionButton.getBadgeNum()));
+                } else {
+                    tvBadge.setText("");
+                }
+            } else {
+                tvBadge.setVisibility(GONE);
+            }
         }
     }
 }

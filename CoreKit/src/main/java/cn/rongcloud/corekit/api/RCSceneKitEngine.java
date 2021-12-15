@@ -4,7 +4,7 @@ import cn.rongcloud.corekit.core.RCSceneKitEngineImpl;
 import cn.rongcloud.corekit.utils.VMLog;
 
 /**
- * Created by hugo on 2021/11/15
+ * Created by gyn on 2021/11/15
  */
 public abstract class RCSceneKitEngine implements IRCSceneKitEngine {
 

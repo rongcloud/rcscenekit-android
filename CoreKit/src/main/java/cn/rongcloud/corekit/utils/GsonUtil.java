@@ -7,6 +7,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,11 @@ public class GsonUtil {
             Log.e(TAG, "the clazz can not null!");
             return null;
         }
-        return gson.fromJson(json, clazz);
+        try {
+            return gson.fromJson(json, clazz);
+        } catch (JsonSyntaxException e) {
+            return null;
+        }
     }
 
     public static <R> R jsonElem2Obj(JsonElement json, Class<R> clazz) {
@@ -35,7 +41,11 @@ public class GsonUtil {
             Log.e(TAG, "the clazz can not null!");
             return null;
         }
-        return gson.fromJson(json, clazz);
+        try {
+            return gson.fromJson(json, clazz);
+        } catch (JsonSyntaxException e) {
+            return null;
+        }
     }
 
     /**
@@ -81,4 +91,26 @@ public class GsonUtil {
         return lst;
     }
 
+    public static <T> List<T> json2List(String json, Class<T> clazz) {
+        if (null == clazz) {
+            VMLog.e(TAG, "the clazz can not null!");
+            return null;
+        }
+        List<T> lst = new ArrayList<T>();
+        try {
+//            JsonElement jsonElement = new JsonParser().parse(json);
+            JsonElement jsonElement = JsonParser.parseString(json);
+            if (jsonElement instanceof JsonArray) {//兼融list
+                JsonArray array = jsonElement.getAsJsonArray();
+                for (JsonElement elem : array) {
+                    lst.add(gson.fromJson(elem, clazz));
+                }
+            } else if (jsonElement instanceof JsonObject) {//obj
+                lst.add(gson.fromJson(json, clazz));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lst;
+    }
 }

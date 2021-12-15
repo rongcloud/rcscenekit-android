@@ -1,0 +1,540 @@
+{
+  "toolBar": {
+    "blurEnable": true,
+    "backgroundColor": {
+      "red": 255,
+      "green": 255,
+      "blue": 255,
+      "alpha": 0.16
+    },
+    "size": {
+      "width": -1,
+      "height": 50
+    },
+    "contentInsets": {
+      "top": 0,
+      "bottom": 0,
+      "left": 14,
+      "right": 14
+    },
+    "spacing": 15,
+    "musicControlEnable": true,
+    "soundEffectEnable": true,
+    "tabItems": [
+      {
+        "normal": {
+          "local": "rckit_tab_music_list_normal",
+          "remote": ""
+        },
+        "select": {
+          "local": "rckit_tab_music_list_select",
+          "remote": ""
+        }
+      },
+      {
+        "normal": {
+          "local": "rckit_tab_music_add_normal",
+          "remote": ""
+        },
+        "select": {
+          "local": "rckit_tab_music_add_select",
+          "remote": ""
+        }
+      },
+      {
+        "normal": {
+          "local": "rckit_tab_music_control_normal",
+          "remote": ""
+        },
+        "select": {
+          "local": "rckit_tab_music_control_select",
+          "remote": ""
+        }
+      },
+      {
+        "normal": {
+          "local": "rckit_tab_music_effect_normal",
+          "remote": ""
+        },
+        "select": {
+          "local": "rckit_tab_music_effect_select",
+          "remote": ""
+        }
+      }
+    ],
+    "tabSize": {
+      "width": 36,
+      "height": 36
+    }
+  },
+  "contentAttribute": {
+    "background": {
+      "red": 255,
+      "green": 255,
+      "blue": 255,
+      "alpha": 0.1
+    },
+    "blurEnable": true,
+    "size": {
+      "width": -1,
+      "height": 400
+    }
+  },
+  "musicList": {
+    "refreshEnable": false,
+    "loadMoreEnable": false,
+    "backgroundColor": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "alpha": 0
+    },
+    "musicItem": {
+      "highlightColor": {
+        "red": 239,
+        "green": 73,
+        "blue": 154,
+        "alpha": 1
+      },
+      "size": {
+        "width": -1,
+        "height": 64
+      },
+      "contentInsets": {
+        "top": 0,
+        "bottom": 0,
+        "left": 23,
+        "right": 15
+      },
+      "coverSize": {
+        "width": 48,
+        "height": 48
+      },
+      "titleAttribute": {
+        "textColor": {
+          "red": 255,
+          "green": 255,
+          "blue": 255,
+          "alpha": 1
+        },
+        "font": {
+          "size": 15,
+          "weight": 500
+        },
+        "insets": {
+          "top": 0,
+          "bottom": 0,
+          "left": 12,
+          "right": 0
+        }
+      },
+      "contentAttribute": {
+        "textColor": {
+          "red": 255,
+          "green": 255,
+          "blue": 255,
+          "alpha": 0.7
+        },
+        "font": {
+          "size": 12,
+          "weight": 500
+        },
+        "insets": {
+          "top": 0,
+          "bottom": 0,
+          "left": 12,
+          "right": 0
+        }
+      },
+      "sizeAttribute": {
+        "textColor": {
+          "red": 255,
+          "green": 255,
+          "blue": 255,
+          "alpha": 0.7
+        },
+        "font": {
+          "size": 9,
+          "weight": 500
+        },
+        "insets": {
+          "top": 0,
+          "bottom": 0,
+          "left": 12,
+          "right": 0
+        }
+      },
+      "separatorAttribute": {
+        "insets": {
+          "top": 0,
+          "bottom": 0,
+          "left": 77,
+          "right": 0
+        },
+        "background": {
+          "red": 255,
+          "green": 255,
+          "blue": 255,
+          "alpha": 0.1
+        },
+        "size": {
+          "width": -1,
+          "height": 1
+        }
+      },
+      "topIconAttribute": {
+        "image": {
+          "local": "rckit_ic_music_top.png",
+          "remote": ""
+        },
+        "size": {
+          "width": 40,
+          "height": 40
+        },
+        "insets": {
+          "insets": 8
+        }
+      },
+      "deleteIconAttribute": {
+        "image": {
+          "local": "rckit_ic_music_del.png",
+          "remote": ""
+        },
+        "size": {
+          "width": 40,
+          "height": 40
+        },
+        "insets": {
+          "insets": 8
+        }
+      }
+    }
+  },
+  "musicAdd": {
+    "refreshEnable": false,
+    "loadMoreEnable": false,
+    "uploadMusicEnable": true,
+    "backgroundColor": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "alpha": 0
+    },
+    "musicSearch": {
+      "contentInsets": {
+        "top": 12,
+        "bottom": 12,
+        "left": 12,
+        "right": 12
+      },
+      "searchSize": {
+        "width": -1,
+        "height": 35
+      },
+      "textAttribute": {
+        "textColor": {
+          "red": 0,
+          "green": 0,
+          "blue": 0,
+          "alpha": 0.85
+        },
+        "font": {
+          "size": 14,
+          "weight": 400
+        },
+        "hintText": "搜索歌曲",
+        "hintColor": {
+          "red": 178,
+          "green": 178,
+          "blue": 178,
+          "alpha": 1
+        }
+      }
+    },
+    "categorySelector": {
+      "size": {
+        "width": -2,
+        "height": 30
+      },
+      "backgroundColor": {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+        "alpha": 0
+      },
+      "showIndicator": true,
+      "indicatorSize": {
+        "width": 20,
+        "height": 2
+      },
+      "indicatorColor": {
+        "red": 239,
+        "green": 73,
+        "blue": 154,
+        "alpha": 1
+      },
+      "labelAttributes": {
+        "fontSelector": {
+          "normal": {
+            "size": 11,
+            "weight": 400
+          },
+          "select": {
+            "size": 12,
+            "weight": 700
+          }
+        },
+        "colorSelector": {
+          "normal": {
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 1
+          },
+          "select": {
+            "red": 239,
+            "green": 73,
+            "blue": 154,
+            "alpha": 1
+          }
+        }
+      }
+    },
+    "musicItem": {
+      "highlightColor": {
+        "red": 239,
+        "green": 73,
+        "blue": 154,
+        "alpha": 1
+      },
+      "size": {
+        "width": -1,
+        "height": 64
+      },
+      "contentInsets": {
+        "top": 0,
+        "bottom": 0,
+        "left": 23,
+        "right": 15
+      },
+      "coverSize": {
+        "width": 48,
+        "height": 48
+      },
+      "titleAttribute": {
+        "textColor": {
+          "red": 255,
+          "green": 255,
+          "blue": 255,
+          "alpha": 1
+        },
+        "font": {
+          "size": 15,
+          "weight": 500
+        },
+        "insets": {
+          "top": 0,
+          "bottom": 0,
+          "left": 12,
+          "right": 0
+        }
+      },
+      "contentAttribute": {
+        "textColor": {
+          "red": 255,
+          "green": 255,
+          "blue": 255,
+          "alpha": 0.7
+        },
+        "font": {
+          "size": 12,
+          "weight": 500
+        },
+        "insets": {
+          "top": 0,
+          "bottom": 0,
+          "left": 12,
+          "right": 0
+        }
+      },
+      "sizeAttribute": {
+        "textColor": {
+          "red": 255,
+          "green": 255,
+          "blue": 255,
+          "alpha": 0.7
+        },
+        "font": {
+          "size": 9,
+          "weight": 500
+        },
+        "insets": {
+          "top": 0,
+          "bottom": 0,
+          "left": 12,
+          "right": 0
+        }
+      },
+      "separatorAttribute": {
+        "insets": {
+          "top": 0,
+          "bottom": 0,
+          "left": 77,
+          "right": 0
+        },
+        "background": {
+          "red": 255,
+          "green": 255,
+          "blue": 255,
+          "alpha": 0.1
+        },
+        "size": {
+          "width": -1,
+          "height": 1
+        }
+      },
+      "addIconAttribute": {
+        "imageSelector": {
+          "normal": {
+            "local": "rckit_ic_music_add.png",
+            "remote": ""
+          },
+          "select": {
+            "local": "rckit_ic_music_added.png",
+            "remote": ""
+          }
+        },
+        "size": {
+          "width": 40,
+          "height": 40
+        },
+        "insets": {
+          "insets": 8
+        }
+      }
+    }
+  },
+  "musicControl": {
+    "backgroundColor": {
+      "red": 0,
+      "green": 0,
+      "blue": 0,
+      "alpha": 0
+    },
+    "normalColor": {
+      "red": 255,
+      "green": 255,
+      "blue": 255,
+      "alpha": 0.1
+    },
+    "tintColor": {
+      "red": 239,
+      "green": 73,
+      "blue": 154,
+      "alpha": 1
+    },
+    "thumbColor": {
+      "red": 255,
+      "green": 255,
+      "blue": 255,
+      "alpha": 1
+    },
+    "textColor": {
+      "red": 255,
+      "green": 255,
+      "blue": 255,
+      "alpha": 1
+    },
+    "font": {
+      "size": 14,
+      "weight": 400
+    }
+  },
+  "soundEffect": {
+    "blurEnable": true,
+    "size": {
+      "width": -1,
+      "height": 54
+    },
+    "contentInsets": {
+      "top": 0,
+      "bottom": 0,
+      "left": 18,
+      "right": 18
+    },
+    "corner": {
+      "radius": 6
+    },
+    "backgroundColor": {
+      "red": 255,
+      "green": 255,
+      "blue": 255,
+      "alpha": 0.16
+    },
+    "itemSpace": 15,
+    "effectAttribute": {
+      "drawableSelector": {
+        "normal": {
+          "shape": 0,
+          "color": {
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 0
+          },
+          "strokeWidth": 1,
+          "strokeColor": {
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 0.2
+          },
+          "corner": {
+            "radius": 27
+          }
+        },
+        "select": {
+          "shape": 0,
+          "color": {
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 0.2
+          },
+          "strokeWidth": 0,
+          "strokeColor": {
+            "red": 255,
+            "green": 255,
+            "blue": 255,
+            "alpha": 0.2
+          },
+          "corner": {
+            "radius": 27
+          }
+        }
+      },
+      "colorSelector": {
+        "normal": {
+          "red": 255,
+          "green": 255,
+          "blue": 255,
+          "alpha": 0.7
+        },
+        "select": {
+          "red": 255,
+          "green": 255,
+          "blue": 255,
+          "alpha": 1
+        }
+      },
+      "font": {
+        "size": 14,
+        "weight": 400
+      },
+      "size": {
+        "width": -2,
+        "height": 38
+      }
+    }
+  }
+}

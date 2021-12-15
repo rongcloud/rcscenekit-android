@@ -4,9 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import cn.rongcloud.corekit.bean.RCImage;
+
 public class ActionButton implements Serializable {
     @SerializedName("icon")
-    private String actionIcon;
+    private RCImage actionIcon;
     @SerializedName("localIcon")
     private int localIcon;
     @SerializedName("hasBadge")
@@ -16,11 +18,11 @@ public class ActionButton implements Serializable {
     @SerializedName("badgeNum")
     private int badgeNum;
 
-    public String getActionIcon() {
+    public RCImage getActionIcon() {
         return actionIcon;
     }
 
-    public void setActionIcon(String actionIcon) {
+    public void setActionIcon(RCImage actionIcon) {
         this.actionIcon = actionIcon;
     }
 

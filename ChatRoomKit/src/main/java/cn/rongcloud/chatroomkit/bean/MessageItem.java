@@ -5,7 +5,7 @@ import android.text.SpannableString;
 import java.io.Serializable;
 
 /**
- * Created by hugo on 2021/11/18
+ * Created by gyn on 2021/11/18
  */
 public class MessageItem<T> implements Serializable {
     private SpannableString text;
