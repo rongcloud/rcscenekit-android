@@ -19,8 +19,8 @@ public class RCCorner implements Serializable {
     private int bottomLeft;
     @SerializedName("bottomRight")
     private int bottomRight;
-    @SerializedName("radius")
-    private int radius;
+
+    private float[] radiusArray;
 
     public RCCorner() {
     }
@@ -33,58 +33,25 @@ public class RCCorner implements Serializable {
     }
 
     public int getTopLeft() {
-        if (topLeft == 0) {
-            return radius;
-        }
-        return topLeft;
-    }
-
-    public void setTopLeft(int topLeft) {
-        this.topLeft = topLeft;
+        return UiUtils.dp2px(topLeft);
     }
 
     public int getTopRight() {
-        if (topRight == 0) {
-            return radius;
-        }
-        return topRight;
-    }
-
-    public void setTopRight(int topRight) {
-        this.topRight = topRight;
+        return UiUtils.dp2px(topRight);
     }
 
     public int getBottomLeft() {
-        if (bottomLeft == 0) {
-            return radius;
-        }
-        return bottomLeft;
-    }
-
-    public void setBottomLeft(int bottomLeft) {
-        this.bottomLeft = bottomLeft;
+        return UiUtils.dp2px(bottomLeft);
     }
 
     public int getBottomRight() {
-        if (bottomRight == 0) {
-            return radius;
-        }
-        return bottomRight;
-    }
-
-    public void setBottomRight(int bottomRight) {
-        this.bottomRight = bottomRight;
-    }
-
-    public int getRadius() {
-        return radius;
-    }
-
-    public void setRadius(int radius) {
-        this.radius = radius;
+        return UiUtils.dp2px(bottomRight);
     }
 
     public float[] getRadiusArray() {
-        return new float[]{UiUtils.dp2px(getTopLeft()), UiUtils.dp2px(getTopRight()), UiUtils.dp2px(getBottomLeft()), UiUtils.dp2px(getBottomRight())};
+        if (radiusArray == null) {
+            radiusArray = new float[]{getTopLeft(), getTopRight(), getBottomLeft(), getBottomRight()};
+        }
+        return radiusArray;
     }
 }

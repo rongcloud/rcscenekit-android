@@ -35,16 +35,8 @@ public class RCColorSelector implements Serializable {
         return normal;
     }
 
-    public void setNormal(RCColor normal) {
-        this.normal = normal;
-    }
-
     public RCColor getSelect() {
         return select;
-    }
-
-    public void setSelect(RCColor select) {
-        this.select = select;
     }
 
     public StateListDrawable getDrawable() {

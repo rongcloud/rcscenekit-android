@@ -221,6 +221,14 @@ public class RealtimeBlurView extends View {
         invalidate();
     }
 
+    public void setCorner(float lt, float rt, float lb, float rb) {
+        leftTopRadius = lt;
+        rightTopRadius = rt;
+        rightBottomRadius = rb;
+        leftBottomRadius = lb;
+        invalidate();
+    }
+
     public void setDownsampleFactor(float factor) {
         if (factor <= 0) {
             throw new IllegalArgumentException("Downsample factor must be greater than 0.");
