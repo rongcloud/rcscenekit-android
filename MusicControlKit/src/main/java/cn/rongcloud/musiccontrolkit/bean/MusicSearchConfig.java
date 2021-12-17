@@ -4,8 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import cn.rongcloud.corekit.bean.RCAttribute;
+import cn.rongcloud.corekit.bean.RCAttributes;
 import cn.rongcloud.corekit.bean.RCInsets;
+import cn.rongcloud.corekit.bean.RCNode;
 import cn.rongcloud.corekit.bean.RCSize;
 
 /**
@@ -13,33 +14,21 @@ import cn.rongcloud.corekit.bean.RCSize;
  */
 public class MusicSearchConfig implements Serializable {
     @SerializedName("contentInsets")
-    private RCInsets contentInsets;
+    private RCNode<RCInsets> contentInsets;
     @SerializedName("searchSize")
-    private RCSize searchSize;
-    @SerializedName("textAttribute")
-    private RCAttribute textAttribute;
+    private RCNode<RCSize> searchSize;
+    @SerializedName("textAttributes")
+    private RCNode<RCAttributes> textAttributes;
 
     public RCInsets getContentInsets() {
-        return contentInsets;
-    }
-
-    public void setContentInsets(RCInsets contentInsets) {
-        this.contentInsets = contentInsets;
+        return contentInsets.getValue();
     }
 
     public RCSize getSearchSize() {
-        return searchSize;
+        return searchSize.getValue();
     }
 
-    public void setSearchSize(RCSize searchSize) {
-        this.searchSize = searchSize;
-    }
-
-    public RCAttribute getTextAttribute() {
-        return textAttribute;
-    }
-
-    public void setTextAttribute(RCAttribute textAttribute) {
-        this.textAttribute = textAttribute;
+    public RCAttributes getTextAttributes() {
+        return textAttributes.getValue();
     }
 }

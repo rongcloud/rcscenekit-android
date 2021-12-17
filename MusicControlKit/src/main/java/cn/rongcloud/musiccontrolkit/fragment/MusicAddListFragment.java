@@ -298,24 +298,24 @@ public class MusicAddListFragment extends RCFragment<MusicControlKitConfig> {
             if (itemConfig != null) {
                 UiUtils.setViewSize(itemView, itemConfig.getSize());
 
-                glGuideStart.setGuidelineBegin(UiUtils.dp2px(itemConfig.getContentInsets().getLeft()));
-                glGuideEnd.setGuidelineEnd(UiUtils.dp2px(itemConfig.getContentInsets().getRight()));
+                glGuideStart.setGuidelineBegin(itemConfig.getContentInsets().getLeft());
+                glGuideEnd.setGuidelineEnd(itemConfig.getContentInsets().getRight());
 
                 UiUtils.setViewSize(civTheme, itemConfig.getCoverSize());
-                UiUtils.setTextAttribute(tvMusicName, itemConfig.getTitleAttribute());
-                UiUtils.setTextAttribute(tvAuthor, itemConfig.getContentAttribute());
-                UiUtils.setTextAttribute(tvSize, itemConfig.getSizeAttribute());
-                if (itemConfig.getSeparatorAttribute() != null) {
-                    UiUtils.setViewSize(separator, itemConfig.getSeparatorAttribute().getSize());
-                    separator.setBackgroundColor(itemConfig.getSeparatorAttribute().getBackground().getColor());
+                UiUtils.setTextAttributes(tvMusicName, itemConfig.getTitleAttributes());
+                UiUtils.setTextAttributes(tvAuthor, itemConfig.getContentAttributes());
+                UiUtils.setTextAttributes(tvSize, itemConfig.getSizeAttributes());
+                if (itemConfig.getSeparatorAttributes() != null) {
+                    UiUtils.setViewSize(separator, itemConfig.getSeparatorAttributes().getSize());
+                    separator.setBackgroundColor(itemConfig.getSeparatorAttributes().getBackground().getColor());
                     ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) separator.getLayoutParams();
-                    params.leftMargin = UiUtils.dp2px(itemConfig.getSeparatorAttribute().getInsets().getLeft());
-                    params.rightMargin = UiUtils.dp2px(itemConfig.getSeparatorAttribute().getInsets().getRight());
+                    params.leftMargin = itemConfig.getSeparatorAttributes().getInsets().getLeft();
+                    params.rightMargin = itemConfig.getSeparatorAttributes().getInsets().getRight();
                     separator.setLayoutParams(params);
                 }
-                UiUtils.setImageAttribute(ivAdd, itemConfig.getAddIconAttribute(), R.drawable.rckit_ic_music_add_selector, RCMusicControlKit.getInstance().getAssetsPath());
-                UiUtils.setViewSize(pbLoad, itemConfig.getAddIconAttribute().getSize());
-                UiUtils.setPadding(pbLoad, itemConfig.getAddIconAttribute().getInsets());
+                UiUtils.setImageAttribute(ivAdd, itemConfig.getAddIconAttributes(), R.drawable.rckit_ic_music_add_selector, RCMusicControlKit.getInstance().getAssetsPath());
+                UiUtils.setViewSize(pbLoad, itemConfig.getAddIconAttributes().getSize());
+                UiUtils.setPadding(pbLoad, itemConfig.getAddIconAttributes().getInsets());
                 pbLoad.setIndeterminateTintList(ColorStateList.valueOf(itemConfig.getHighlightColor().getColor()));
             }
         }

@@ -4,70 +4,48 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import cn.rongcloud.corekit.bean.RCAttribute;
+import cn.rongcloud.corekit.bean.RCAttributes;
+import cn.rongcloud.corekit.bean.RCNode;
 
 /**
  * Created by gyn on 2021/12/7
  */
 public class MusicControlKitConfig implements Serializable {
     @SerializedName("toolBar")
-    private MusicToolbarConfig musicToolbar;
-    @SerializedName("contentAttribute")
-    private RCAttribute contentAttribute;
+    private RCNode<MusicToolbarConfig> musicToolbar;
+    @SerializedName("contentAttributes")
+    private RCNode<RCAttributes> contentAttributes;
     @SerializedName("musicList")
-    private MusicListConfig musicList;
+    private RCNode<MusicListConfig> musicList;
     @SerializedName("musicAdd")
-    private MusicAddConfig musicAdd;
+    private RCNode<MusicAddConfig> musicAdd;
     @SerializedName("musicControl")
-    private MusicControlConfig musicControl;
+    private RCNode<MusicControlConfig> musicControl;
     @SerializedName("soundEffect")
-    private SoundEffectConfig soundEffect;
+    private RCNode<SoundEffectConfig> soundEffect;
 
     public MusicToolbarConfig getMusicToolbar() {
-        return musicToolbar;
+        return musicToolbar.getValue();
     }
 
-    public void setMusicToolbar(MusicToolbarConfig musicToolbar) {
-        this.musicToolbar = musicToolbar;
-    }
-
-    public RCAttribute getContentAttribute() {
-        return contentAttribute;
-    }
-
-    public void setContentAttribute(RCAttribute contentAttribute) {
-        this.contentAttribute = contentAttribute;
+    public RCAttributes getContentAttributes() {
+        return contentAttributes.getValue();
     }
 
     public MusicListConfig getMusicList() {
-        return musicList;
-    }
-
-    public void setMusicList(MusicListConfig musicList) {
-        this.musicList = musicList;
+        return musicList.getValue();
     }
 
     public MusicAddConfig getMusicAdd() {
-        return musicAdd;
-    }
-
-    public void setMusicAdd(MusicAddConfig musicAdd) {
-        this.musicAdd = musicAdd;
+        return musicAdd.getValue();
     }
 
     public MusicControlConfig getMusicControl() {
-        return musicControl;
-    }
-
-    public void setMusicControl(MusicControlConfig musicControl) {
-        this.musicControl = musicControl;
+        return musicControl.getValue();
     }
 
     public SoundEffectConfig getSoundEffect() {
-        return soundEffect;
+        return soundEffect.getValue();
     }
 
-    public void setSoundEffect(SoundEffectConfig soundEffect) {
-        this.soundEffect = soundEffect;
-    }
 }

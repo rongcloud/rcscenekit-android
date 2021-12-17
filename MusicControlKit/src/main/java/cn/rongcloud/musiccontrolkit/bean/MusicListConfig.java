@@ -5,49 +5,34 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 import cn.rongcloud.corekit.bean.RCColor;
+import cn.rongcloud.corekit.bean.RCNode;
 
 /**
  * Created by gyn on 2021/12/7
  */
 public class MusicListConfig implements Serializable {
     @SerializedName("refreshEnable")
-    private boolean refreshEnable;
+    private RCNode<Boolean> refreshEnable;
     @SerializedName("loadMoreEnable")
-    private boolean loadMoreEnable;
+    private RCNode<Boolean> loadMoreEnable;
     @SerializedName("backgroundColor")
-    private RCColor backgroundColor;
+    private RCNode<RCColor> backgroundColor;
     @SerializedName("musicItem")
-    private MusicItemConfig musicItem;
+    private RCNode<MusicItemConfig> musicItem;
 
     public MusicItemConfig getMusicItem() {
-        return musicItem;
-    }
-
-    public void setMusicItem(MusicItemConfig musicItem) {
-        this.musicItem = musicItem;
+        return musicItem.getValue();
     }
 
     public boolean isRefreshEnable() {
-        return refreshEnable;
-    }
-
-    public void setRefreshEnable(boolean refreshEnable) {
-        this.refreshEnable = refreshEnable;
+        return refreshEnable.getValue();
     }
 
     public boolean isLoadMoreEnable() {
-        return loadMoreEnable;
-    }
-
-    public void setLoadMoreEnable(boolean loadMoreEnable) {
-        this.loadMoreEnable = loadMoreEnable;
+        return loadMoreEnable.getValue();
     }
 
     public RCColor getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public void setBackgroundColor(RCColor backgroundColor) {
-        this.backgroundColor = backgroundColor;
+        return backgroundColor.getValue();
     }
 }
