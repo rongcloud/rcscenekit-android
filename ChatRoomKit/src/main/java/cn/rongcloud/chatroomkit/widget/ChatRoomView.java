@@ -12,14 +12,14 @@ import cn.rongcloud.chatroomkit.RCChatRoomKit;
 import cn.rongcloud.chatroomkit.api.IRCChatroomMessage;
 import cn.rongcloud.chatroomkit.api.OnMessageContentClickListener;
 import cn.rongcloud.chatroomkit.bean.ActionButton;
-import cn.rongcloud.chatroomkit.bean.ChatRoomKitBean;
+import cn.rongcloud.chatroomkit.bean.ChatRoomKitConfig;
 import cn.rongcloud.chatroomkit.manager.AudioRecordManager;
 import cn.rongcloud.corekit.base.RCLinearLayout;
 
 /**
  * Created by gyn on 2021/11/17
  */
-public class ChatRoomView extends RCLinearLayout<ChatRoomKitBean> {
+public class ChatRoomView extends RCLinearLayout<ChatRoomKitConfig> {
     private ToolBar toolbar;
     private InputBarDialog inputBarDialog;
     private MessageView messageView;
@@ -40,7 +40,7 @@ public class ChatRoomView extends RCLinearLayout<ChatRoomKitBean> {
     }
 
     @Override
-    public ChatRoomKitBean getKitConfig() {
+    public ChatRoomKitConfig getKitConfig() {
         return RCChatRoomKit.getInstance().getKitConfig();
     }
 
@@ -56,7 +56,7 @@ public class ChatRoomView extends RCLinearLayout<ChatRoomKitBean> {
     }
 
     @Override
-    public void initConfig(ChatRoomKitBean chatRoomKitBean) {
+    public void initConfig(ChatRoomKitConfig chatRoomKitConfig) {
 
     }
 

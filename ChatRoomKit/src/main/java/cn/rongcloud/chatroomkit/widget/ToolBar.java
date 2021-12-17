@@ -22,8 +22,8 @@ import java.util.List;
 import cn.rongcloud.chatroomkit.R;
 import cn.rongcloud.chatroomkit.RCChatRoomKit;
 import cn.rongcloud.chatroomkit.bean.ActionButton;
-import cn.rongcloud.chatroomkit.bean.ChatRoomKitBean;
-import cn.rongcloud.chatroomkit.bean.ToolBarBean;
+import cn.rongcloud.chatroomkit.bean.ChatRoomKitConfig;
+import cn.rongcloud.chatroomkit.bean.ToolBarConfig;
 import cn.rongcloud.chatroomkit.manager.AudioPlayManager;
 import cn.rongcloud.chatroomkit.manager.AudioRecordManager;
 import cn.rongcloud.chatroomkit.utils.PermissionCheckUtil;
@@ -36,14 +36,14 @@ import cn.rongcloud.corekit.utils.VMLog;
 /**
  * Created by gyn on 2021/11/12
  */
-public class ToolBar extends RCConstraintLayout<ChatRoomKitBean> {
+public class ToolBar extends RCConstraintLayout<ChatRoomKitConfig> {
     private final static String TAG = ToolBar.class.getSimpleName();
     private LinearLayout llChat;
     private TextView tvChat;
     private RecyclerView rvAction;
     private ImageView ivRecord;
     private AudioRecordManager audioRecordManager;
-    private ToolBarBean toolBarBean;
+    private ToolBarConfig toolBarConfig;
     private OnActionClickListener onActionClickListener;
     private ActionAdapter actionAdapter;
 
@@ -62,7 +62,7 @@ public class ToolBar extends RCConstraintLayout<ChatRoomKitBean> {
     }
 
     @Override
-    public ChatRoomKitBean getKitConfig() {
+    public ChatRoomKitConfig getKitConfig() {
         return RCChatRoomKit.getInstance().getKitConfig();
     }
 
@@ -105,7 +105,7 @@ public class ToolBar extends RCConstraintLayout<ChatRoomKitBean> {
                     AudioPlayManager.getInstance().stopPlay();
                 }
 
-                audioRecordManager.startRecord(v.getRootView(), toolBarBean.getRecordQuality() != 0);
+                audioRecordManager.startRecord(v.getRootView(), toolBarConfig.getRecordQuality() != 0);
             } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 if (event.getRawX() <= 0 || event.getRawX() > x + v.getWidth() || event.getRawY() < y) {
                     audioRecordManager.willCancelRecord();
@@ -121,39 +121,36 @@ public class ToolBar extends RCConstraintLayout<ChatRoomKitBean> {
     }
 
     @Override
-    public void initConfig(ChatRoomKitBean chatRoomKitBean) {
-        toolBarBean = chatRoomKitBean.getToolBar();
-        if (toolBarBean == null) {
+    public void initConfig(ChatRoomKitConfig chatRoomKitConfig) {
+        toolBarConfig = chatRoomKitConfig.getToolBar();
+        if (toolBarConfig == null) {
             VMLog.e(TAG, "initView failed : toolBarBean is null");
             return;
         }
         // content
-        this.setBackgroundColor(toolBarBean.getBackgroundColor().getColor());
-        UiUtils.setPadding(this, toolBarBean.getContentInsets());
+        this.setBackgroundColor(toolBarConfig.getBackgroundColor().getColor());
+        UiUtils.setPadding(this, toolBarConfig.getContentInsets());
         // chat button
-        tvChat.setText(toolBarBean.getChatButtonTitle());
-        llChat.setMinimumHeight(toolBarBean.getChatButtonSize().getHeight());
-        tvChat.setTextColor(toolBarBean.getChatButtonTextColor().getColor());
-        tvChat.setTextSize(toolBarBean.getChatButtonTextSize());
-        llChat.setBackground(UiUtils.createRectangleDrawable(toolBarBean.getChatButtonBackgroundColor().getColor(), 0, 0, dp2px(toolBarBean.getChatButtonBackgroundCorner())));
-        UiUtils.setPadding(llChat, toolBarBean.getChatButtonInsets());
+        tvChat.setText(toolBarConfig.getChatButtonAttributes().getText());
+        tvChat.setTextColor(toolBarConfig.getChatButtonAttributes().getTextColor().getColor());
+        tvChat.setTextSize(toolBarConfig.getChatButtonAttributes().getFont().getSize());
+        UiUtils.setViewSize(llChat, toolBarConfig.getChatButtonAttributes().getSize());
+        UiUtils.setDrawable(llChat, toolBarConfig.getChatButtonAttributes().getDrawable());
+        UiUtils.setPadding(llChat, toolBarConfig.getChatButtonAttributes().getInsets());
+
         // record image
-        if (toolBarBean.getRecordButtonEnable()) {
+        if (toolBarConfig.getRecordButtonEnable()) {
             ivRecord.setVisibility(VISIBLE);
         } else {
             ivRecord.setVisibility(GONE);
         }
         audioRecordManager = new AudioRecordManager();
-        audioRecordManager.setMaxVoiceDuration(toolBarBean.getRecordMaxDuration());
-        if (toolBarBean.getRecordPosition() != 0) {
+        audioRecordManager.setMaxVoiceDuration(toolBarConfig.getRecordMaxDuration());
+        if (toolBarConfig.getRecordPosition() != 0) {
             UiUtils.reverseChild(llChat);
         }
 
-        actionAdapter.setActionList(toolBarBean.getActionArray());
-    }
-
-    private int dp2px(int dp) {
-        return UiUtils.dp2px(dp);
+        actionAdapter.setActionList(toolBarConfig.getButtonArray());
     }
 
     public void setOnClickChatButton(View.OnClickListener l) {
@@ -171,8 +168,8 @@ public class ToolBar extends RCConstraintLayout<ChatRoomKitBean> {
     }
 
     public List<ActionButton> getActionButtons() {
-        if (toolBarBean != null) {
-            return toolBarBean.getActionArray();
+        if (toolBarConfig != null) {
+            return toolBarConfig.getButtonArray();
         } else {
             return null;
         }
