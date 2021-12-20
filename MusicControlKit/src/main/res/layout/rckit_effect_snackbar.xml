@@ -11,9 +11,9 @@
         android:id="@+id/rbv_effect"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:radius="6dp"
-        app:realtimeBlurRadius="14dp"
-        app:realtimeOverlayColor="#1AFFFFFF" />
+        app:rckit_radius="6dp"
+        app:rckit_realtimeBlurRadius="14dp"
+        app:rckit_realtimeOverlayColor="#1AFFFFFF" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_effect"

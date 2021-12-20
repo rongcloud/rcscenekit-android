@@ -22,4 +22,16 @@ public class RCNode<T> implements Serializable {
     public T getValue() {
         return value;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setValue(T value) {
+        this.value = value;
+    }
 }
