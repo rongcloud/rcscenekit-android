@@ -13,8 +13,8 @@ import com.vanniktech.emoji.EmojiPopup;
 
 import cn.rongcloud.chatroomkit.R;
 import cn.rongcloud.chatroomkit.RCChatRoomKit;
-import cn.rongcloud.chatroomkit.bean.ChatRoomKitBean;
-import cn.rongcloud.chatroomkit.bean.InputBarBean;
+import cn.rongcloud.chatroomkit.bean.ChatRoomKitConfig;
+import cn.rongcloud.chatroomkit.bean.InputBarConfig;
 import cn.rongcloud.corekit.base.RCLinearLayout;
 import cn.rongcloud.corekit.utils.SoftKeyboardUtils;
 import cn.rongcloud.corekit.utils.UiUtils;
@@ -24,7 +24,7 @@ import cn.rongcloud.corekit.utils.VMLog;
 /**
  * Created by gyn on 2021/11/12
  */
-public class InputBar extends RCLinearLayout<ChatRoomKitBean> {
+public class InputBar extends RCLinearLayout<ChatRoomKitConfig> {
     private final static String TAG = InputBar.class.getSimpleName();
     private EmojiEditText etInput;
     private Space space1;
@@ -51,7 +51,7 @@ public class InputBar extends RCLinearLayout<ChatRoomKitBean> {
     }
 
     @Override
-    public ChatRoomKitBean getKitConfig() {
+    public ChatRoomKitConfig getKitConfig() {
         return RCChatRoomKit.getInstance().getKitConfig();
     }
 
@@ -68,26 +68,19 @@ public class InputBar extends RCLinearLayout<ChatRoomKitBean> {
     }
 
     @Override
-    public void initConfig(ChatRoomKitBean chatRoomKitBean) {
-        InputBarBean inputBarBean = chatRoomKitBean.getInputBar();
-        if (inputBarBean == null) {
+    public void initConfig(ChatRoomKitConfig chatRoomKitConfig) {
+        InputBarConfig inputBarConfig = chatRoomKitConfig.getInputBar();
+        if (inputBarConfig == null) {
             VMLog.e(TAG, "initView failed : inputBarBean is null");
             return;
         }
         // parent
-        this.setBackgroundColor(inputBarBean.getBackgroundColor().getColor());
-        UiUtils.setPadding(this, inputBarBean.getContentInsets());
+        this.setBackgroundColor(inputBarConfig.getBackgroundColor().getColor());
+        UiUtils.setPadding(this, inputBarConfig.getContentInsets());
         // input
-        etInput.setBackground(UiUtils.createRectangleDrawable(inputBarBean.getInputBackgroundColor().getColor(), 0, 0, dp2px(inputBarBean.getInputCorner())));
-        UiUtils.setPadding(etInput, inputBarBean.getInputInsets());
-        etInput.setMinHeight(dp2px(inputBarBean.getInputMinHeight()));
-        etInput.setMaxHeight(dp2px(inputBarBean.getInputMaxHeight()));
-        etInput.setTextSize(inputBarBean.getInputTextSize());
-        etInput.setTextColor(inputBarBean.getInputTextColor().getColor());
-        etInput.setHint(inputBarBean.getInputHint());
-        etInput.setHintTextColor(inputBarBean.getInputHintColor().getColor());
+        UiUtils.setTextAttributes(etInput, inputBarConfig.getInputAttributes());
         // emoji
-        if (inputBarBean.getEmojiEnable()) {
+        if (inputBarConfig.getEmojiEnable()) {
             space1.setVisibility(VISIBLE);
             ivEmoji.setVisibility(VISIBLE);
         } else {
@@ -125,10 +118,6 @@ public class InputBar extends RCLinearLayout<ChatRoomKitBean> {
                 inputBarListener.onClickSend(message);
             }
         });
-    }
-
-    private int dp2px(int dp) {
-        return UiUtils.dp2px(dp);
     }
 
     public void showInputBar() {

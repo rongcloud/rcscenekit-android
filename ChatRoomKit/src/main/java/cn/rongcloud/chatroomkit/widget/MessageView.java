@@ -30,8 +30,8 @@ import cn.rongcloud.chatroomkit.RCChatRoomKit;
 import cn.rongcloud.chatroomkit.api.IRCChatroomMessage;
 import cn.rongcloud.chatroomkit.api.IRCChatroomVoiceMessage;
 import cn.rongcloud.chatroomkit.api.OnMessageContentClickListener;
-import cn.rongcloud.chatroomkit.bean.ChatRoomKitBean;
-import cn.rongcloud.chatroomkit.bean.MessageViewBean;
+import cn.rongcloud.chatroomkit.bean.ChatRoomKitConfig;
+import cn.rongcloud.chatroomkit.bean.MessageViewConfig;
 import cn.rongcloud.chatroomkit.cache.MessageList;
 import cn.rongcloud.chatroomkit.manager.AudioPlayManager;
 import cn.rongcloud.corekit.base.RCFrameLayout;
@@ -45,9 +45,9 @@ import cn.rongcloud.corekit.widget.SpaceItemDecoration;
 /**
  * Created by gyn on 2021/11/12
  */
-public class MessageView extends RCFrameLayout<ChatRoomKitBean> {
+public class MessageView extends RCFrameLayout<ChatRoomKitConfig> {
     private final static String TAG = MessageView.class.getSimpleName();
-    MessageViewBean messageViewBean;
+    MessageViewConfig messageViewConfig;
     MessageAdapter adapter;
     OnMessageContentClickListener onMessageContentClickListener;
     private RecyclerView rvMessage;
@@ -66,7 +66,7 @@ public class MessageView extends RCFrameLayout<ChatRoomKitBean> {
     }
 
     @Override
-    public ChatRoomKitBean getKitConfig() {
+    public ChatRoomKitConfig getKitConfig() {
         return RCChatRoomKit.getInstance().getKitConfig();
     }
 
@@ -77,22 +77,22 @@ public class MessageView extends RCFrameLayout<ChatRoomKitBean> {
     }
 
     @Override
-    public void initConfig(ChatRoomKitBean chatRoomKitBean) {
-        messageViewBean = chatRoomKitBean.getMessageView();
-        if (messageViewBean == null) {
+    public void initConfig(ChatRoomKitConfig chatRoomKitConfig) {
+        messageViewConfig = chatRoomKitConfig.getMessageView();
+        if (messageViewConfig == null) {
             VMLog.e(TAG, "initView failed : messageViewBean is null");
             return;
         }
-        UiUtils.setPadding(this, messageViewBean.getContentInsets());
-        adapter = new MessageAdapter(messageViewBean.getMaxVisibleCount());
-        SpaceItemDecoration decoration = new SpaceItemDecoration(0, dp2px(messageViewBean.getBubbleSpace() / 2));
+        UiUtils.setPadding(this, messageViewConfig.getContentInsets());
+        adapter = new MessageAdapter(messageViewConfig.getMaxVisibleCount());
+        SpaceItemDecoration decoration = new SpaceItemDecoration(0, dp2px(messageViewConfig.getBubbleSpace() / 2));
         rvMessage.addItemDecoration(decoration);
         rvMessage.setAdapter(adapter);
     }
 
     public void setMessages(List<IRCChatroomMessage> messageList) {
         if (adapter != null) {
-            MessageList<IRCChatroomMessage> newList = new MessageList<>(messageViewBean.getMaxVisibleCount());
+            MessageList<IRCChatroomMessage> newList = new MessageList<>(messageViewConfig.getMaxVisibleCount());
             if (messageList != null) {
                 newList.addAll(messageList);
             }
@@ -105,7 +105,7 @@ public class MessageView extends RCFrameLayout<ChatRoomKitBean> {
 
     public void addMessage(IRCChatroomMessage message) {
         if (adapter != null) {
-            MessageList<IRCChatroomMessage> newList = new MessageList<>(messageViewBean.getMaxVisibleCount());
+            MessageList<IRCChatroomMessage> newList = new MessageList<>(messageViewConfig.getMaxVisibleCount());
             newList.addAll(adapter.messageList);
             if (message != null) {
                 newList.add(message);
@@ -119,7 +119,7 @@ public class MessageView extends RCFrameLayout<ChatRoomKitBean> {
 
     public void addMessages(List<IRCChatroomMessage> messageList) {
         if (adapter != null) {
-            MessageList<IRCChatroomMessage> newList = new MessageList<>(messageViewBean.getMaxVisibleCount());
+            MessageList<IRCChatroomMessage> newList = new MessageList<>(messageViewConfig.getMaxVisibleCount());
             newList.addAll(adapter.messageList);
             if (messageList != null) {
                 newList.addAll(messageList);
@@ -217,10 +217,10 @@ public class MessageView extends RCFrameLayout<ChatRoomKitBean> {
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
             tvMessage = itemView.findViewById(R.id.tv_message);
-            if (messageViewBean != null) {
-                UiUtils.setPadding(tvMessage, messageViewBean.getBubbleInsets());
-                setBackground(messageViewBean.getDefaultBubbleColor(), messageViewBean.getDefaultBubbleCorner());
-                setMessageTextColor(messageViewBean.getDefaultBubbleTextColor());
+            if (messageViewConfig != null) {
+                UiUtils.setPadding(tvMessage, messageViewConfig.getBubbleInsets());
+                setBackground(messageViewConfig.getDefaultBubbleColor(), messageViewConfig.getDefaultBubbleCorner());
+                setMessageTextColor(messageViewConfig.getDefaultBubbleTextColor());
             }
         }
 
@@ -228,20 +228,16 @@ public class MessageView extends RCFrameLayout<ChatRoomKitBean> {
             setBackground(chatroomMessage.bubbleColor(), chatroomMessage.bubbleCorner());
             setMessageTextColor(chatroomMessage.bubbleTextColor());
             SpannableStringBuilder builder = chatroomMessage.buildMessage(onMessageContentClickListener);
-            if (builder.length() > messageViewBean.getBubbleTextMaxLength()) {
-                tvMessage.setText(builder.subSequence(0, messageViewBean.getBubbleTextMaxLength()));
-            } else {
-                tvMessage.setText(builder);
-            }
+            tvMessage.setText(builder);
             tvMessage.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
         private void setBackground(RCColor argb, RCCorner corner) {
             if (argb == null) {
-                argb = messageViewBean.getDefaultBubbleColor();
+                argb = messageViewConfig.getDefaultBubbleColor();
             }
             if (corner == null) {
-                corner = messageViewBean.getDefaultBubbleCorner();
+                corner = messageViewConfig.getDefaultBubbleCorner();
             }
             if (argb == null || corner == null) {
                 return;
@@ -251,7 +247,7 @@ public class MessageView extends RCFrameLayout<ChatRoomKitBean> {
 
         private void setMessageTextColor(RCColor argb) {
             if (argb == null) {
-                argb = messageViewBean.getDefaultBubbleTextColor();
+                argb = messageViewConfig.getDefaultBubbleTextColor();
             }
             if (argb == null) {
                 return;
@@ -274,12 +270,12 @@ public class MessageView extends RCFrameLayout<ChatRoomKitBean> {
             ivVoice = itemView.findViewById(R.id.iv_voice);
             tvDuration = itemView.findViewById(R.id.tv_duration);
 
-            if (messageViewBean != null) {
-                UiUtils.setPadding(llMessage, messageViewBean.getBubbleInsets());
-                setBackground(messageViewBean.getDefaultBubbleColor(), messageViewBean.getDefaultBubbleCorner());
-                setMessageTextColor(messageViewBean.getDefaultBubbleTextColor());
-                ivVoice.setImageTintList(ColorStateList.valueOf(messageViewBean.getVoiceIconColor().getColor()));
-                tvDuration.setTextColor(messageViewBean.getVoiceIconColor().getColor());
+            if (messageViewConfig != null) {
+                UiUtils.setPadding(llMessage, messageViewConfig.getBubbleInsets());
+                setBackground(messageViewConfig.getDefaultBubbleColor(), messageViewConfig.getDefaultBubbleCorner());
+                setMessageTextColor(messageViewConfig.getDefaultBubbleTextColor());
+                ivVoice.setImageTintList(ColorStateList.valueOf(messageViewConfig.getVoiceIconColor().getColor()));
+                tvDuration.setTextColor(messageViewConfig.getVoiceIconColor().getColor());
             }
         }
 
@@ -287,11 +283,7 @@ public class MessageView extends RCFrameLayout<ChatRoomKitBean> {
             setBackground(voiceMessage.bubbleColor(), voiceMessage.bubbleCorner());
             setMessageTextColor(voiceMessage.bubbleTextColor());
             SpannableStringBuilder builder = voiceMessage.buildMessage(onMessageContentClickListener);
-            if (builder.length() > messageViewBean.getBubbleTextMaxLength()) {
-                tvMessage.setText(builder.subSequence(0, messageViewBean.getBubbleTextMaxLength()));
-            } else {
-                tvMessage.setText(builder);
-            }
+            tvMessage.setText(builder);
             tvMessage.setMovementMethod(LinkMovementMethod.getInstance());
             tvDuration.setText(String.format("%d''", voiceMessage.voiceDuration()));
             AnimationDrawable animationDrawable = (AnimationDrawable) ivVoice.getDrawable();
@@ -340,10 +332,10 @@ public class MessageView extends RCFrameLayout<ChatRoomKitBean> {
 
         private void setBackground(RCColor argb, RCCorner corner) {
             if (argb == null) {
-                argb = messageViewBean.getDefaultBubbleColor();
+                argb = messageViewConfig.getDefaultBubbleColor();
             }
             if (corner == null) {
-                corner = messageViewBean.getDefaultBubbleCorner();
+                corner = messageViewConfig.getDefaultBubbleCorner();
             }
             if (argb == null || corner == null) {
                 return;
@@ -353,7 +345,7 @@ public class MessageView extends RCFrameLayout<ChatRoomKitBean> {
 
         private void setMessageTextColor(RCColor argb) {
             if (argb == null) {
-                argb = messageViewBean.getDefaultBubbleTextColor();
+                argb = messageViewConfig.getDefaultBubbleTextColor();
             }
             if (argb == null) {
                 return;

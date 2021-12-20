@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.rongcloud.corekit.base.RCBottomSheetDialog;
-import cn.rongcloud.corekit.bean.RCAttribute;
+import cn.rongcloud.corekit.bean.RCAttributes;
 import cn.rongcloud.corekit.bean.RCInsets;
 import cn.rongcloud.corekit.bean.RCSize;
 import cn.rongcloud.corekit.utils.UiUtils;
@@ -131,11 +131,11 @@ public class MusicControlDialog extends RCBottomSheetDialog<MusicControlKitConfi
                 ivEffect.setVisibility(View.INVISIBLE);
             }
         }
-        RCAttribute contentAttribute = musicControlKitConfig.getContentAttribute();
-        if (contentAttribute != null) {
-            rbvBottom.setOverlayColor(contentAttribute.getBackground().getColor());
-            rbvBottom.setBlurRadius(contentAttribute.isBlurEnable() ? UiUtils.dp2px(14) : 0);
-            UiUtils.setViewSize(vpMusic, contentAttribute.getSize());
+        RCAttributes contentAttributes = musicControlKitConfig.getContentAttributes();
+        if (contentAttributes != null) {
+            rbvBottom.setOverlayColor(contentAttributes.getBackground().getColor());
+            rbvBottom.setBlurRadius(contentAttributes.isBlurEnable() ? UiUtils.dp2px(14) : 0);
+            UiUtils.setViewSize(vpMusic, contentAttributes.getSize());
         }
 
         SoundEffectConfig effectConfig = musicControlKitConfig.getSoundEffect();

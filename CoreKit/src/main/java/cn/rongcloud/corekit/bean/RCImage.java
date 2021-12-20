@@ -28,16 +28,8 @@ public class RCImage implements Serializable {
         return local;
     }
 
-    public void setLocal(String local) {
-        this.local = local;
-    }
-
     public String getRemote() {
         return remote;
-    }
-
-    public void setRemote(String remote) {
-        this.remote = remote;
     }
 
     public String getUrl(String assetsPath) {

@@ -5,122 +5,85 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-import cn.rongcloud.corekit.annotation.KitBean;
 import cn.rongcloud.corekit.bean.RCColor;
 import cn.rongcloud.corekit.bean.RCImageSelector;
 import cn.rongcloud.corekit.bean.RCInsets;
+import cn.rongcloud.corekit.bean.RCNode;
 import cn.rongcloud.corekit.bean.RCSize;
 
 /**
  * Created by gyn on 2021/12/6
  */
-@KitBean(parseKey = "musicToolBar")
 public class MusicToolbarConfig implements Serializable {
     @SerializedName("blurEnable")
-    private boolean blurEnable;
+    private RCNode<Boolean> blurEnable;
     @SerializedName("contentInsets")
-    private RCInsets contentInsets;
+    private RCNode<RCInsets> contentInsets;
     @SerializedName("backgroundColor")
-    private RCColor backgroundColor;
+    private RCNode<RCColor> backgroundColor;
     @SerializedName("size")
-    private RCSize size;
+    private RCNode<RCSize> size;
     @SerializedName("spacing")
-    private Integer spacing;
+    private RCNode<Integer> spacing;
     @SerializedName("musicControlEnable")
-    private Boolean musicControlEnable;
+    private RCNode<Boolean> musicControlEnable;
     @SerializedName("soundEffectEnable")
-    private Boolean soundEffectEnable;
+    private RCNode<Boolean> soundEffectEnable;
     @SerializedName("tabItems")
-    private List<RCImageSelector> tabItems;
+    private RCNode<List<RCImageSelector>> tabItems;
     @SerializedName("tabSize")
-    private RCSize tabSize;
+    private RCNode<RCSize> tabSize;
 
     public boolean isBlurEnable() {
-        return blurEnable;
-    }
-
-    public void setBlurEnable(boolean blurEnable) {
-        this.blurEnable = blurEnable;
+        return blurEnable.getValue();
     }
 
     public RCInsets getContentInsets() {
-        return contentInsets;
-    }
-
-    public void setContentInsets(RCInsets contentInsets) {
-        this.contentInsets = contentInsets;
+        return contentInsets.getValue();
     }
 
     public RCColor getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public void setBackgroundColor(RCColor backgroundColor) {
-        this.backgroundColor = backgroundColor;
+        return backgroundColor.getValue();
     }
 
     public RCSize getSize() {
-        return size;
-    }
-
-    public void setSize(RCSize size) {
-        this.size = size;
+        return size.getValue();
     }
 
     public Integer getSpacing() {
-        return spacing;
-    }
-
-    public void setSpacing(Integer spacing) {
-        this.spacing = spacing;
+        return spacing.getValue();
     }
 
     public Boolean getMusicControlEnable() {
-        return musicControlEnable;
-    }
-
-    public void setMusicControlEnable(Boolean musicControlEnable) {
-        this.musicControlEnable = musicControlEnable;
+        return musicControlEnable.getValue();
     }
 
     public Boolean getSoundEffectEnable() {
-        return soundEffectEnable;
-    }
-
-    public void setSoundEffectEnable(Boolean soundEffectEnable) {
-        this.soundEffectEnable = soundEffectEnable;
+        return soundEffectEnable.getValue();
     }
 
     public List<RCImageSelector> getTabItems() {
-        return tabItems;
-    }
-
-    public void setTabItems(List<RCImageSelector> tabItems) {
-        this.tabItems = tabItems;
+        return tabItems.getValue();
     }
 
     public RCSize getTabSize() {
-        return tabSize;
-    }
-
-    public void setTabSize(RCSize tabSize) {
-        this.tabSize = tabSize;
+        return tabSize.getValue();
     }
 
     public RCImageSelector getTabItem(int index) {
-        if (tabItems == null) {
+        if (tabItems == null || tabItems.getValue() == null) {
             return null;
         }
-        if (index < tabItems.size()) {
-            return tabItems.get(index);
+        if (index < tabItems.getValue().size()) {
+            return tabItems.getValue().get(index);
         }
         return null;
     }
 
     public RCImageSelector getLastTab() {
-        if (tabItems == null || tabItems.size() == 0) {
+        if (tabItems == null || tabItems.getValue() == null || tabItems.getValue().size() == 0) {
             return null;
         }
-        return tabItems.get(tabItems.size() - 1);
+        return tabItems.getValue().get(tabItems.getValue().size() - 1);
     }
 }

@@ -23,17 +23,10 @@ public class RCDrawableSelector implements Serializable {
         return normal;
     }
 
-    public void setNormal(RCDrawable normal) {
-        this.normal = normal;
-    }
-
     public RCDrawable getSelect() {
         return select;
     }
 
-    public void setSelect(RCDrawable select) {
-        this.select = select;
-    }
 
     public StateListDrawable getDrawable() {
         drawable = new StateListDrawable();

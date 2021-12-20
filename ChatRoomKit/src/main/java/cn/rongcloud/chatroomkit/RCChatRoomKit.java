@@ -7,7 +7,7 @@ import com.vanniktech.emoji.ios.IosEmojiProvider;
 
 import java.io.File;
 
-import cn.rongcloud.chatroomkit.bean.ChatRoomKitBean;
+import cn.rongcloud.chatroomkit.bean.ChatRoomKitConfig;
 import cn.rongcloud.corekit.core.RCKitInit;
 import cn.rongcloud.corekit.utils.FileUtils;
 import cn.rongcloud.corekit.utils.VMLog;
@@ -15,7 +15,7 @@ import cn.rongcloud.corekit.utils.VMLog;
 /**
  * Created by gyn on 2021/11/18
  */
-public class RCChatRoomKit extends RCKitInit<ChatRoomKitBean> {
+public class RCChatRoomKit extends RCKitInit<ChatRoomKitConfig> {
     private static final String TAG = RCChatRoomKit.class.getSimpleName();
 
     private final static Holder holder = new Holder();

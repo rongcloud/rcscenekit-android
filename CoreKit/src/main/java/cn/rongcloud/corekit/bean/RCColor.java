@@ -38,38 +38,6 @@ public class RCColor implements Serializable {
         this.blue = blue;
     }
 
-    public int getRed() {
-        return red;
-    }
-
-    public void setRed(int red) {
-        this.red = red;
-    }
-
-    public int getGreen() {
-        return green;
-    }
-
-    public void setGreen(int green) {
-        this.green = green;
-    }
-
-    public int getBlue() {
-        return blue;
-    }
-
-    public void setBlue(int blue) {
-        this.blue = blue;
-    }
-
-    public float getAlpha() {
-        return alpha;
-    }
-
-    public void setAlpha(float alpha) {
-        this.alpha = alpha;
-    }
-
     public int getColor() {
         if (color == -1) {
             color = Color.argb((int) (alpha * 255.0f + 0.5f), red, green, blue);

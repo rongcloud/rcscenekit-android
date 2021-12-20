@@ -31,16 +31,8 @@ public class RCImageSelector implements Serializable {
         return normal;
     }
 
-    public void setNormal(RCImage normal) {
-        this.normal = normal;
-    }
-
     public RCImage getSelect() {
         return select;
-    }
-
-    public void setSelect(RCImage select) {
-        this.select = select;
     }
 
     public StateListDrawable getDrawable() {

@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import cn.rongcloud.corekit.utils.UiUtils;
+
 /**
  * @author gyn
  * @date 2021/12/13
@@ -24,39 +26,19 @@ public class RCDrawable implements Serializable {
         return shape;
     }
 
-    public void setShape(int shape) {
-        this.shape = shape;
-    }
-
     public RCColor getColor() {
         return color;
     }
 
-    public void setColor(RCColor color) {
-        this.color = color;
-    }
-
     public int getStrokeWidth() {
-        return strokeWidth;
-    }
-
-    public void setStrokeWidth(int strokeWidth) {
-        this.strokeWidth = strokeWidth;
+        return UiUtils.dp2px(strokeWidth);
     }
 
     public RCColor getStrokeColor() {
         return strokeColor;
     }
 
-    public void setStrokeColor(RCColor strokeColor) {
-        this.strokeColor = strokeColor;
-    }
-
     public RCCorner getCorner() {
         return corner;
-    }
-
-    public void setCorner(RCCorner corner) {
-        this.corner = corner;
     }
 }

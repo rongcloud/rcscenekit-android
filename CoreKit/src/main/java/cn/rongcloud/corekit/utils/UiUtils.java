@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.rongcloud.corekit.api.RCSceneKitEngine;
-import cn.rongcloud.corekit.bean.RCAttribute;
+import cn.rongcloud.corekit.bean.RCAttributes;
 import cn.rongcloud.corekit.bean.RCDrawable;
 import cn.rongcloud.corekit.bean.RCDrawableSelector;
 import cn.rongcloud.corekit.bean.RCFont;
@@ -108,7 +108,7 @@ public class UiUtils {
             //设置填充颜色
             radiusBg.setColor(drawable.getColor().getColor());
             //设置线条粗心和颜色,px
-            radiusBg.setStroke(dp2px(drawable.getStrokeWidth()), drawable.getStrokeColor().getColor());
+            radiusBg.setStroke(drawable.getStrokeWidth(), drawable.getStrokeColor().getColor());
             //设置圆角角度,如果每个角度都一样,则使用此方法
             float[] radius = drawable.getCorner().getRadiusArray();
             radiusBg.setCornerRadii(new float[]{radius[0], radius[0], radius[1], radius[1], radius[2], radius[2], radius[3], radius[3]});
@@ -163,8 +163,7 @@ public class UiUtils {
         if (view == null || insets == null) {
             return;
         }
-        Context context = view.getContext();
-        view.setPadding(dp2px(insets.getLeft()), dp2px(insets.getTop()), dp2px(insets.getRight()), dp2px(insets.getBottom()));
+        view.setPadding(insets.getLeft(), insets.getTop(), insets.getRight(), insets.getBottom());
     }
 
     /**
@@ -350,16 +349,16 @@ public class UiUtils {
         }
         ViewGroup.LayoutParams params = view.getLayoutParams();
         int with;
-        if (size.getWidth() == -1 || size.getWidth() == -2) {
-            with = size.getWidth();
+        if (size.getWidthMode() == -1 || size.getWidthMode() == -2) {
+            with = size.getWidthMode();
         } else {
-            with = dp2px(size.getWidth());
+            with = size.getWidth();
         }
         int height;
-        if (size.getHeight() == -1 || size.getHeight() == -2) {
-            height = size.getWidth();
+        if (size.getHeightMode() == -1 || size.getHeightMode() == -2) {
+            height = size.getHeightMode();
         } else {
-            height = dp2px(size.getHeight());
+            height = size.getHeight();
         }
         if (params == null) {
             params = new ViewGroup.LayoutParams(with, height);
@@ -370,42 +369,42 @@ public class UiUtils {
         view.setLayoutParams(params);
     }
 
-    public static void setTextAttribute(TextView view, RCAttribute attribute) {
-        if (view == null || attribute == null) {
+    public static void setTextAttributes(TextView view, RCAttributes attributes) {
+        if (view == null || attributes == null) {
             return;
         }
-        if (!TextUtils.isEmpty(attribute.getText())) {
-            view.setText(attribute.getText());
+        if (!TextUtils.isEmpty(attributes.getText())) {
+            view.setText(attributes.getText());
         }
-        if (attribute.getInsets() != null) {
-            setPadding(view, attribute.getInsets());
+        if (attributes.getInsets() != null) {
+            setPadding(view, attributes.getInsets());
         }
-        if (attribute.getSize() != null) {
-            setViewSize(view, attribute.getSize());
+        if (attributes.getSize() != null) {
+            setViewSize(view, attributes.getSize());
         }
-        if (attribute.getBackground() != null) {
-            view.setBackgroundColor(attribute.getBackground().getColor());
+        if (attributes.getBackground() != null) {
+            view.setBackgroundColor(attributes.getBackground().getColor());
         }
-        if (attribute.getTextColor() != null) {
-            view.setTextColor(attribute.getTextColor().getColor());
+        if (attributes.getTextColor() != null) {
+            view.setTextColor(attributes.getTextColor().getColor());
         }
-        if (attribute.getFont() != null) {
-            setTextFont(view, attribute.getFont());
+        if (attributes.getFont() != null) {
+            setTextFont(view, attributes.getFont());
         }
-        if (attribute.getHintColor() != null) {
-            view.setHintTextColor(attribute.getHintColor().getColor());
+        if (attributes.getHintColor() != null) {
+            view.setHintTextColor(attributes.getHintColor().getColor());
         }
-        if (!TextUtils.isEmpty(attribute.getHintText())) {
-            view.setHint(attribute.getHintText());
+        if (!TextUtils.isEmpty(attributes.getHintText())) {
+            view.setHint(attributes.getHintText());
         }
-        if (attribute.getColorSelector() != null) {
-            view.setTextColor(attribute.getColorSelector().getColor());
+        if (attributes.getColorSelector() != null) {
+            view.setTextColor(attributes.getColorSelector().getColor());
         }
-        if (attribute.getDrawableSelector() != null) {
-            setDrawableSelector(view, attribute.getDrawableSelector());
+        if (attributes.getDrawableSelector() != null) {
+            setDrawableSelector(view, attributes.getDrawableSelector());
         }
-        if (attribute.getDrawable() != null) {
-            setDrawable(view, attribute.getDrawable());
+        if (attributes.getDrawable() != null) {
+            setDrawable(view, attributes.getDrawable());
         }
     }
 
@@ -417,7 +416,7 @@ public class UiUtils {
         view.getPaint().setFakeBoldText(rcFont.isBold());
     }
 
-    public static void setImageAttribute(ImageView view, RCAttribute attribute, @DrawableRes int defaultRes, String assetsPath) {
+    public static void setImageAttribute(ImageView view, RCAttributes attribute, @DrawableRes int defaultRes, String assetsPath) {
         if (view == null || attribute == null) {
             return;
         }
@@ -451,13 +450,12 @@ public class UiUtils {
         if (view == null || insets == null) {
             return;
         }
-        Context context = view.getContext();
         ViewGroup.LayoutParams params = view.getLayoutParams();
         if (params instanceof ViewGroup.MarginLayoutParams) {
-            ((ViewGroup.MarginLayoutParams) params).leftMargin = dp2px(insets.getLeft());
-            ((ViewGroup.MarginLayoutParams) params).topMargin = dp2px(insets.getTop());
-            ((ViewGroup.MarginLayoutParams) params).rightMargin = dp2px(insets.getRight());
-            ((ViewGroup.MarginLayoutParams) params).bottomMargin = dp2px(insets.getBottom());
+            ((ViewGroup.MarginLayoutParams) params).leftMargin = insets.getLeft();
+            ((ViewGroup.MarginLayoutParams) params).topMargin = insets.getTop();
+            ((ViewGroup.MarginLayoutParams) params).rightMargin = insets.getRight();
+            ((ViewGroup.MarginLayoutParams) params).bottomMargin = insets.getBottom();
             view.setLayoutParams(params);
         }
     }

@@ -148,12 +148,12 @@ public class MusicAddFragment extends RCFragment<MusicControlKitConfig> {
             if (searchConfig != null) {
                 UiUtils.setPadding(clSearch, searchConfig.getContentInsets());
                 UiUtils.setViewSize(etSearch, searchConfig.getSearchSize());
-                UiUtils.setTextAttribute(etSearch, searchConfig.getTextAttribute());
+                UiUtils.setTextAttributes(etSearch, searchConfig.getTextAttributes());
             }
             CategorySelectorConfig categorySelectorConfig = musicControlKitConfig.getMusicAdd().getCategorySelector();
             if (categorySelectorConfig != null) {
                 tabCategory.setBackgroundColor(categorySelectorConfig.getBackgroundColor().getColor());
-                tabCategory.setSelectedTabIndicatorHeight(categorySelectorConfig.getShowIndicator() ? UiUtils.dp2px(categorySelectorConfig.getIndicatorSize().getHeight()) : 0);
+                tabCategory.setSelectedTabIndicatorHeight(categorySelectorConfig.getShowIndicator() ? categorySelectorConfig.getIndicatorSize().getHeight() : 0);
                 tabCategory.setSelectedTabIndicatorColor(categorySelectorConfig.getIndicatorColor().getColor());
                 UiUtils.setViewSize(tabCategory, categorySelectorConfig.getSize());
                 tabCategory.setTabTextColors(categorySelectorConfig.getLabelAttributes().getColorSelector().getNormal().getColor(), categorySelectorConfig.getLabelAttributes().getColorSelector().getSelect().getColor());

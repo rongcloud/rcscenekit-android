@@ -4,8 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import cn.rongcloud.corekit.bean.RCAttribute;
+import cn.rongcloud.corekit.bean.RCAttributes;
 import cn.rongcloud.corekit.bean.RCColor;
+import cn.rongcloud.corekit.bean.RCNode;
 import cn.rongcloud.corekit.bean.RCSize;
 
 /**
@@ -13,63 +14,41 @@ import cn.rongcloud.corekit.bean.RCSize;
  */
 public class CategorySelectorConfig implements Serializable {
     @SerializedName("size")
-    private RCSize size;
+    private RCNode<RCSize> size;
     @SerializedName("backgroundColor")
-    private RCColor backgroundColor;
+    private RCNode<RCColor> backgroundColor;
     @SerializedName("showIndicator")
-    private Boolean showIndicator;
+    private RCNode<Boolean> showIndicator;
     @SerializedName("indicatorSize")
-    private RCSize indicatorSize;
+    private RCNode<RCSize> indicatorSize;
     @SerializedName("indicatorColor")
-    private RCColor indicatorColor;
+    private RCNode<RCColor> indicatorColor;
     @SerializedName("labelAttributes")
-    private RCAttribute labelAttributes;
+    private RCNode<RCAttributes> labelAttributes;
 
     public RCSize getSize() {
-        return size;
-    }
-
-    public void setSize(RCSize size) {
-        this.size = size;
+        return size.getValue();
     }
 
     public RCColor getBackgroundColor() {
-        return backgroundColor;
+        return backgroundColor.getValue();
     }
 
-    public void setBackgroundColor(RCColor backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
 
     public Boolean getShowIndicator() {
-        return showIndicator;
-    }
-
-    public void setShowIndicator(Boolean showIndicator) {
-        this.showIndicator = showIndicator;
+        return showIndicator.getValue();
     }
 
     public RCSize getIndicatorSize() {
-        return indicatorSize;
+        return indicatorSize.getValue();
     }
 
-    public void setIndicatorSize(RCSize indicatorSize) {
-        this.indicatorSize = indicatorSize;
+    public RCAttributes getLabelAttributes() {
+        return labelAttributes.getValue();
     }
 
-    public RCAttribute getLabelAttributes() {
-        return labelAttributes;
-    }
-
-    public void setLabelAttributes(RCAttribute labelAttributes) {
-        this.labelAttributes = labelAttributes;
-    }
 
     public RCColor getIndicatorColor() {
-        return indicatorColor;
-    }
-
-    public void setIndicatorColor(RCColor indicatorColor) {
-        this.indicatorColor = indicatorColor;
+        return indicatorColor.getValue();
     }
 }

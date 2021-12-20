@@ -4,10 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import cn.rongcloud.corekit.bean.RCAttribute;
+import cn.rongcloud.corekit.bean.RCAttributes;
 import cn.rongcloud.corekit.bean.RCColor;
 import cn.rongcloud.corekit.bean.RCCorner;
 import cn.rongcloud.corekit.bean.RCInsets;
+import cn.rongcloud.corekit.bean.RCNode;
 import cn.rongcloud.corekit.bean.RCSize;
 
 /**
@@ -15,73 +16,46 @@ import cn.rongcloud.corekit.bean.RCSize;
  */
 public class SoundEffectConfig implements Serializable {
     @SerializedName("blurEnable")
-    private boolean blurEnable;
+    private RCNode<Boolean> blurEnable;
     @SerializedName("size")
-    private RCSize size;
+    private RCNode<RCSize> size;
     @SerializedName("backgroundColor")
-    private RCColor backgroundColor;
-    @SerializedName("effectAttribute")
-    private RCAttribute effectAttribute;
+    private RCNode<RCColor> backgroundColor;
+    @SerializedName("effectAttributes")
+    private RCNode<RCAttributes> effectAttributes;
     @SerializedName("itemSpace")
-    private int itemSpace;
+    private RCNode<Integer> itemSpace;
     @SerializedName("contentInsets")
-    private RCInsets contentInsets;
+    private RCNode<RCInsets> contentInsets;
     @SerializedName("corner")
-    private RCCorner corner;
+    private RCNode<RCCorner> corner;
 
     public boolean isBlurEnable() {
-        return blurEnable;
-    }
-
-    public void setBlurEnable(boolean blurEnable) {
-        this.blurEnable = blurEnable;
+        return blurEnable.getValue();
     }
 
     public RCColor getBackgroundColor() {
-        return backgroundColor;
+        return backgroundColor.getValue();
     }
 
-    public void setBackgroundColor(RCColor backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
-
-    public RCAttribute getEffectAttribute() {
-        return effectAttribute;
-    }
-
-    public void setEffectAttribute(RCAttribute effectAttribute) {
-        this.effectAttribute = effectAttribute;
+    public RCAttributes getEffectAttributes() {
+        return effectAttributes.getValue();
     }
 
     public RCSize getSize() {
-        return size;
-    }
-
-    public void setSize(RCSize size) {
-        this.size = size;
+        return size.getValue();
     }
 
     public int getItemSpace() {
-        return itemSpace;
-    }
-
-    public void setItemSpace(int itemSpace) {
-        this.itemSpace = itemSpace;
+        return itemSpace.getValue();
     }
 
     public RCInsets getContentInsets() {
-        return contentInsets;
-    }
-
-    public void setContentInsets(RCInsets contentInsets) {
-        this.contentInsets = contentInsets;
+        return contentInsets.getValue();
     }
 
     public RCCorner getCorner() {
-        return corner;
+        return corner.getValue();
     }
 
-    public void setCorner(RCCorner corner) {
-        this.corner = corner;
-    }
 }

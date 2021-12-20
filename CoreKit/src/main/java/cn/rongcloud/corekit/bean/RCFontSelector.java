@@ -18,15 +18,8 @@ public class RCFontSelector implements Serializable {
         return normal;
     }
 
-    public void setNormal(RCFont normal) {
-        this.normal = normal;
-    }
-
     public RCFont getSelect() {
         return select;
     }
 
-    public void setSelect(RCFont select) {
-        this.select = select;
-    }
 }

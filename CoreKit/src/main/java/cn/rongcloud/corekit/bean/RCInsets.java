@@ -4,12 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import cn.rongcloud.corekit.utils.UiUtils;
+
 /**
  * Created by gyn on 2021/11/15
  */
 public class RCInsets implements Serializable {
-    @SerializedName("insets")
-    private int insets;
     @SerializedName("left")
     private int left;
     @SerializedName("top")
@@ -19,52 +19,32 @@ public class RCInsets implements Serializable {
     @SerializedName("bottom")
     private int bottom;
 
-    public int getInsets() {
-        return insets;
-    }
-
-    public void setInsets(int insets) {
-        this.insets = insets;
-    }
-
     public int getLeft() {
-        if (left == 0) {
-            return insets;
-        }
-        return left;
+        return UiUtils.dp2px(left);
+    }
+
+    public int getTop() {
+        return UiUtils.dp2px(top);
+    }
+
+    public int getRight() {
+        return UiUtils.dp2px(right);
+    }
+
+    public int getBottom() {
+        return UiUtils.dp2px(bottom);
     }
 
     public void setLeft(int left) {
         this.left = left;
     }
 
-    public int getTop() {
-        if (top == 0) {
-            return insets;
-        }
-        return top;
-    }
-
     public void setTop(int top) {
         this.top = top;
     }
 
-    public int getRight() {
-        if (right == 0) {
-            return insets;
-        }
-        return right;
-    }
-
     public void setRight(int right) {
         this.right = right;
-    }
-
-    public int getBottom() {
-        if (bottom == 0) {
-            return insets;
-        }
-        return bottom;
     }
 
     public void setBottom(int bottom) {

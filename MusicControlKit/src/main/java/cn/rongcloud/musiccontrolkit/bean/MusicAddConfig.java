@@ -3,6 +3,7 @@ package cn.rongcloud.musiccontrolkit.bean;
 import com.google.gson.annotations.SerializedName;
 
 import cn.rongcloud.corekit.bean.RCColor;
+import cn.rongcloud.corekit.bean.RCNode;
 
 /**
  * @author gyn
@@ -10,73 +11,45 @@ import cn.rongcloud.corekit.bean.RCColor;
  */
 public class MusicAddConfig {
     @SerializedName("refreshEnable")
-    private boolean refreshEnable;
+    private RCNode<Boolean> refreshEnable;
     @SerializedName("loadMoreEnable")
-    private boolean loadMoreEnable;
+    private RCNode<Boolean> loadMoreEnable;
     @SerializedName("backgroundColor")
-    private RCColor backgroundColor;
+    private RCNode<RCColor> backgroundColor;
     @SerializedName("musicSearch")
-    private MusicSearchConfig musicSearch;
+    private RCNode<MusicSearchConfig> musicSearch;
     @SerializedName("categorySelector")
-    private CategorySelectorConfig categorySelector;
+    private RCNode<CategorySelectorConfig> categorySelector;
     @SerializedName("musicItem")
-    private MusicItemConfig musicItem;
+    private RCNode<MusicItemConfig> musicItem;
     @SerializedName("uploadMusicEnable")
-    private boolean uploadMusicEnable;
+    private RCNode<Boolean> uploadMusicEnable;
 
     public MusicSearchConfig getMusicSearch() {
-        return musicSearch;
-    }
-
-    public void setMusicSearch(MusicSearchConfig musicSearch) {
-        this.musicSearch = musicSearch;
+        return musicSearch.getValue();
     }
 
     public CategorySelectorConfig getCategorySelector() {
-        return categorySelector;
-    }
-
-    public void setCategorySelector(CategorySelectorConfig categorySelector) {
-        this.categorySelector = categorySelector;
+        return categorySelector.getValue();
     }
 
     public MusicItemConfig getMusicItem() {
-        return musicItem;
-    }
-
-    public void setMusicItem(MusicItemConfig musicItem) {
-        this.musicItem = musicItem;
+        return musicItem.getValue();
     }
 
     public boolean isRefreshEnable() {
-        return refreshEnable;
-    }
-
-    public void setRefreshEnable(boolean refreshEnable) {
-        this.refreshEnable = refreshEnable;
+        return refreshEnable.getValue();
     }
 
     public boolean isLoadMoreEnable() {
-        return loadMoreEnable;
-    }
-
-    public void setLoadMoreEnable(boolean loadMoreEnable) {
-        this.loadMoreEnable = loadMoreEnable;
+        return loadMoreEnable.getValue();
     }
 
     public RCColor getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public void setBackgroundColor(RCColor backgroundColor) {
-        this.backgroundColor = backgroundColor;
+        return backgroundColor.getValue();
     }
 
     public boolean isUploadMusicEnable() {
-        return uploadMusicEnable;
-    }
-
-    public void setUploadMusicEnable(boolean uploadMusicEnable) {
-        this.uploadMusicEnable = uploadMusicEnable;
+        return uploadMusicEnable.getValue();
     }
 }

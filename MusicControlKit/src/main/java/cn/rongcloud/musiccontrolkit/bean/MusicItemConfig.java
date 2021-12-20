@@ -4,9 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import cn.rongcloud.corekit.bean.RCAttribute;
+import cn.rongcloud.corekit.bean.RCAttributes;
 import cn.rongcloud.corekit.bean.RCColor;
 import cn.rongcloud.corekit.bean.RCInsets;
+import cn.rongcloud.corekit.bean.RCNode;
 import cn.rongcloud.corekit.bean.RCSize;
 
 /**
@@ -15,113 +16,69 @@ import cn.rongcloud.corekit.bean.RCSize;
  */
 public class MusicItemConfig implements Serializable {
     @SerializedName("highlightColor")
-    private RCColor highlightColor;
+    private RCNode<RCColor> highlightColor;
     @SerializedName("size")
-    private RCSize size;
+    private RCNode<RCSize> size;
     @SerializedName("contentInsets")
-    private RCInsets contentInsets;
+    private RCNode<RCInsets> contentInsets;
     @SerializedName("coverSize")
-    private RCSize coverSize;
-    @SerializedName("titleAttribute")
-    private RCAttribute titleAttribute;
-    @SerializedName("contentAttribute")
-    private RCAttribute contentAttribute;
-    @SerializedName("sizeAttribute")
-    private RCAttribute sizeAttribute;
-    @SerializedName("separatorAttribute")
-    private RCAttribute separatorAttribute;
-    @SerializedName("addIconAttribute")
-    private RCAttribute addIconAttribute;
-    @SerializedName("topIconAttribute")
-    private RCAttribute topIconAttribute;
-    @SerializedName("deleteIconAttribute")
-    private RCAttribute deleteIconAttribute;
+    private RCNode<RCSize> coverSize;
+    @SerializedName("titleAttributes")
+    private RCNode<RCAttributes> titleAttributes;
+    @SerializedName("contentAttributes")
+    private RCNode<RCAttributes> contentAttributes;
+    @SerializedName("sizeAttributes")
+    private RCNode<RCAttributes> sizeAttributes;
+    @SerializedName("separatorAttributes")
+    private RCNode<RCAttributes> separatorAttributes;
+    @SerializedName("addIconAttributes")
+    private RCNode<RCAttributes> addIconAttributes;
+    @SerializedName("topIconAttributes")
+    private RCNode<RCAttributes> topIconAttributes;
+    @SerializedName("deleteIconAttributes")
+    private RCNode<RCAttributes> deleteIconAttributes;
 
     public RCColor getHighlightColor() {
-        return highlightColor;
-    }
-
-    public void setHighlightColor(RCColor highlightColor) {
-        this.highlightColor = highlightColor;
+        return highlightColor.getValue();
     }
 
     public RCSize getSize() {
-        return size;
-    }
-
-    public void setSize(RCSize size) {
-        this.size = size;
+        return size.getValue();
     }
 
     public RCInsets getContentInsets() {
-        return contentInsets;
-    }
-
-    public void setContentInsets(RCInsets contentInsets) {
-        this.contentInsets = contentInsets;
+        return contentInsets.getValue();
     }
 
     public RCSize getCoverSize() {
-        return coverSize;
+        return coverSize.getValue();
     }
 
-    public void setCoverSize(RCSize coverSize) {
-        this.coverSize = coverSize;
+    public RCAttributes getTitleAttributes() {
+        return titleAttributes.getValue();
     }
 
-    public RCAttribute getTitleAttribute() {
-        return titleAttribute;
+    public RCAttributes getContentAttributes() {
+        return contentAttributes.getValue();
     }
 
-    public void setTitleAttribute(RCAttribute titleAttribute) {
-        this.titleAttribute = titleAttribute;
+    public RCAttributes getSizeAttributes() {
+        return sizeAttributes.getValue();
     }
 
-    public RCAttribute getContentAttribute() {
-        return contentAttribute;
+    public RCAttributes getSeparatorAttributes() {
+        return separatorAttributes.getValue();
     }
 
-    public void setContentAttribute(RCAttribute contentAttribute) {
-        this.contentAttribute = contentAttribute;
+    public RCAttributes getAddIconAttributes() {
+        return addIconAttributes.getValue();
     }
 
-    public RCAttribute getSizeAttribute() {
-        return sizeAttribute;
+    public RCAttributes getTopIconAttributes() {
+        return topIconAttributes.getValue();
     }
 
-    public void setSizeAttribute(RCAttribute sizeAttribute) {
-        this.sizeAttribute = sizeAttribute;
-    }
-
-    public RCAttribute getSeparatorAttribute() {
-        return separatorAttribute;
-    }
-
-    public void setSeparatorAttribute(RCAttribute separatorAttribute) {
-        this.separatorAttribute = separatorAttribute;
-    }
-
-    public RCAttribute getAddIconAttribute() {
-        return addIconAttribute;
-    }
-
-    public void setAddIconAttribute(RCAttribute addIconAttribute) {
-        this.addIconAttribute = addIconAttribute;
-    }
-
-    public RCAttribute getTopIconAttribute() {
-        return topIconAttribute;
-    }
-
-    public void setTopIconAttribute(RCAttribute topIconAttribute) {
-        this.topIconAttribute = topIconAttribute;
-    }
-
-    public RCAttribute getDeleteIconAttribute() {
-        return deleteIconAttribute;
-    }
-
-    public void setDeleteIconAttribute(RCAttribute deleteIconAttribute) {
-        this.deleteIconAttribute = deleteIconAttribute;
+    public RCAttributes getDeleteIconAttributes() {
+        return deleteIconAttributes.getValue();
     }
 }

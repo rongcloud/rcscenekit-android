@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 import cn.rongcloud.corekit.bean.RCColor;
 import cn.rongcloud.corekit.bean.RCFont;
+import cn.rongcloud.corekit.bean.RCNode;
 
 /**
  * Created by gyn on 2021/12/7
@@ -13,63 +14,39 @@ import cn.rongcloud.corekit.bean.RCFont;
 public class MusicControlConfig implements Serializable {
 
     @SerializedName("backgroundColor")
-    private RCColor backgroundColor;
+    private RCNode<RCColor> backgroundColor;
     @SerializedName("normalColor")
-    private RCColor normalColor;
+    private RCNode<RCColor> normalColor;
     @SerializedName("tintColor")
-    private RCColor tintColor;
+    private RCNode<RCColor> tintColor;
     @SerializedName("thumbColor")
-    private RCColor thumbColor;
+    private RCNode<RCColor> thumbColor;
     @SerializedName("textColor")
-    private RCColor textColor;
+    private RCNode<RCColor> textColor;
     @SerializedName("font")
-    private RCFont font;
+    private RCNode<RCFont> font;
 
     public RCColor getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public void setBackgroundColor(RCColor backgroundColor) {
-        this.backgroundColor = backgroundColor;
+        return backgroundColor.getValue();
     }
 
     public RCColor getNormalColor() {
-        return normalColor;
-    }
-
-    public void setNormalColor(RCColor normalColor) {
-        this.normalColor = normalColor;
+        return normalColor.getValue();
     }
 
     public RCColor getTintColor() {
-        return tintColor;
-    }
-
-    public void setTintColor(RCColor tintColor) {
-        this.tintColor = tintColor;
+        return tintColor.getValue();
     }
 
     public RCColor getTextColor() {
-        return textColor;
-    }
-
-    public void setTextColor(RCColor textColor) {
-        this.textColor = textColor;
+        return textColor.getValue();
     }
 
     public RCFont getFont() {
-        return font;
-    }
-
-    public void setFont(RCFont font) {
-        this.font = font;
+        return font.getValue();
     }
 
     public RCColor getThumbColor() {
-        return thumbColor;
-    }
-
-    public void setThumbColor(RCColor thumbColor) {
-        this.thumbColor = thumbColor;
+        return thumbColor.getValue();
     }
 }
