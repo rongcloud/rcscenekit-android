@@ -117,16 +117,16 @@ public class RealtimeBlurView extends View {
         mBlurImpl = getBlurImpl(); // provide your own by override getBlurImpl()
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RCKitRealtimeBlurView);
-        mBlurRadius = a.getDimension(R.styleable.RCKitRealtimeBlurView_realtimeBlurRadius,
+        mBlurRadius = a.getDimension(R.styleable.RCKitRealtimeBlurView_rckit_realtimeBlurRadius,
                 TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, context.getResources().getDisplayMetrics()));
-        mDownsampleFactor = a.getFloat(R.styleable.RCKitRealtimeBlurView_realtimeDownsampleFactor, 4);
-        mOverlayColor = a.getColor(R.styleable.RCKitRealtimeBlurView_realtimeOverlayColor, 0xAAFFFFFF);
+        mDownsampleFactor = a.getFloat(R.styleable.RCKitRealtimeBlurView_rckit_realtimeDownsampleFactor, 4);
+        mOverlayColor = a.getColor(R.styleable.RCKitRealtimeBlurView_rckit_realtimeOverlayColor, 0xAAFFFFFF);
 
-        radius = a.getDimensionPixelOffset(R.styleable.RCKitRealtimeBlurView_radius, 0);
-        leftTopRadius = a.getDimensionPixelOffset(R.styleable.RCKitRealtimeBlurView_left_top_radius, 0);
-        rightTopRadius = a.getDimensionPixelOffset(R.styleable.RCKitRealtimeBlurView_right_top_radius, 0);
-        rightBottomRadius = a.getDimensionPixelOffset(R.styleable.RCKitRealtimeBlurView_right_bottom_radius, 0);
-        leftBottomRadius = a.getDimensionPixelOffset(R.styleable.RCKitRealtimeBlurView_left_bottom_radius, 0);
+        radius = a.getDimensionPixelOffset(R.styleable.RCKitRealtimeBlurView_rckit_radius, 0);
+        leftTopRadius = a.getDimensionPixelOffset(R.styleable.RCKitRealtimeBlurView_rckit_left_top_radius, 0);
+        rightTopRadius = a.getDimensionPixelOffset(R.styleable.RCKitRealtimeBlurView_rckit_right_top_radius, 0);
+        rightBottomRadius = a.getDimensionPixelOffset(R.styleable.RCKitRealtimeBlurView_rckit_right_bottom_radius, 0);
+        leftBottomRadius = a.getDimensionPixelOffset(R.styleable.RCKitRealtimeBlurView_rckit_left_bottom_radius, 0);
 
         setCornerRadius(radius);
 
