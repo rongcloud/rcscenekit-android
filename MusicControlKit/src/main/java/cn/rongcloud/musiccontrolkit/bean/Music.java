@@ -12,7 +12,7 @@ import cn.rongcloud.corekit.utils.GsonUtil;
 /**
  * Created by gyn on 2021/11/24
  */
-public class Music implements Serializable {
+public class Music<T> implements Serializable {
     private static final String UPLOAD_ID = "UPLOAD_ID";
     private static final Music uploadItem = new Music();
     /**
@@ -60,6 +60,19 @@ public class Music implements Serializable {
      */
     @SerializedName("musicId")
     private String musicId;
+
+    /**
+     * 拓展字段，可根据业务传入
+     */
+    private T extra;
+
+    public T getExtra() {
+        return extra;
+    }
+
+    public void setExtra(T extra) {
+        this.extra = extra;
+    }
 
     public String getFileUrl() {
         return fileUrl;
