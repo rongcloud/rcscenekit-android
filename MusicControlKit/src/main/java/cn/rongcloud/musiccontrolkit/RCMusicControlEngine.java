@@ -344,17 +344,18 @@ public class RCMusicControlEngine extends AbsMusicEngine {
             Context context = RCSceneKitEngine.getInstance().getContext();
             mmr.setDataSource(context, uri);
             String title = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
-            VMLog.d(TAG, "title:" + title);
+//            VMLog.d(TAG, "title:" + title);
             String album = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
-            VMLog.d(TAG, "album:" + album);
+//            VMLog.d(TAG, "album:" + album);
             String artist = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-            VMLog.d(TAG, "artist:" + artist);
+//            VMLog.d(TAG, "artist:" + artist);
             String duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION); // 播放时长单位为毫秒
-            VMLog.d(TAG, "duration:" + duration);
+//            VMLog.d(TAG, "duration:" + duration);
+            mmr.release();
             // 图片，可以通过BitmapFactory.decodeByteArray转换为bitmap图片
 //            byte[] pic = mmr.getEmbeddedPicture();
             String path = RealPathFromUriUtils.getRealPathFromUri(context, uri);
-            VMLog.d(TAG, "path:" + path);
+//            VMLog.d(TAG, "path:" + path);
 
             Music music = new Music();
             music.setMusicId(UUID.randomUUID().toString());

@@ -74,9 +74,13 @@ public class MusicControlManager extends RCRTCAudioMixingStateChangeListener imp
             //混音完成，可能的原因有：
             if (reason == MixingStateReason.ALL_LOOPS_COMPLETED) {
                 //调用startMix方法时，传入的loopCount > 0，并且loopCount次数的混音已经完成
-
-                // 这里自动混音下一首
-                RCMusicControlEngine.getInstance().playNextMusic();
+                HandlerUtils.mainThreadPost(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 这里自动混音下一首
+                        RCMusicControlEngine.getInstance().playNextMusic();
+                    }
+                });
             } else if (reason == MixingStateReason.ONE_LOOP_COMPLETED) {
                 //调用startMix方法时，传入的loopCount < 0（无限循环）或 > 1，混音完成一次。接下来会继续自动开始下一次混音。
             } else if (reason == MixingStateReason.STOPPED_BY_USER) {

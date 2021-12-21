@@ -21,6 +21,7 @@ import androidx.constraintlayout.widget.Guideline;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshLoadMoreListener;
@@ -322,6 +323,7 @@ public class MusicAddListFragment extends RCFragment<MusicControlKitConfig> {
 
         private void initView(Music music) {
             if (music.isUploadMusicItem()) {
+                Glide.with(civTheme).clear(civTheme);
                 civTheme.setImageResource(R.drawable.rckit_ic_music_upload);
                 tvMusicName.setText(music.getMusicName());
                 tvAuthor.setVisibility(View.GONE);
