@@ -257,14 +257,16 @@ public class RCMusicControlEngine extends AbsMusicEngine {
      * @param music 操作的音乐
      */
     public void toggleMusic(Music music) {
+        if (music == null) {
+            return;
+        }
         if (playingMusic == null) {
             playingMusic = music;
             setPlayingLiveData(true);
         } else if (TextUtils.equals(playingMusic.getMusicId(), music.getMusicId())) {
             boolean isPlaying = isPlaying();
             if (isPlaying) {
-                onPauseMixingWithMusic(music);
-                playingLiveData.postValue(false);
+                pauseMusic();
             } else {
                 onResumeMixingWithMusic(music);
                 playingLiveData.postValue(true);
@@ -273,6 +275,16 @@ public class RCMusicControlEngine extends AbsMusicEngine {
             playingMusic = music;
             setPlayingLiveData(true);
         }
+    }
+
+    /**
+     * 暂停播放
+     */
+    public void pauseMusic() {
+        if (playingMusic != null) {
+            onPauseMixingWithMusic(playingMusic);
+        }
+        playingLiveData.postValue(false);
     }
 
     private void setPlayingLiveData(boolean isPlaying) {
