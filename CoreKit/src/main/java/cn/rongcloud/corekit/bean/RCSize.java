@@ -20,7 +20,7 @@ public class RCSize implements Serializable {
     @SerializedName("heightMode")
     private int heightMode;
 
-    public int getWidth() {
+    public int getWidthPx() {
         return UiUtils.dp2px(width);
     }
 
@@ -28,12 +28,20 @@ public class RCSize implements Serializable {
         this.width = width;
     }
 
-    public int getHeight() {
+    public int getHeightPx() {
         return UiUtils.dp2px(height);
     }
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public int getWidthMode() {

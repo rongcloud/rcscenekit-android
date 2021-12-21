@@ -108,7 +108,7 @@ public class UiUtils {
             //设置填充颜色
             radiusBg.setColor(drawable.getColor().getColor());
             //设置线条粗心和颜色,px
-            radiusBg.setStroke(drawable.getStrokeWidth(), drawable.getStrokeColor().getColor());
+            radiusBg.setStroke(drawable.getStrokeWidthPx(), drawable.getStrokeColor().getColor());
             //设置圆角角度,如果每个角度都一样,则使用此方法
             float[] radius = drawable.getCorner().getRadiusArray();
             radiusBg.setCornerRadii(new float[]{radius[0], radius[0], radius[1], radius[1], radius[2], radius[2], radius[3], radius[3]});
@@ -163,7 +163,7 @@ public class UiUtils {
         if (view == null || insets == null) {
             return;
         }
-        view.setPadding(insets.getLeft(), insets.getTop(), insets.getRight(), insets.getBottom());
+        view.setPadding(insets.getLeftPx(), insets.getTopPx(), insets.getRightPx(), insets.getBottomPx());
     }
 
     /**
@@ -352,13 +352,13 @@ public class UiUtils {
         if (size.getWidthMode() == -1 || size.getWidthMode() == -2) {
             with = size.getWidthMode();
         } else {
-            with = size.getWidth();
+            with = size.getWidthPx();
         }
         int height;
         if (size.getHeightMode() == -1 || size.getHeightMode() == -2) {
             height = size.getHeightMode();
         } else {
-            height = size.getHeight();
+            height = size.getHeightPx();
         }
         if (params == null) {
             params = new ViewGroup.LayoutParams(with, height);
@@ -452,10 +452,10 @@ public class UiUtils {
         }
         ViewGroup.LayoutParams params = view.getLayoutParams();
         if (params instanceof ViewGroup.MarginLayoutParams) {
-            ((ViewGroup.MarginLayoutParams) params).leftMargin = insets.getLeft();
-            ((ViewGroup.MarginLayoutParams) params).topMargin = insets.getTop();
-            ((ViewGroup.MarginLayoutParams) params).rightMargin = insets.getRight();
-            ((ViewGroup.MarginLayoutParams) params).bottomMargin = insets.getBottom();
+            ((ViewGroup.MarginLayoutParams) params).leftMargin = insets.getLeftPx();
+            ((ViewGroup.MarginLayoutParams) params).topMargin = insets.getTopPx();
+            ((ViewGroup.MarginLayoutParams) params).rightMargin = insets.getRightPx();
+            ((ViewGroup.MarginLayoutParams) params).bottomMargin = insets.getBottomPx();
             view.setLayoutParams(params);
         }
     }

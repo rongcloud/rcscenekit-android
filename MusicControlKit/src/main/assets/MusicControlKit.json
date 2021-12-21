@@ -981,7 +981,10 @@
                   "alpha": 0.2
                 },
                 "corner": {
-                  "radius": 27
+                  "topLeft": 27,
+                  "topRight": 27,
+                  "bottomLeft": 27,
+                  "bottomRight": 27
                 }
               },
               "select": {
@@ -1000,7 +1003,10 @@
                   "alpha": 0.2
                 },
                 "corner": {
-                  "radius": 27
+                  "topLeft": 27,
+                  "topRight": 27,
+                  "bottomLeft": 27,
+                  "bottomRight": 27
                 }
               }
             }

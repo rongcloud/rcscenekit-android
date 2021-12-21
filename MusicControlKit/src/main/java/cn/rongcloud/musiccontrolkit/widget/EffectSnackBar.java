@@ -87,7 +87,7 @@ public class EffectSnackBar extends BaseTransientBottomBar<EffectSnackBar> {
         UiUtils.setViewSize(getView(), effectConfig.getSize());
         rbvEffect.setOverlayColor(effectConfig.getBackgroundColor().getColor());
         rbvEffect.setBlurRadius(effectConfig.isBlurEnable() ? UiUtils.dp2px(14) : 0);
-        rbvEffect.setCorner(effectConfig.getCorner().getTopLeft(), effectConfig.getCorner().getTopRight(), effectConfig.getCorner().getBottomLeft(), effectConfig.getCorner().getBottomRight());
+        rbvEffect.setCorner(effectConfig.getCorner().getTopLeftPx(), effectConfig.getCorner().getTopRightPx(), effectConfig.getCorner().getBottomLeftPx(), effectConfig.getCorner().getBottomRightPx());
         UiUtils.setPadding(rvEffect, effectConfig.getContentInsets());
         int space = UiUtils.dp2px(effectConfig.getItemSpace());
         rvEffect.addItemDecoration(new SpaceItemDecoration(space / 2, 0, -space / 2, -space / 2));

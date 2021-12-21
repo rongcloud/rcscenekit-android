@@ -19,20 +19,36 @@ public class RCInsets implements Serializable {
     @SerializedName("bottom")
     private int bottom;
 
-    public int getLeft() {
+    public int getLeftPx() {
         return UiUtils.dp2px(left);
     }
 
-    public int getTop() {
+    public int getTopPx() {
         return UiUtils.dp2px(top);
     }
 
-    public int getRight() {
+    public int getRightPx() {
         return UiUtils.dp2px(right);
     }
 
-    public int getBottom() {
+    public int getBottomPx() {
         return UiUtils.dp2px(bottom);
+    }
+
+    public int getLeft() {
+        return left;
+    }
+
+    public int getTop() {
+        return top;
+    }
+
+    public int getRight() {
+        return right;
+    }
+
+    public int getBottom() {
+        return bottom;
     }
 
     public void setLeft(int left) {

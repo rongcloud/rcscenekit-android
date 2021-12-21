@@ -298,8 +298,8 @@ public class MusicAddListFragment extends RCFragment<MusicControlKitConfig> {
             if (itemConfig != null) {
                 UiUtils.setViewSize(itemView, itemConfig.getSize());
 
-                glGuideStart.setGuidelineBegin(itemConfig.getContentInsets().getLeft());
-                glGuideEnd.setGuidelineEnd(itemConfig.getContentInsets().getRight());
+                glGuideStart.setGuidelineBegin(itemConfig.getContentInsets().getLeftPx());
+                glGuideEnd.setGuidelineEnd(itemConfig.getContentInsets().getRightPx());
 
                 UiUtils.setViewSize(civTheme, itemConfig.getCoverSize());
                 UiUtils.setTextAttributes(tvMusicName, itemConfig.getTitleAttributes());
@@ -309,8 +309,8 @@ public class MusicAddListFragment extends RCFragment<MusicControlKitConfig> {
                     UiUtils.setViewSize(separator, itemConfig.getSeparatorAttributes().getSize());
                     separator.setBackgroundColor(itemConfig.getSeparatorAttributes().getBackground().getColor());
                     ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) separator.getLayoutParams();
-                    params.leftMargin = itemConfig.getSeparatorAttributes().getInsets().getLeft();
-                    params.rightMargin = itemConfig.getSeparatorAttributes().getInsets().getRight();
+                    params.leftMargin = itemConfig.getSeparatorAttributes().getInsets().getLeftPx();
+                    params.rightMargin = itemConfig.getSeparatorAttributes().getInsets().getRightPx();
                     separator.setLayoutParams(params);
                 }
                 UiUtils.setImageAttribute(ivAdd, itemConfig.getAddIconAttributes(), R.drawable.rckit_ic_music_add_selector, RCMusicControlKit.getInstance().getAssetsPath());

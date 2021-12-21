@@ -30,8 +30,12 @@ public class RCDrawable implements Serializable {
         return color;
     }
 
-    public int getStrokeWidth() {
+    public int getStrokeWidthPx() {
         return UiUtils.dp2px(strokeWidth);
+    }
+
+    public int getStrokeWidth() {
+        return strokeWidth;
     }
 
     public RCColor getStrokeColor() {

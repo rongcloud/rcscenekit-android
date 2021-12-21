@@ -32,25 +32,41 @@ public class RCCorner implements Serializable {
         this.bottomRight = bottomRight;
     }
 
-    public int getTopLeft() {
+    public int getTopLeftPx() {
         return UiUtils.dp2px(topLeft);
     }
 
-    public int getTopRight() {
+    public int getTopRightPx() {
         return UiUtils.dp2px(topRight);
     }
 
-    public int getBottomLeft() {
+    public int getBottomLeftPx() {
         return UiUtils.dp2px(bottomLeft);
     }
 
-    public int getBottomRight() {
+    public int getBottomRightPx() {
         return UiUtils.dp2px(bottomRight);
+    }
+
+    public int getTopLeft() {
+        return topLeft;
+    }
+
+    public int getTopRight() {
+        return topRight;
+    }
+
+    public int getBottomLeft() {
+        return bottomLeft;
+    }
+
+    public int getBottomRight() {
+        return bottomRight;
     }
 
     public float[] getRadiusArray() {
         if (radiusArray == null) {
-            radiusArray = new float[]{getTopLeft(), getTopRight(), getBottomLeft(), getBottomRight()};
+            radiusArray = new float[]{getTopLeftPx(), getTopRightPx(), getBottomLeftPx(), getBottomRightPx()};
         }
         return radiusArray;
     }
