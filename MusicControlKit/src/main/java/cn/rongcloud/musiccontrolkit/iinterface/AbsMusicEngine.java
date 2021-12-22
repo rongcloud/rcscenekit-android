@@ -179,6 +179,14 @@ public abstract class AbsMusicEngine implements RCMusicKitListener {
     }
 
     @Override
+    public void onStopMixingWithMusic() {
+        if (rcMusicKitListener == null) {
+            return;
+        }
+        rcMusicKitListener.onStopMixingWithMusic();
+    }
+
+    @Override
     public void onPlayEffect(Effect effect) {
         if (rcMusicKitListener == null) {
             return;

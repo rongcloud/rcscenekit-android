@@ -126,8 +126,18 @@ public class RCMusicControlEngine extends AbsMusicEngine {
 
     /**
      * 播放音乐列表的下一首
+     * 默认不循环播放
      */
     public Music playNextMusic() {
+        return playNextMusic(false);
+    }
+
+    /**
+     * 播放音乐列表的下一首
+     *
+     * @param loop 是否循环
+     */
+    public Music playNextMusic(boolean loop) {
         List<Music> musicList = getMusicList();
         if (ListUtil.isEmpty(musicList)) {
             return null;
@@ -135,10 +145,17 @@ public class RCMusicControlEngine extends AbsMusicEngine {
         if (playingMusic != null) {
             int index = musicList.indexOf(playingMusic);
             if (index >= musicList.size() - 1) {
-                playingMusic = musicList.get(0);
+                if (loop) {
+                    playingMusic = musicList.get(0);
+                } else {
+                    setPlayingLiveData(false);
+                    onStopMixingWithMusic();
+                    return null;
+                }
             } else {
                 playingMusic = musicList.get(index + 1);
             }
+
         } else {
             playingMusic = musicList.get(0);
         }

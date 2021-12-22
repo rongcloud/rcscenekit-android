@@ -464,6 +464,12 @@ public class MusicControlManager extends RCRTCAudioMixingStateChangeListener imp
     }
 
     @Override
+    public void onStopMixingWithMusic() {
+        VMLog.d(TAG, "onStopMixingWithMusic");
+        RCRTCAudioMixer.getInstance().stop();
+    }
+
+    @Override
     public void onPlayEffect(Effect effect) {
         VMLog.d(TAG, "onPlayEffect");
         RCRTCEngine.getInstance().getAudioEffectManager().stopAllEffects();

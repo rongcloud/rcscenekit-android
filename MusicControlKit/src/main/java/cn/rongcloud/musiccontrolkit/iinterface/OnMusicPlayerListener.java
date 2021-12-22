@@ -43,6 +43,13 @@ public interface OnMusicPlayerListener {
     void onPauseMixingWithMusic(Music music);
 
     /**
+     * 停止混音
+     * 播放列表播放完后会被调用，
+     * 循环播放场景不会触发
+     */
+    void onStopMixingWithMusic();
+
+    /**
      * @param effect 播放氛围
      */
     void onPlayEffect(Effect effect);
