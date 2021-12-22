@@ -89,8 +89,7 @@ public class MusicControlDialog extends RCBottomSheetDialog<MusicControlKitConfi
             }
             MusicFragmentAdapter adapter = new MusicFragmentAdapter(this);
             vpMusic.setAdapter(adapter);
-            vpMusic.setUserInputEnabled(false);
-//            vpMusic.setSaveEnabled(false);
+            vpMusic.setUserInputEnabled(true);
 
             int[] icons = new int[]{R.drawable.rckit_tab_music_list_selector, R.drawable.rckit_tab_music_add_selector, R.drawable.rckit_tab_music_control_selector};
             ImageView imageView;
