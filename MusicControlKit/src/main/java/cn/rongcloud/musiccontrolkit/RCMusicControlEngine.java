@@ -164,6 +164,25 @@ public class RCMusicControlEngine extends AbsMusicEngine {
     }
 
     /**
+     * 暂停播放
+     */
+    public void pauseMusic() {
+        if (playingMusic != null) {
+            onPauseMixingWithMusic(playingMusic);
+        }
+        playingLiveData.postValue(false);
+    }
+
+    /**
+     * 停止播放
+     */
+    public void stopMusic() {
+        playingMusic = null;
+        playingLiveData.postValue(false);
+        onStopMixingWithMusic();
+    }
+
+    /**
      * @param musicList 批量添加音乐
      */
     public void addMusicList(List<Music> musicList) {
@@ -292,16 +311,6 @@ public class RCMusicControlEngine extends AbsMusicEngine {
             playingMusic = music;
             setPlayingLiveData(true);
         }
-    }
-
-    /**
-     * 暂停播放
-     */
-    public void pauseMusic() {
-        if (playingMusic != null) {
-            onPauseMixingWithMusic(playingMusic);
-        }
-        playingLiveData.postValue(false);
     }
 
     private void setPlayingLiveData(boolean isPlaying) {
