@@ -331,8 +331,10 @@
             "name": "输入框大小",
             "type": "RCSize",
             "value": {
-              "width": -1,
-              "height": 36
+              "width": 0,
+              "height": 36,
+              "widthMode": -1,
+              "heightMode": 0
             }
           },
           "font": {
