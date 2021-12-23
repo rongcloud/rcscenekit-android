@@ -326,7 +326,7 @@ public class RCMusicControlEngine extends AbsMusicEngine {
      * 重置监听和数据
      */
     public void release() {
-        setPlayingLiveData(false);
+        playingLiveData.postValue(false);
         setMusicList(new ArrayList<>());
         playingMusic = null;
         super.release();
