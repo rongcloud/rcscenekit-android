@@ -148,7 +148,7 @@ public class RCMusicControlEngine extends AbsMusicEngine {
                 if (loop) {
                     playingMusic = musicList.get(0);
                 } else {
-                    setPlayingLiveData(false);
+                    stopMusic();
                     onStopMixingWithMusic();
                     return null;
                 }
