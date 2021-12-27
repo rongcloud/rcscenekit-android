@@ -17,7 +17,7 @@ public class RCImageSelector implements Serializable {
     @SerializedName("select")
     private RCImage select;
 
-    private StateListDrawable drawable;
+    private transient StateListDrawable drawable;
 
     public RCImageSelector() {
     }

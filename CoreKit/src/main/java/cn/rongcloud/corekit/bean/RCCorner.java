@@ -20,7 +20,7 @@ public class RCCorner implements Serializable {
     @SerializedName("bottomRight")
     private int bottomRight;
 
-    private float[] radiusArray;
+    private transient float[] radiusArray;
 
     public RCCorner() {
     }

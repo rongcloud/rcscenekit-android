@@ -19,9 +19,9 @@ public class RCColorSelector implements Serializable {
     @SerializedName("select")
     private RCColor select;
 
-    private StateListDrawable drawable;
+    private transient StateListDrawable drawable;
 
-    private ColorStateList color;
+    private transient ColorStateList color;
 
     public RCColorSelector() {
     }

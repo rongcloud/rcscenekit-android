@@ -13,7 +13,7 @@ import cn.rongcloud.corekit.utils.UiUtils;
  * @date 2021/12/13
  */
 public class RCDrawableSelector implements Serializable {
-    StateListDrawable drawable;
+    private transient StateListDrawable drawable;
     @SerializedName("normal")
     private RCDrawable normal;
     @SerializedName("select")
