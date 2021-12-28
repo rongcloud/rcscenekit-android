@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -15,7 +16,6 @@ import java.util.List;
 
 import cn.rongcloud.corekit.api.DataCallback;
 import cn.rongcloud.corekit.utils.UiUtils;
-import cn.rongcloud.corekit.widget.RealtimeBlurView;
 import cn.rongcloud.corekit.widget.SpaceItemDecoration;
 import cn.rongcloud.musiccontrolkit.R;
 import cn.rongcloud.musiccontrolkit.RCMusicControlEngine;
@@ -26,9 +26,8 @@ import cn.rongcloud.musiccontrolkit.bean.SoundEffectConfig;
  * Created by gyn on 2021/11/29
  */
 public class EffectSnackBar extends BaseTransientBottomBar<EffectSnackBar> {
-
+    private ConstraintLayout clRoot;
     private RecyclerView rvEffect;
-    private RealtimeBlurView rbvEffect;
     private List<Effect> effectList = new ArrayList<>();
     private Effect currentEffect;
     private EffectAdapter adapter;
@@ -64,8 +63,8 @@ public class EffectSnackBar extends BaseTransientBottomBar<EffectSnackBar> {
     }
 
     private void initView() {
-        rbvEffect = getView().findViewById(R.id.rbv_effect);
         rvEffect = (RecyclerView) getView().findViewById(R.id.rv_effect);
+        clRoot = getView().findViewById(R.id.cl_root);
         adapter = new EffectAdapter();
         rvEffect.setAdapter(adapter);
         RCMusicControlEngine.getInstance().onLoadEffectList(new DataCallback<List<Effect>>() {
@@ -85,9 +84,7 @@ public class EffectSnackBar extends BaseTransientBottomBar<EffectSnackBar> {
             return;
         }
         UiUtils.setViewSize(getView(), effectConfig.getSize());
-        rbvEffect.setOverlayColor(effectConfig.getBackgroundColor().getColor());
-        rbvEffect.setBlurRadius(effectConfig.isBlurEnable() ? UiUtils.dp2px(14) : 0);
-        rbvEffect.setCorner(effectConfig.getCorner().getTopLeftPx(), effectConfig.getCorner().getTopRightPx(), effectConfig.getCorner().getBottomLeftPx(), effectConfig.getCorner().getBottomRightPx());
+        clRoot.setBackground(UiUtils.createRectangleDrawable(effectConfig.getBackgroundColor().getColor(), 0, 0, effectConfig.getCorner().getRadiusArray()));
         UiUtils.setPadding(rvEffect, effectConfig.getContentInsets());
         int space = UiUtils.dp2px(effectConfig.getItemSpace());
         rvEffect.addItemDecoration(new SpaceItemDecoration(space / 2, 0, -space / 2, -space / 2));

@@ -4,16 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="54dp"
+    android:id="@+id/cl_root"
     android:background="@color/transparent"
     tools:background="#234">
-
-    <cn.rongcloud.corekit.widget.RealtimeBlurView
-        android:id="@+id/rbv_effect"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:rckit_radius="6dp"
-        app:rckit_realtimeBlurRadius="14dp"
-        app:rckit_realtimeOverlayColor="#1AFFFFFF" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_effect"

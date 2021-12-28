@@ -9,15 +9,4 @@
         <item name="bottomSheetStyle">@style/RCKitBottomSheetStyle</item>
     </style>
 
-    <declare-styleable name="RCKitRealtimeBlurView">
-        <attr name="rckit_realtimeBlurRadius" format="dimension" />
-        <attr name="rckit_realtimeDownsampleFactor" format="float" />
-        <attr name="rckit_realtimeOverlayColor" format="color" />
-
-        <attr name="rckit_radius" format="dimension" />
-        <attr name="rckit_left_top_radius" format="float" />
-        <attr name="rckit_right_top_radius" format="float" />
-        <attr name="rckit_right_bottom_radius" format="float" />
-        <attr name="rckit_left_bottom_radius" format="float" />
-    </declare-styleable>
 </resources>

@@ -16,7 +16,6 @@ import java.util.UUID;
 import cn.rongcloud.corekit.api.RCSceneKitEngine;
 import cn.rongcloud.corekit.utils.ListUtil;
 import cn.rongcloud.corekit.utils.RealPathFromUriUtils;
-import cn.rongcloud.corekit.utils.VMLog;
 import cn.rongcloud.musiccontrolkit.bean.Music;
 import cn.rongcloud.musiccontrolkit.iinterface.AbsMusicEngine;
 import cn.rongcloud.musiccontrolkit.iinterface.RCMusicKitListener;
@@ -100,7 +99,6 @@ public class RCMusicControlEngine extends AbsMusicEngine {
      * @param music 添加音乐
      */
     public void addMusic(Music music) {
-        VMLog.e(TAG, "==============");
         List<Music> list = getMusicList();
         if (isInMusicList(music.getMusicId())) {
             return;

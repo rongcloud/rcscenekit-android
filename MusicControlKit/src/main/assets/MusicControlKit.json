@@ -3,19 +3,14 @@
     "name": "顶部工具栏",
     "type": "RCContainer",
     "value": {
-      "blurEnable": {
-        "name": "背景是否支持高斯模糊",
-        "type": "RCBoolean",
-        "value": true
-      },
       "backgroundColor": {
         "name": "顶部工具栏背景色",
         "type": "RCColor",
         "value": {
-          "red": 255,
-          "green": 255,
-          "blue": 255,
-          "alpha": 0.16
+          "red": 111,
+          "green": 93,
+          "blue": 182,
+          "alpha": 1
         }
       },
       "size": {
@@ -135,16 +130,11 @@
         "name": "背景色",
         "type": "RCColor",
         "value": {
-          "red": 255,
-          "green": 255,
-          "blue": 255,
-          "alpha": 0.1
+          "red": 92,
+          "green": 80,
+          "blue": 149,
+          "alpha": 1
         }
-      },
-      "blurEnable": {
-        "name": "背景是否支持高斯模糊",
-        "type": "RCBoolean",
-        "value": true
       },
       "size": {
         "name": "内容显示区域大小",
@@ -907,11 +897,6 @@
     "name": "音乐氛围弹框配置",
     "type": "RCContainer",
     "value": {
-      "blurEnable": {
-        "name": "背景是否支持高斯模糊",
-        "type": "RCBoolean",
-        "value": true
-      },
       "size": {
         "name": "音乐氛围弹框尺寸",
         "type": "RCSize",
@@ -946,10 +931,10 @@
         "name": "音乐氛围弹框背景色",
         "type": "RCColor",
         "value": {
-          "red": 255,
-          "green": 255,
-          "blue": 255,
-          "alpha": 0.16
+          "red": 111,
+          "green": 93,
+          "blue": 182,
+          "alpha": 1
         }
       },
       "itemSpace": {

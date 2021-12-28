@@ -22,7 +22,6 @@ import cn.rongcloud.corekit.bean.RCInsets;
 import cn.rongcloud.corekit.bean.RCSize;
 import cn.rongcloud.corekit.core.RCKitInit;
 import cn.rongcloud.corekit.utils.UiUtils;
-import cn.rongcloud.corekit.widget.RealtimeBlurView;
 import cn.rongcloud.musiccontrolkit.bean.MusicControlKitConfig;
 import cn.rongcloud.musiccontrolkit.bean.MusicToolbarConfig;
 import cn.rongcloud.musiccontrolkit.bean.SoundEffectConfig;
@@ -37,10 +36,8 @@ import cn.rongcloud.musiccontrolkit.widget.EffectSnackBar;
  */
 public class MusicControlDialog extends RCBottomSheetDialog<MusicControlKitConfig> implements OnSwitchPageListener {
     public static final String TAG = MusicControlDialog.class.getSimpleName();
-    private RealtimeBlurView rbvTop;
     private ConstraintLayout clTop;
     private TabLayout tlTab;
-    private RealtimeBlurView rbvBottom;
     private ViewPager2 vpMusic;
     private ImageView ivEffect;
     private View space;
@@ -61,10 +58,8 @@ public class MusicControlDialog extends RCBottomSheetDialog<MusicControlKitConfi
 
     @Override
     public void initView() {
-        rbvTop = (RealtimeBlurView) getView().findViewById(R.id.rbv_top);
         clTop = (ConstraintLayout) getView().findViewById(R.id.cl_top);
         tlTab = (TabLayout) getView().findViewById(R.id.tl_tab);
-        rbvBottom = (RealtimeBlurView) getView().findViewById(R.id.rbv_bottom);
         vpMusic = (ViewPager2) getView().findViewById(R.id.vp_music);
         ivEffect = (ImageView) getView().findViewById(R.id.iv_effect);
         space = getView().findViewById(R.id.spacer);
@@ -78,8 +73,7 @@ public class MusicControlDialog extends RCBottomSheetDialog<MusicControlKitConfi
         MusicToolbarConfig toolbarBean = musicControlKitConfig.getMusicToolbar();
         if (toolbarBean != null) {
             // toolbar
-            rbvTop.setBlurRadius(toolbarBean.isBlurEnable() ? UiUtils.dp2px(14) : 0);
-            rbvTop.setOverlayColor(toolbarBean.getBackgroundColor().getColor());
+            clTop.setBackgroundColor(toolbarBean.getBackgroundColor().getColor());
             UiUtils.setPadding(clTop, toolbarBean.getContentInsets());
             UiUtils.setViewSize(clTop, toolbarBean.getSize());
             // 添加显示的页面
@@ -134,8 +128,7 @@ public class MusicControlDialog extends RCBottomSheetDialog<MusicControlKitConfi
         }
         RCAttributes contentAttributes = musicControlKitConfig.getContentAttributes();
         if (contentAttributes != null) {
-            rbvBottom.setOverlayColor(contentAttributes.getBackground().getColor());
-            rbvBottom.setBlurRadius(contentAttributes.isBlurEnable() ? UiUtils.dp2px(14) : 0);
+            vpMusic.setBackgroundColor(contentAttributes.getBackground().getColor());
             UiUtils.setViewSize(vpMusic, contentAttributes.getSize());
         }
 

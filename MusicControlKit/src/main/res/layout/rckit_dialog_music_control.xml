@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     tools:background="#FF0">
 
-    <cn.rongcloud.corekit.widget.RealtimeBlurView
-        android:id="@+id/rbv_top"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/cl_top"
-        app:layout_constraintTop_toTopOf="@id/cl_top"
-        app:rckit_realtimeBlurRadius="14dp"
-        app:rckit_realtimeOverlayColor="#29FFFFFF" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_top"
         android:layout_width="match_parent"
@@ -48,16 +39,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <cn.rongcloud.corekit.widget.RealtimeBlurView
-        android:id="@+id/rbv_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/vp_music"
-        app:layout_constraintTop_toTopOf="@id/vp_music"
-        app:rckit_realtimeBlurRadius="14dp"
-        app:rckit_realtimeOverlayColor="#1AFFFFFF"
-        tools:background="#F0F" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_music"

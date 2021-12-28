@@ -39,8 +39,6 @@ public class RCAttributes implements Serializable {
     private RCNode<RCInsets> insets;
     @SerializedName("image")
     private RCNode<RCImage> image;
-    @SerializedName("blurEnable")
-    private RCNode<Boolean> blurEnable;
     @SerializedName("drawable")
     private RCNode<RCDrawable> drawable;
 
@@ -86,10 +84,6 @@ public class RCAttributes implements Serializable {
 
     public RCImage getImage() {
         return image == null ? null : image.getValue();
-    }
-
-    public boolean isBlurEnable() {
-        return blurEnable == null ? false : blurEnable.getValue();
     }
 
     public RCColorSelector getBackgroundSelector() {
