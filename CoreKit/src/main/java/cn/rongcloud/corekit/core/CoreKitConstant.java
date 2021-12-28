@@ -12,6 +12,7 @@ import cn.rongcloud.corekit.api.RCSceneKitEngine;
  */
 public class CoreKitConstant {
     public static final String ROOT_FOLDER = "RCSceneKit";
+    public static final String ROOT_CONFIG_NAME = "RCSceneKit.json";
     public static final String KIT_CONFIG_NAME = "KitConfig.json";
     public static final String TEMP_FOLDER = "temp";
     public static final String ASSETS_FOLDER = "assets";
@@ -31,6 +32,15 @@ public class CoreKitConstant {
 
         }
         return rootPath;
+    }
+
+    /**
+     * 获取根目录下所有kit配置信息的文件路径
+     *
+     * @return eg: /data/user/0/cn.rongcloud.scenekitdemo/files/RCSceneKit/RCSceneKit.json
+     */
+    public static String getRootConfigName() {
+        return rootPath + File.separator + ROOT_CONFIG_NAME;
     }
 
     /**

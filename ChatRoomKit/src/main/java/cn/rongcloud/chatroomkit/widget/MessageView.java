@@ -37,6 +37,7 @@ import cn.rongcloud.chatroomkit.manager.AudioPlayManager;
 import cn.rongcloud.corekit.base.RCFrameLayout;
 import cn.rongcloud.corekit.bean.RCColor;
 import cn.rongcloud.corekit.bean.RCCorner;
+import cn.rongcloud.corekit.core.RCKitInit;
 import cn.rongcloud.corekit.utils.UiUtils;
 import cn.rongcloud.corekit.utils.VMLog;
 import cn.rongcloud.corekit.widget.SpaceItemDecoration;
@@ -66,8 +67,8 @@ public class MessageView extends RCFrameLayout<ChatRoomKitConfig> {
     }
 
     @Override
-    public ChatRoomKitConfig getKitConfig() {
-        return RCChatRoomKit.getInstance().getKitConfig();
+    public RCKitInit<ChatRoomKitConfig> getKitInstance() {
+        return RCChatRoomKit.getInstance();
     }
 
     @Override

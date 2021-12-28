@@ -64,7 +64,7 @@ public class Wrapper implements IWrap {
     }
 
     public boolean ok() {
-        return code == 10000;
+        return code == 10000 || code == 0;
     }
 
     @Nullable

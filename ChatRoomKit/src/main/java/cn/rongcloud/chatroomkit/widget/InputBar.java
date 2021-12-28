@@ -16,6 +16,7 @@ import cn.rongcloud.chatroomkit.RCChatRoomKit;
 import cn.rongcloud.chatroomkit.bean.ChatRoomKitConfig;
 import cn.rongcloud.chatroomkit.bean.InputBarConfig;
 import cn.rongcloud.corekit.base.RCLinearLayout;
+import cn.rongcloud.corekit.core.RCKitInit;
 import cn.rongcloud.corekit.utils.SoftKeyboardUtils;
 import cn.rongcloud.corekit.utils.UiUtils;
 import cn.rongcloud.corekit.utils.VMLog;
@@ -51,8 +52,8 @@ public class InputBar extends RCLinearLayout<ChatRoomKitConfig> {
     }
 
     @Override
-    public ChatRoomKitConfig getKitConfig() {
-        return RCChatRoomKit.getInstance().getKitConfig();
+    public RCKitInit<ChatRoomKitConfig> getKitInstance() {
+        return RCChatRoomKit.getInstance();
     }
 
     @Override

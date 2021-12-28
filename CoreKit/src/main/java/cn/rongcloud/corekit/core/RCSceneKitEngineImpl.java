@@ -1,6 +1,7 @@
 package cn.rongcloud.corekit.core;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.zeroturnaround.zip.ZipUtil;
@@ -8,20 +9,26 @@ import org.zeroturnaround.zip.ZipUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import cn.rongcloud.corekit.api.IRCSceneKitEngine;
 import cn.rongcloud.corekit.bean.KitInfo;
 import cn.rongcloud.corekit.net.oklib.OkApi;
 import cn.rongcloud.corekit.net.oklib.WrapperCallBack;
 import cn.rongcloud.corekit.net.oklib.api.callback.FileIOCallBack;
+import cn.rongcloud.corekit.net.oklib.interceptor.RetryInterceptor;
 import cn.rongcloud.corekit.net.oklib.wrapper.Wrapper;
 import cn.rongcloud.corekit.utils.FileUtils;
 import cn.rongcloud.corekit.utils.GsonUtil;
 import cn.rongcloud.corekit.utils.HandlerUtils;
 import cn.rongcloud.corekit.utils.ListUtil;
 import cn.rongcloud.corekit.utils.VMLog;
+import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
 /**
@@ -32,29 +39,12 @@ public class RCSceneKitEngineImpl implements IRCSceneKitEngine {
     private final static String TAG = RCSceneKitEngineImpl.class.getSimpleName();
 
     private final static Holder holder = new Holder();
-    private final List<RCKitInit> coreKitInitList = new ArrayList<>();
+    private final Map<String, RCKitInit<?>> kitInitMap = new HashMap<>();
     private Context mContext;
     private String mAppKey;
 
     public static IRCSceneKitEngine getInstance() {
         return holder.instance;
-    }
-
-    /**
-     * 注册Kit模块
-     *
-     * @param kit 要注册的kit
-     */
-    @Override
-    public void installKit(RCKitInit... kit) {
-        if (kit == null) {
-            return;
-        }
-        for (RCKitInit kitInit : kit) {
-            if (!coreKitInitList.contains(kitInit)) {
-                coreKitInitList.add(kitInit);
-            }
-        }
     }
 
     /**
@@ -67,7 +57,6 @@ public class RCSceneKitEngineImpl implements IRCSceneKitEngine {
     public void initWithAppKey(Context context, String appKey) {
         mContext = context.getApplicationContext();
         mAppKey = appKey;
-        initSubKit();
         createRootFolder();
         loadAllKitInfo();
     }
@@ -88,43 +77,98 @@ public class RCSceneKitEngineImpl implements IRCSceneKitEngine {
     }
 
     /**
-     * 初始化子模块Kit
-     */
-    private void initSubKit() {
-        for (RCKitInit k : coreKitInitList) {
-            k.init(mContext);
-        }
-    }
-
-    /**
      * 下载所有kit的版本信息
      */
     private void loadAllKitInfo() {
+        OkApi.config(new OkHttpClient.Builder().addInterceptor(new RetryInterceptor(2)));
         OkApi.get(CoreKitConstant.Api.KIT_INFO_LIST, null, new WrapperCallBack() {
             @Override
             public void onResult(Wrapper result) {
                 VMLog.d(TAG, "kit info load success");
-                List<KitInfo> kitInfoList = result.getList(KitInfo.class);
-                if (ListUtil.isNotEmpty(kitInfoList)) {
-                    VMLog.d(TAG, "your kit size :" + kitInfoList.size());
-                    for (KitInfo kitInfo : kitInfoList) {
-                        checkKitNeedUpdate(kitInfo);
+                if (result.ok()) {
+                    List<KitInfo> kitInfoList = result.getList(KitInfo.class);
+                    updateAllKitInfo(GsonUtil.obj2Json(kitInfoList));
+                    if (ListUtil.isNotEmpty(kitInfoList)) {
+                        VMLog.d(TAG, "your kit size :" + kitInfoList.size());
+                        for (KitInfo kitInfo : kitInfoList) {
+                            initSubKit(kitInfo);
+                            checkKitNeedUpdate(kitInfo);
+                        }
                     }
+                } else {
+                    loadLocalAllKitInfo();
                 }
             }
 
             @Override
             public void onError(int code, String msg) {
                 super.onError(code, msg);
+                loadLocalAllKitInfo();
                 VMLog.e(TAG, "kit info load failed :" + code + "->" + msg);
             }
         });
     }
 
     /**
-     * 检查kit是否需要更新
+     * 更新根目录下RCSceneKit.json文件
+     *
+     * @param allKitInfoJson json
+     */
+    private void updateAllKitInfo(String allKitInfoJson) {
+        if (allKitInfoJson == null) {
+            allKitInfoJson = "";
+        }
+        FileUtils.writeString(CoreKitConstant.getRootConfigName(), allKitInfoJson);
+    }
+
+    /**
+     * 加载根目录下RCSceneKit.json文件
+     */
+    private void loadLocalAllKitInfo() {
+        File file = new File(CoreKitConstant.getRootConfigName());
+        if (file.exists() && file.isFile()) {
+            String allKitInfo = FileUtils.getStringFromFile(file);
+            if (!TextUtils.isEmpty(allKitInfo)) {
+                List<KitInfo> kitInfoList = GsonUtil.json2List(allKitInfo, KitInfo.class);
+                if (ListUtil.isNotEmpty(kitInfoList)) {
+                    for (KitInfo kitInfo : kitInfoList) {
+                        initSubKit(kitInfo);
+                        checkKitNeedUpdate(kitInfo);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 初始化子模块
      *
      * @param kitInfo
+     */
+    private void initSubKit(KitInfo kitInfo) {
+        try {
+            if (kitInfo == null || TextUtils.isEmpty(kitInfo.getName())) {
+                VMLog.e(TAG, "kitInfo is null or kitInfo.name is null");
+                return;
+            }
+            Class<?> c = Class.forName(String.format("cn.rongcloud.%s.RC%s", kitInfo.getName().toLowerCase(Locale.ROOT), kitInfo.getName()));
+            Method m = c.getDeclaredMethod("getInstance");
+            Object o = m.invoke(null);
+            if (o instanceof RCKitInit) {
+                RCKitInit<?> kitInit = (RCKitInit<?>) o;
+                kitInitMap.put(kitInfo.getName(), kitInit);
+                kitInit.setUseLocal(true);
+            }
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+            VMLog.e(TAG, e.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * 检查kit是否需要更新
+     *
+     * @param kitInfo KitInfo
      */
     private void checkKitNeedUpdate(KitInfo kitInfo) {
         if (kitInfo == null) {
@@ -146,7 +190,7 @@ public class RCSceneKitEngineImpl implements IRCSceneKitEngine {
     /**
      * 下载压缩包
      *
-     * @param kitInfo
+     * @param kitInfo KitInfo
      */
     private void loadKitZip(KitInfo kitInfo) {
         if (kitInfo == null) {
@@ -178,8 +222,8 @@ public class RCSceneKitEngineImpl implements IRCSceneKitEngine {
                     ZipUtil.unpack(file, kitFile);
                     // 更新kitInfo信息
                     updateKitInfo(kitInfo);
-                    // 刷新每个kit的kitConfig
-                    refreshKitConfig();
+                    // 刷新指定kit的kitConfig
+                    refreshKitConfig(kitInfo);
                 }
                 return file;
             }
@@ -204,22 +248,20 @@ public class RCSceneKitEngineImpl implements IRCSceneKitEngine {
     /**
      * 更新KitInfo信息
      *
-     * @param kitInfo
+     * @param kitInfo KitInfo
      */
     private void updateKitInfo(KitInfo kitInfo) {
         FileUtils.writeString(CoreKitConstant.getKitInfoPath(kitInfo.getName()), GsonUtil.obj2Json(kitInfo));
     }
 
     /**
-     * 刷新每个kit的配置信息
+     * 刷新指定kit的配置信息
      */
-    private void refreshKitConfig() {
-        HandlerUtils.mainThreadPost(new Runnable() {
-            @Override
-            public void run() {
-                for (RCKitInit kitInit : coreKitInitList) {
-                    kitInit.refreshKitConfig();
-                }
+    private void refreshKitConfig(KitInfo kitInfo) {
+        HandlerUtils.mainThreadPost(() -> {
+            RCKitInit<?> kitInit = kitInitMap.get(kitInfo.getName());
+            if (kitInit != null) {
+                kitInit.setNeedRefresh();
             }
         });
     }

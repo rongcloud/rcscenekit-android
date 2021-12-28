@@ -20,6 +20,7 @@ import cn.rongcloud.corekit.base.RCBottomSheetDialog;
 import cn.rongcloud.corekit.bean.RCAttributes;
 import cn.rongcloud.corekit.bean.RCInsets;
 import cn.rongcloud.corekit.bean.RCSize;
+import cn.rongcloud.corekit.core.RCKitInit;
 import cn.rongcloud.corekit.utils.UiUtils;
 import cn.rongcloud.corekit.widget.RealtimeBlurView;
 import cn.rongcloud.musiccontrolkit.bean.MusicControlKitConfig;
@@ -52,9 +53,10 @@ public class MusicControlDialog extends RCBottomSheetDialog<MusicControlKitConfi
         return R.layout.rckit_dialog_music_control;
     }
 
+
     @Override
-    public MusicControlKitConfig getKitConfig() {
-        return RCMusicControlKit.getInstance().getKitConfig();
+    public RCKitInit<MusicControlKitConfig> getKitInstance() {
+        return RCMusicControlKit.getInstance();
     }
 
     @Override

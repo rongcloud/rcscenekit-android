@@ -31,14 +31,29 @@ public abstract class RCConstraintLayout<T> extends ConstraintLayout implements 
         super(context, attrs, defStyleAttr, defStyleRes);
         LayoutInflater.from(context).inflate(setLayoutId(), this);
         initView();
-        checkData(getKitConfig());
+        check();
     }
 
-    private void checkData(T t) {
+    @Override
+    public void check() {
+        if (getKitInstance() == null) {
+            VMLog.e(getClass().getSimpleName(), "getKitInstance is null");
+            return;
+        }
+        T t = getKitInstance().getKitConfig();
         if (t == null) {
-            VMLog.e("RCConstraintLayout", "initData failed: t is null");
+            VMLog.e(getClass().getSimpleName(), "getKitConfig is null");
             return;
         }
         initConfig(t);
+        getKitInstance().incrementUse();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        if (getKitInstance() != null) {
+            getKitInstance().decrementUse();
+        }
+        super.onDetachedFromWindow();
     }
 }

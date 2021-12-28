@@ -15,6 +15,7 @@ import cn.rongcloud.chatroomkit.bean.ActionButton;
 import cn.rongcloud.chatroomkit.bean.ChatRoomKitConfig;
 import cn.rongcloud.chatroomkit.manager.AudioRecordManager;
 import cn.rongcloud.corekit.base.RCLinearLayout;
+import cn.rongcloud.corekit.core.RCKitInit;
 
 /**
  * Created by gyn on 2021/11/17
@@ -40,8 +41,8 @@ public class ChatRoomView extends RCLinearLayout<ChatRoomKitConfig> {
     }
 
     @Override
-    public ChatRoomKitConfig getKitConfig() {
-        return RCChatRoomKit.getInstance().getKitConfig();
+    public RCKitInit<ChatRoomKitConfig> getKitInstance() {
+        return RCChatRoomKit.getInstance();
     }
 
     @Override

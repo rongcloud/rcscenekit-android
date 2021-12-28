@@ -4,7 +4,10 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import java.io.File;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import cn.rongcloud.corekit.api.RCSceneKitEngine;
 import cn.rongcloud.corekit.bean.KitInfo;
 import cn.rongcloud.corekit.utils.FileUtils;
 import cn.rongcloud.corekit.utils.GsonUtil;
@@ -17,8 +20,17 @@ import cn.rongcloud.corekit.utils.VMLog;
 public abstract class RCKitInit<T> {
     private static final String TAG = RCKitInit.class.getSimpleName();
     private T kitConfig;
-    private Context context;
     private String assetsPath;
+    /**
+     * 这个用来存储 KitConfig 被读取的次数，用来决定更新KitConfig的时机
+     * 如果还没被使用useCount=0，从网络下载下来的数据可以直接刷新内存里的KitConfig
+     * 如果已经被使用useCount>0，当view销毁useCount-1,直到没有view在使用当前KitConfig且有新配置待更新，则主动刷新内存
+     * 每次初始化view后读取config时useCount+1
+     */
+    private final AtomicInteger useCount = new AtomicInteger(0);
+    private final AtomicBoolean needRefresh = new AtomicBoolean(false);
+
+    private boolean useLocal = false;
 
     /**
      * 初始化 kit
@@ -26,7 +38,6 @@ public abstract class RCKitInit<T> {
      * @param context
      */
     public void init(Context context) {
-        this.context = context;
         getKitConfig();
     }
 
@@ -36,9 +47,6 @@ public abstract class RCKitInit<T> {
      * @return 返回 Kit 配置信息
      */
     public T getKitConfig() {
-        if (context == null) {
-            throw new RuntimeException("Please add super.init(context) in " + getClass().getSimpleName());
-        }
         if (kitConfig != null) {
             return kitConfig;
         } else {
@@ -52,8 +60,10 @@ public abstract class RCKitInit<T> {
      * @return Kit 配置信息
      */
     public T refreshKitConfig() {
-        assetsPath = null;
-        kitConfig = getLocalKitConfig();
+        if (useLocal) {
+            assetsPath = null;
+            kitConfig = getLocalKitConfig();
+        }
         if (kitConfig == null) {
             kitConfig = getDefaultKitConfig();
         }
@@ -66,14 +76,11 @@ public abstract class RCKitInit<T> {
      * @return kit 配置信息
      */
     private T getDefaultKitConfig() {
-        if (context == null) {
-            throw new RuntimeException("Please add super.init(context) in " + getClass().getSimpleName());
-        }
         String kitConfigName = getKitConfigName();
         if (TextUtils.isEmpty(kitConfigName)) {
             throw new RuntimeException("Please return KitConfigName in " + getClass().getSimpleName());
         }
-        String json = FileUtils.getStringFromAssets(context, getKitConfigName() + ".json");
+        String json = FileUtils.getStringFromAssets(RCSceneKitEngine.getInstance().getContext(), getKitConfigName() + ".json");
         if (TextUtils.isEmpty(json)) {
             throw new RuntimeException("Please add " + kitConfigName + ".json in your assets");
         }
@@ -140,5 +147,50 @@ public abstract class RCKitInit<T> {
      */
     public String getAssetsPath() {
         return assetsPath;
+    }
+
+    /**
+     * 使用+1
+     */
+    public void incrementUse() {
+        int count = useCount.incrementAndGet();
+        VMLog.d(TAG, "increment use count is " + count);
+    }
+
+    /**
+     * 使用-1
+     */
+    public void decrementUse() {
+        int count = useCount.decrementAndGet();
+        VMLog.d(TAG, "decrement use count is " + count);
+        checkRefresh();
+    }
+
+    /**
+     * 设置需要刷新
+     */
+    public void setNeedRefresh() {
+        needRefresh.set(true);
+        VMLog.d(TAG, "set need refresh");
+        checkRefresh();
+    }
+
+    /**
+     * 没有使用者且需要更新时，更新
+     */
+    private void checkRefresh() {
+        if (useCount.get() == 0 && needRefresh.get()) {
+            needRefresh.set(false);
+            refreshKitConfig();
+        }
+    }
+
+    /**
+     * 是否使用本地sd卡上缓存的版本
+     *
+     * @param useLocal true使用，false使用默认配置
+     */
+    public void setUseLocal(boolean useLocal) {
+        this.useLocal = useLocal;
     }
 }

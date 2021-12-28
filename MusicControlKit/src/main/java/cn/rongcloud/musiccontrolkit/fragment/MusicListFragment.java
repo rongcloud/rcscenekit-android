@@ -26,6 +26,7 @@ import java.util.List;
 
 import cn.rongcloud.corekit.api.DataCallback;
 import cn.rongcloud.corekit.base.RCFragment;
+import cn.rongcloud.corekit.core.RCKitInit;
 import cn.rongcloud.corekit.utils.GlideUtil;
 import cn.rongcloud.corekit.utils.ListUtil;
 import cn.rongcloud.corekit.utils.UiUtils;
@@ -71,8 +72,8 @@ public class MusicListFragment extends RCFragment<MusicControlKitConfig> {
     }
 
     @Override
-    public MusicControlKitConfig getKitConfig() {
-        return RCMusicControlKit.getInstance().getKitConfig();
+    public RCKitInit<MusicControlKitConfig> getKitInstance() {
+        return RCMusicControlKit.getInstance();
     }
 
     @Override

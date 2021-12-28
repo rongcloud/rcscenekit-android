@@ -19,10 +19,15 @@ public class RCChatRoomKit extends RCKitInit<ChatRoomKitConfig> {
     private static final String TAG = RCChatRoomKit.class.getSimpleName();
 
     private final static Holder holder = new Holder();
+
     private String voicePath;
 
     public static RCChatRoomKit getInstance() {
         return holder.instance;
+    }
+
+    private static class Holder {
+        private RCChatRoomKit instance = new RCChatRoomKit();
     }
 
     @Override
@@ -66,7 +71,5 @@ public class RCChatRoomKit extends RCKitInit<ChatRoomKitConfig> {
         FileUtils.delAllFile(voicePath);
     }
 
-    private static class Holder {
-        private RCChatRoomKit instance = new RCChatRoomKit();
-    }
+
 }

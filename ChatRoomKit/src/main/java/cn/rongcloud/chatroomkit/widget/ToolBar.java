@@ -28,6 +28,7 @@ import cn.rongcloud.chatroomkit.manager.AudioPlayManager;
 import cn.rongcloud.chatroomkit.manager.AudioRecordManager;
 import cn.rongcloud.chatroomkit.utils.PermissionCheckUtil;
 import cn.rongcloud.corekit.base.RCConstraintLayout;
+import cn.rongcloud.corekit.core.RCKitInit;
 import cn.rongcloud.corekit.utils.GlideUtil;
 import cn.rongcloud.corekit.utils.UiUtils;
 import cn.rongcloud.corekit.utils.VMLog;
@@ -62,8 +63,8 @@ public class ToolBar extends RCConstraintLayout<ChatRoomKitConfig> {
     }
 
     @Override
-    public ChatRoomKitConfig getKitConfig() {
-        return RCChatRoomKit.getInstance().getKitConfig();
+    public RCKitInit<ChatRoomKitConfig> getKitInstance() {
+        return RCChatRoomKit.getInstance();
     }
 
     @Override

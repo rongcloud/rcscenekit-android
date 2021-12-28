@@ -2,10 +2,8 @@ package cn.rongcloud.kitdemo;
 
 import android.app.Application;
 
-import cn.rongcloud.chatroomkit.RCChatRoomKit;
 import cn.rongcloud.corekit.api.RCSceneKitEngine;
 import cn.rongcloud.corekit.utils.VMLog;
-import cn.rongcloud.musiccontrolkit.RCMusicControlKit;
 import cn.rongcloud.voiceroom.api.RCVoiceRoomEngine;
 import cn.rongcloud.voiceroom.api.callback.RCVoiceInitCallback;
 
@@ -21,8 +19,6 @@ public class MyApplication extends Application {
         super.onCreate();
         app = this;
         long millis = System.currentTimeMillis();
-        // 注册使用的 kit，可以传入多个 Kit
-        RCSceneKitEngine.getInstance().installKit(RCChatRoomKit.getInstance(), RCMusicControlKit.getInstance());
         // 初始化 Kit，优先根据 appkey 从远端下载配置，不成功采用默认配置
         RCSceneKitEngine.getInstance().initWithAppKey(this, "appkey");
         VMLog.e(TAG, "init kit cost time: " + (System.currentTimeMillis() - millis));

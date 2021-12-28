@@ -64,15 +64,30 @@ public abstract class RCBottomSheetDialog<T> extends BottomSheetDialogFragment i
         super.onViewCreated(view, savedInstanceState);
         initView();
         initListener();
-        checkData(getKitConfig());
+        check();
     }
 
-    private void checkData(T t) {
+    @Override
+    public void check() {
+        if (getKitInstance() == null) {
+            VMLog.e(getClass().getSimpleName(), "getKitInstance is null");
+            return;
+        }
+        T t = getKitInstance().getKitConfig();
         if (t == null) {
-            VMLog.e("RCConstraintLayout", "initData failed: t is null");
+            VMLog.e(getClass().getSimpleName(), "getKitConfig is null");
             return;
         }
         initConfig(t);
+        getKitInstance().incrementUse();
+    }
+
+    @Override
+    public void onDetach() {
+        if (getKitInstance() != null) {
+            getKitInstance().decrementUse();
+        }
+        super.onDetach();
     }
 
     @Override
