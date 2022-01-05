@@ -252,7 +252,7 @@ public class UiUtils {
             return;
         }
         StateListDrawable drawable = new StateListDrawable();
-        GlideUtil.loadBitmap(view.getContext(), selector.getSelect().getUrl(assetsPath), new CustomTarget<Drawable>() {
+        GlideUtil.loadBitmap(view.getContext(), selector.getSelected().getUrl(assetsPath), new CustomTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                 drawable.addState(new int[]{android.R.attr.state_selected}, resource);
@@ -302,7 +302,7 @@ public class UiUtils {
             return;
         }
         StateListDrawable drawable = new StateListDrawable();
-        GlideUtil.loadBitmap(view.getContext(), selector.getSelect().getUrl(assetsPath), new CustomTarget<Drawable>() {
+        GlideUtil.loadBitmap(view.getContext(), selector.getSelected().getUrl(assetsPath), new CustomTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                 drawable.addState(new int[]{android.R.attr.state_selected}, resource);

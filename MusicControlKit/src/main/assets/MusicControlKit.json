@@ -74,7 +74,7 @@
                 "local": "rckit_tab_music_add_normal",
                 "remote": ""
               },
-              "select": {
+              "selected": {
                 "local": "rckit_tab_music_add_select",
                 "remote": ""
               }
@@ -88,7 +88,7 @@
                 "local": "rckit_tab_music_control_normal",
                 "remote": ""
               },
-              "select": {
+              "selected": {
                 "local": "rckit_tab_music_control_select",
                 "remote": ""
               }
@@ -102,7 +102,7 @@
                 "local": "rckit_tab_music_effect_normal",
                 "remote": ""
               },
-              "select": {
+              "selected": {
                 "local": "rckit_tab_music_effect_select",
                 "remote": ""
               }
@@ -591,7 +591,7 @@
                     "blue": 255,
                     "alpha": 1
                   },
-                  "select": {
+                  "selected": {
                     "red": 239,
                     "green": 73,
                     "blue": 154,
@@ -797,7 +797,7 @@
                     "local": "rckit_ic_music_add.png",
                     "remote": ""
                   },
-                  "select": {
+                  "selected": {
                     "local": "rckit_ic_music_added.png",
                     "remote": ""
                   }
@@ -972,7 +972,7 @@
                   "bottomRight": 27
                 }
               },
-              "select": {
+              "selected": {
                 "shape": 0,
                 "color": {
                   "red": 255,
@@ -1006,7 +1006,7 @@
                 "blue": 255,
                 "alpha": 0.7
               },
-              "select": {
+              "selected": {
                 "red": 255,
                 "green": 255,
                 "blue": 255,

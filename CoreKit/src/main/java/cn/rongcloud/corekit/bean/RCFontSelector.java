@@ -11,15 +11,15 @@ import java.io.Serializable;
 public class RCFontSelector implements Serializable {
     @SerializedName("normal")
     private RCFont normal;
-    @SerializedName("select")
-    private RCFont select;
+    @SerializedName("selected")
+    private RCFont selected;
 
     public RCFont getNormal() {
         return normal;
     }
 
-    public RCFont getSelect() {
-        return select;
+    public RCFont getSelected() {
+        return selected;
     }
 
 }

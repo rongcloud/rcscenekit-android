@@ -16,21 +16,21 @@ public class RCDrawableSelector implements Serializable {
     private transient StateListDrawable drawable;
     @SerializedName("normal")
     private RCDrawable normal;
-    @SerializedName("select")
-    private RCDrawable select;
+    @SerializedName("selected")
+    private RCDrawable selected;
 
     public RCDrawable getNormal() {
         return normal;
     }
 
-    public RCDrawable getSelect() {
-        return select;
+    public RCDrawable getSelected() {
+        return selected;
     }
 
 
     public StateListDrawable getDrawable() {
         drawable = new StateListDrawable();
-        drawable.addState(new int[]{android.R.attr.state_selected}, UiUtils.createDrawable(select));
+        drawable.addState(new int[]{android.R.attr.state_selected}, UiUtils.createDrawable(selected));
         drawable.addState(new int[]{}, UiUtils.createDrawable(normal));
         return drawable;
     }

@@ -16,8 +16,8 @@ import java.io.Serializable;
 public class RCColorSelector implements Serializable {
     @SerializedName("normal")
     private RCColor normal;
-    @SerializedName("select")
-    private RCColor select;
+    @SerializedName("selected")
+    private RCColor selected;
 
     private transient StateListDrawable drawable;
 
@@ -28,21 +28,21 @@ public class RCColorSelector implements Serializable {
 
     public RCColorSelector(RCColor normal, RCColor select) {
         this.normal = normal;
-        this.select = select;
+        this.selected = select;
     }
 
     public RCColor getNormal() {
         return normal;
     }
 
-    public RCColor getSelect() {
-        return select;
+    public RCColor getSelected() {
+        return selected;
     }
 
     public StateListDrawable getDrawable() {
         if (drawable == null) {
             drawable = new StateListDrawable();
-            drawable.addState(new int[]{android.R.attr.state_selected}, new ColorDrawable(select.getColor()));
+            drawable.addState(new int[]{android.R.attr.state_selected}, new ColorDrawable(selected.getColor()));
             drawable.addState(new int[]{}, new ColorDrawable(normal.getColor()));
         }
         return drawable;
@@ -50,7 +50,7 @@ public class RCColorSelector implements Serializable {
 
     public ColorStateList getColor() {
         if (color == null) {
-            color = new ColorStateList(new int[][]{new int[]{android.R.attr.state_selected}, new int[]{}}, new int[]{getSelect().getColor(), getNormal().getColor()});
+            color = new ColorStateList(new int[][]{new int[]{android.R.attr.state_selected}, new int[]{}}, new int[]{getSelected().getColor(), getNormal().getColor()});
         }
         return color;
     }

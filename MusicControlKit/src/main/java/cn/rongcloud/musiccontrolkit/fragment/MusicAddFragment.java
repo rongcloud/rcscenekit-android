@@ -157,7 +157,7 @@ public class MusicAddFragment extends RCFragment<MusicControlKitConfig> {
                 tabCategory.setSelectedTabIndicatorHeight(categorySelectorConfig.getShowIndicator() ? categorySelectorConfig.getIndicatorSize().getHeightPx() : 0);
                 tabCategory.setSelectedTabIndicatorColor(categorySelectorConfig.getIndicatorColor().getColor());
                 UiUtils.setViewSize(tabCategory, categorySelectorConfig.getSize());
-                tabCategory.setTabTextColors(categorySelectorConfig.getLabelAttributes().getColorSelector().getNormal().getColor(), categorySelectorConfig.getLabelAttributes().getColorSelector().getSelect().getColor());
+                tabCategory.setTabTextColors(categorySelectorConfig.getLabelAttributes().getColorSelector().getNormal().getColor(), categorySelectorConfig.getLabelAttributes().getColorSelector().getSelected().getColor());
             }
         }
     }

@@ -14,25 +14,25 @@ import java.io.Serializable;
 public class RCImageSelector implements Serializable {
     @SerializedName("normal")
     private RCImage normal;
-    @SerializedName("select")
-    private RCImage select;
+    @SerializedName("selected")
+    private RCImage selected;
 
     private transient StateListDrawable drawable;
 
     public RCImageSelector() {
     }
 
-    public RCImageSelector(RCImage normal, RCImage select) {
+    public RCImageSelector(RCImage normal, RCImage selected) {
         this.normal = normal;
-        this.select = select;
+        this.selected = selected;
     }
 
     public RCImage getNormal() {
         return normal;
     }
 
-    public RCImage getSelect() {
-        return select;
+    public RCImage getSelected() {
+        return selected;
     }
 
     public StateListDrawable getDrawable() {
