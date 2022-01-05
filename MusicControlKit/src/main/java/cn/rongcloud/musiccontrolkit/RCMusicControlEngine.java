@@ -380,6 +380,12 @@ public class RCMusicControlEngine extends AbsMusicEngine {
 //            byte[] pic = mmr.getEmbeddedPicture();
             String path = RealPathFromUriUtils.getRealPathFromUri(context, uri);
 //            VMLog.d(TAG, "path:" + path);
+            // 如果取不到音乐名称就取文件名
+            if (TextUtils.isEmpty(title) && !TextUtils.isEmpty(path)) {
+                File file = new File(path);
+                String name = file.getName();
+                title = name.substring(0, name.lastIndexOf("."));
+            }
 
             Music music = new Music();
             music.setMusicId(UUID.randomUUID().toString());
