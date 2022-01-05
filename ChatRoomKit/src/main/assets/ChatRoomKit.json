@@ -58,6 +58,14 @@
           "alpha": 0.7
         }
       },
+      "defaultBubbleTextFont": {
+        "name": "气泡文字大小",
+        "type": "RCFont",
+        "value": {
+          "size": 12,
+          "weight": 400
+        }
+      },
       "bubbleSpace": {
         "name": "气泡间距",
         "type": "RCNumber",

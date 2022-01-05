@@ -222,6 +222,7 @@ public class MessageView extends RCFrameLayout<ChatRoomKitConfig> {
                 UiUtils.setPadding(tvMessage, messageViewConfig.getBubbleInsets());
                 setBackground(messageViewConfig.getDefaultBubbleColor(), messageViewConfig.getDefaultBubbleCorner());
                 setMessageTextColor(messageViewConfig.getDefaultBubbleTextColor());
+                tvMessage.setTextSize(messageViewConfig.getDefaultBubbleTextFont().getSize());
             }
         }
 
@@ -277,6 +278,7 @@ public class MessageView extends RCFrameLayout<ChatRoomKitConfig> {
                 setMessageTextColor(messageViewConfig.getDefaultBubbleTextColor());
                 ivVoice.setImageTintList(ColorStateList.valueOf(messageViewConfig.getVoiceIconColor().getColor()));
                 tvDuration.setTextColor(messageViewConfig.getVoiceIconColor().getColor());
+                tvMessage.setTextSize(messageViewConfig.getDefaultBubbleTextFont().getSize());
             }
         }
 

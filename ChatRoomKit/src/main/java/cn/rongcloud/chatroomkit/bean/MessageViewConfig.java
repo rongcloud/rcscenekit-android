@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 import cn.rongcloud.corekit.bean.RCColor;
 import cn.rongcloud.corekit.bean.RCCorner;
+import cn.rongcloud.corekit.bean.RCFont;
 import cn.rongcloud.corekit.bean.RCInsets;
 import cn.rongcloud.corekit.bean.RCNode;
 
@@ -28,6 +29,8 @@ public class MessageViewConfig implements Serializable {
     private RCNode<Integer> bubbleSpace;
     @SerializedName("defaultBubbleTextColor")
     private RCNode<RCColor> defaultBubbleTextColor;
+    @SerializedName("defaultBubbleTextFont")
+    private RCNode<RCFont> defaultBubbleTextFont;
     @SerializedName("voiceIconColor")
     private RCNode<RCColor> voiceIconColor;
 
@@ -61,5 +64,9 @@ public class MessageViewConfig implements Serializable {
 
     public RCColor getVoiceIconColor() {
         return voiceIconColor.getValue();
+    }
+
+    public RCFont getDefaultBubbleTextFont() {
+        return defaultBubbleTextFont.getValue();
     }
 }
