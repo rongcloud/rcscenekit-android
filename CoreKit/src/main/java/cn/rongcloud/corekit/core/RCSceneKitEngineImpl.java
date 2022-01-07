@@ -80,7 +80,11 @@ public class RCSceneKitEngineImpl implements IRCSceneKitEngine {
      * 下载所有kit的版本信息
      */
     private void loadAllKitInfo() {
+        if (TextUtils.isEmpty(mAppKey)) {
+            return;
+        }
         OkApi.config(new OkHttpClient.Builder().addInterceptor(new RetryInterceptor(2)));
+        // TODO 替换成正式地址
         OkApi.get(CoreKitConstant.Api.KIT_INFO_LIST, null, new WrapperCallBack() {
             @Override
             public void onResult(Wrapper result) {
@@ -160,8 +164,7 @@ public class RCSceneKitEngineImpl implements IRCSceneKitEngine {
                 kitInit.setUseLocal(true);
             }
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-            VMLog.e(TAG, e.getLocalizedMessage());
+            VMLog.e(TAG, kitInfo.getName() + ": " + e.getLocalizedMessage());
         }
     }
 
