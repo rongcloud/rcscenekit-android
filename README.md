@@ -2,6 +2,9 @@
 
 ## Kit项目结构
 
+该项目为demo展示项目，其中 `rccorekit-android` `rcchatroomkit-android` `rcmusiccontrolkit-android`
+为submodule方式集成，拉取完项目后，请执行 `git submodule update --init --recursive` 拉取子项目
+
 - `app` ：各个Kit的demo展示，可直接运行体验Kit效果
 - `CoreKit` ：Kit的基础库，主要负责初始化Kit，网络加载Json文件或本地 Json 文件等，优先下载远端配置，远端拉取失败或者未配置 AppKey 的情况下采用本地配置。
 - `ChatRoomKit` ：语聊房 Kit，封装了消息列表、底部工具栏、输入框等。
@@ -32,7 +35,7 @@ public class MyApplication extends Application {
 
 ## ChatRoomKit 文档及示例
 
-### [文档](./ChatRoomKit/README.md)
+### [文档](https://github.com/rongcloud/rcchatroomkit-android)
 
 ### 示例
 
@@ -40,7 +43,7 @@ public class MyApplication extends Application {
 
 ## MusicControlKit 文档及示例
 
-### [文档](./MusicControlKit/README.md)
+### [文档](https://github.com/rongcloud/rcmusiccontrolkit-android)
 
 ### 示例
 

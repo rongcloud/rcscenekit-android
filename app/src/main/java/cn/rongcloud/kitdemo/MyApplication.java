@@ -20,7 +20,7 @@ public class MyApplication extends Application {
         app = this;
         long millis = System.currentTimeMillis();
         // 初始化 Kit，优先根据 appkey 从远端下载配置，不成功采用默认配置
-        RCSceneKitEngine.getInstance().initWithAppKey(this, "appkey");
+        RCSceneKitEngine.getInstance().initWithAppKey(this, null);
         VMLog.e(TAG, "init kit cost time: " + (System.currentTimeMillis() - millis));
         // demo 的依赖初始化
         // 初始化语聊房SDK
