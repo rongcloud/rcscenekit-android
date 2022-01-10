@@ -2,30 +2,30 @@ package cn.rongcloud.chatroomkit.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.vanniktech.emoji.EmojiEditText;
 import com.vanniktech.emoji.EmojiPopup;
 
 import cn.rongcloud.chatroomkit.R;
-import cn.rongcloud.chatroomkit.bean.InputBarBean;
-import cn.rongcloud.corekit.api.RCSceneKitEngine;
+import cn.rongcloud.chatroomkit.RCChatRoomKit;
+import cn.rongcloud.chatroomkit.bean.ChatRoomKitConfig;
+import cn.rongcloud.chatroomkit.bean.InputBarConfig;
+import cn.rongcloud.corekit.base.RCLinearLayout;
+import cn.rongcloud.corekit.core.RCKitInit;
 import cn.rongcloud.corekit.utils.SoftKeyboardUtils;
 import cn.rongcloud.corekit.utils.UiUtils;
 import cn.rongcloud.corekit.utils.VMLog;
 
 
 /**
- * Created by hugo on 2021/11/12
+ * Created by gyn on 2021/11/12
  */
-public class InputBar extends LinearLayout {
+public class InputBar extends RCLinearLayout<ChatRoomKitConfig> {
     private final static String TAG = InputBar.class.getSimpleName();
     private EmojiEditText etInput;
     private Space space1;
@@ -38,21 +38,26 @@ public class InputBar extends LinearLayout {
      */
     private EmojiPopup mEmojiPopup;
 
-    public InputBar(@NonNull Context context) {
-        this(context, null);
+    public InputBar(Context context) {
+        super(context);
     }
 
-    public InputBar(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
+    public InputBar(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
     }
 
-    public InputBar(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        LayoutInflater.from(context).inflate(R.layout.rckit_inputbar, this);
-        initView();
+    @Override
+    public int setLayoutId() {
+        return R.layout.rckit_inputbar;
     }
 
-    private void initView() {
+    @Override
+    public RCKitInit<ChatRoomKitConfig> getKitInstance() {
+        return RCChatRoomKit.getInstance();
+    }
+
+    @Override
+    public void initView() {
         // init view
         this.setOrientation(HORIZONTAL);
         etInput = (EmojiEditText) findViewById(R.id.et_input);
@@ -61,25 +66,22 @@ public class InputBar extends LinearLayout {
         space2 = (Space) findViewById(R.id.space2);
         tvSend = (TextView) findViewById(R.id.tv_send);
 
-        InputBarBean inputBarBean = RCSceneKitEngine.getInstance().getKitConfig(InputBarBean.class);
-        if (inputBarBean == null) {
+    }
+
+    @Override
+    public void initConfig(ChatRoomKitConfig chatRoomKitConfig) {
+        InputBarConfig inputBarConfig = chatRoomKitConfig.getInputBar();
+        if (inputBarConfig == null) {
             VMLog.e(TAG, "initView failed : inputBarBean is null");
             return;
         }
         // parent
-        this.setBackgroundColor(inputBarBean.getBackgroundColor().getColor());
-        UiUtils.setPadding(this, inputBarBean.getContentInsets());
+        this.setBackgroundColor(inputBarConfig.getBackgroundColor().getColor());
+        UiUtils.setPadding(this, inputBarConfig.getContentInsets());
         // input
-        etInput.setBackground(UiUtils.createRectangleDrawable(inputBarBean.getInputBackgroundColor().getColor(), 0, 0, dp2px(inputBarBean.getInputCorner())));
-        UiUtils.setPadding(etInput, inputBarBean.getInputInsets());
-        etInput.setMinHeight(dp2px(inputBarBean.getInputMinHeight()));
-        etInput.setMaxHeight(dp2px(inputBarBean.getInputMaxHeight()));
-        etInput.setTextSize(inputBarBean.getInputTextSize());
-        etInput.setTextColor(inputBarBean.getInputTextColor().getColor());
-        etInput.setHint(inputBarBean.getInputHint());
-        etInput.setHintTextColor(inputBarBean.getInputHintColor().getColor());
+        UiUtils.setTextAttributes(etInput, inputBarConfig.getInputAttributes());
         // emoji
-        if (inputBarBean.getEmojiEnable()) {
+        if (inputBarConfig.getEmojiEnable()) {
             space1.setVisibility(VISIBLE);
             ivEmoji.setVisibility(VISIBLE);
         } else {
@@ -117,10 +119,6 @@ public class InputBar extends LinearLayout {
                 inputBarListener.onClickSend(message);
             }
         });
-    }
-
-    private int dp2px(int dp) {
-        return UiUtils.dp2px(getContext(), dp);
     }
 
     public void showInputBar() {

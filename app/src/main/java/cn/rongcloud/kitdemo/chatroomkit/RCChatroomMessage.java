@@ -16,14 +16,14 @@ import cn.rongcloud.chatroomkit.api.OnMessageContentClickListener;
 import cn.rongcloud.chatroomkit.bean.MessageItem;
 import cn.rongcloud.chatroomkit.utils.MessageContentUtils;
 import cn.rongcloud.chatroomkit.widget.CenterAlignImageSpan;
-import cn.rongcloud.corekit.bean.Argb;
-import cn.rongcloud.corekit.bean.Corner;
+import cn.rongcloud.corekit.bean.RCColor;
+import cn.rongcloud.corekit.bean.RCCorner;
 import cn.rongcloud.corekit.utils.UiUtils;
 import cn.rongcloud.kitdemo.MyApplication;
 import cn.rongcloud.kitdemo.R;
 
 /**
- * Created by hugo on 2021/11/19
+ * Created by gyn on 2021/11/19
  */
 public class RCChatroomMessage implements IRCChatroomMessage {
     /**
@@ -60,24 +60,24 @@ public class RCChatroomMessage implements IRCChatroomMessage {
      * @return 返回气泡背景颜色，返回 null 采用默认配置
      */
     @Override
-    public Argb bubbleColor() {
-        return new Argb(0.5f, 100, 100, 100);
+    public RCColor bubbleColor() {
+        return new RCColor(0.5f, 100, 100, 100);
     }
 
     /**
      * @return 返回气泡文字颜色，返回 null 采用默认配置
      */
     @Override
-    public Argb bubbleTextColor() {
-        return new Argb(0.7f, 255, 255, 255);
+    public RCColor bubbleTextColor() {
+        return new RCColor(0.7f, 255, 255, 255);
     }
 
     /**
      * @return 返回气泡圆角，返回 null 采用默认配置
      */
     @Override
-    public Corner bubbleCorner() {
-        return new Corner(0, 15, 15, 15);
+    public RCCorner bubbleCorner() {
+        return new RCCorner(0, 15, 15, 15);
     }
 
     /**
@@ -99,7 +99,7 @@ public class RCChatroomMessage implements IRCChatroomMessage {
             // 可以添加带icon的富文本
             SpannableString iconString = new SpannableString("  ");
             Drawable drawable = ContextCompat.getDrawable(MyApplication.app, R.drawable.ic_creator);
-            int iconSize = UiUtils.dp2px(MyApplication.app, 11);
+            int iconSize = UiUtils.dp2px(11);
             drawable.setBounds(0, 0, iconSize, iconSize);
             iconString.setSpan(new CenterAlignImageSpan(drawable), 0, 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             messageItemList.add(new MessageItem<>(iconString));

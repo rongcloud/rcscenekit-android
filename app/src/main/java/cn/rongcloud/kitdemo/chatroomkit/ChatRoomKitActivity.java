@@ -22,7 +22,7 @@ import cn.rongcloud.chatroomkit.widget.ToolBar;
 import cn.rongcloud.kitdemo.R;
 
 /**
- * Created by hugo on 2021/11/23
+ * Created by gyn on 2021/11/23
  */
 public class ChatRoomKitActivity extends AppCompatActivity {
 
@@ -36,7 +36,6 @@ public class ChatRoomKitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chatroomkit);
 
         ChatRoomView chatRoomView = findViewById(R.id.chat_room_view);
-
         // 设置InputBar监听
         chatRoomView.setInputBarListener(new InputBar.InputBarListener() {
             @Override

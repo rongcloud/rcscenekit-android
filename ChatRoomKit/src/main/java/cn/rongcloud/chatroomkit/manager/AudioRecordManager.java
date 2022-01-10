@@ -23,7 +23,7 @@ import android.widget.TextView;
 import java.io.File;
 
 import cn.rongcloud.chatroomkit.R;
-import cn.rongcloud.chatroomkit.utils.SavePathUtils;
+import cn.rongcloud.chatroomkit.RCChatRoomKit;
 import cn.rongcloud.corekit.utils.VMLog;
 
 
@@ -316,7 +316,7 @@ public class AudioRecordManager implements Handler.Callback {
                     mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_WB);
                 }
             }
-            File savePath = SavePathUtils.getSavePath(mContext.getCacheDir());
+            File savePath = new File(RCChatRoomKit.getInstance().getVoicePath());
             mAudioPath = Uri.fromFile(new File(savePath, System.currentTimeMillis() + "temp.voice"));
             mMediaRecorder.setOutputFile(mAudioPath.getPath());
             mMediaRecorder.prepare();

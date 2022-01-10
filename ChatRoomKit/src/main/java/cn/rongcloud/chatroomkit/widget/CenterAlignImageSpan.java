@@ -8,7 +8,7 @@ import android.text.style.ImageSpan;
 import androidx.annotation.NonNull;
 
 /**
- * Created by hugo on 2021/11/22
+ * Created by gyn on 2021/11/22
  */
 public class CenterAlignImageSpan extends ImageSpan {
 

@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,33 +20,68 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.rongcloud.chatroomkit.R;
+import cn.rongcloud.chatroomkit.RCChatRoomKit;
 import cn.rongcloud.chatroomkit.bean.ActionButton;
-import cn.rongcloud.chatroomkit.bean.ToolBarBean;
+import cn.rongcloud.chatroomkit.bean.ChatRoomKitConfig;
+import cn.rongcloud.chatroomkit.bean.ToolBarConfig;
 import cn.rongcloud.chatroomkit.manager.AudioPlayManager;
 import cn.rongcloud.chatroomkit.manager.AudioRecordManager;
 import cn.rongcloud.chatroomkit.utils.PermissionCheckUtil;
-import cn.rongcloud.corekit.api.RCSceneKitEngine;
+import cn.rongcloud.corekit.base.RCConstraintLayout;
+import cn.rongcloud.corekit.core.RCKitInit;
 import cn.rongcloud.corekit.utils.GlideUtil;
 import cn.rongcloud.corekit.utils.UiUtils;
 import cn.rongcloud.corekit.utils.VMLog;
 
 
 /**
- * Created by hugo on 2021/11/12
+ * Created by gyn on 2021/11/12
  */
-public class ToolBar extends ConstraintLayout {
+public class ToolBar extends RCConstraintLayout<ChatRoomKitConfig> {
     private final static String TAG = ToolBar.class.getSimpleName();
     private LinearLayout llChat;
     private TextView tvChat;
     private RecyclerView rvAction;
     private ImageView ivRecord;
     private AudioRecordManager audioRecordManager;
-    private ToolBarBean toolBarBean;
+    private ToolBarConfig toolBarConfig;
     private OnActionClickListener onActionClickListener;
     private ActionAdapter actionAdapter;
-    private OnTouchListener onTouchListener = new OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
+
+    public ToolBar(Context context) {
+        this(context, null);
+    }
+
+    public ToolBar(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+
+    @Override
+    public int setLayoutId() {
+        return R.layout.rckit_toolbar;
+    }
+
+    @Override
+    public RCKitInit<ChatRoomKitConfig> getKitInstance() {
+        return RCChatRoomKit.getInstance();
+    }
+
+    @Override
+    public void initView() {
+        // init view
+        llChat = (LinearLayout) findViewById(R.id.ll_chat);
+        tvChat = (TextView) findViewById(R.id.tv_chat);
+        rvAction = (RecyclerView) findViewById(R.id.rv_action);
+        ivRecord = (ImageView) findViewById(R.id.iv_record);
+        // action recyclerview
+        actionAdapter = new ActionAdapter();
+        rvAction.setAdapter(actionAdapter);
+        setRecordOnTouchListener();
+    }
+
+    private void setRecordOnTouchListener() {
+        ivRecord.setOnTouchListener((v, event) -> {
             String[] permissions = {Manifest.permission.RECORD_AUDIO};
             if (!PermissionCheckUtil.checkPermissions(
                     v.getContext(),
@@ -72,7 +106,7 @@ public class ToolBar extends ConstraintLayout {
                     AudioPlayManager.getInstance().stopPlay();
                 }
 
-                audioRecordManager.startRecord(v.getRootView(), toolBarBean.getRecordQuality() != 0);
+                audioRecordManager.startRecord(v.getRootView(), toolBarConfig.getRecordQuality() != 0);
             } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 if (event.getRawX() <= 0 || event.getRawX() > x + v.getWidth() || event.getRawY() < y) {
                     audioRecordManager.willCancelRecord();
@@ -84,67 +118,40 @@ public class ToolBar extends ConstraintLayout {
                 audioRecordManager.stopRecord();
             }
             return true;
-        }
-    };
-
-    public ToolBar(@NonNull Context context) {
-        this(context, null);
+        });
     }
 
-    public ToolBar(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public ToolBar(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        LayoutInflater.from(context).inflate(R.layout.rckit_toolbar, this);
-        initView();
-    }
-
-    private void initView() {
-        // init view
-
-        llChat = (LinearLayout) findViewById(R.id.ll_chat);
-        tvChat = (TextView) findViewById(R.id.tv_chat);
-        rvAction = (RecyclerView) findViewById(R.id.rv_action);
-        ivRecord = (ImageView) findViewById(R.id.iv_record);
-
-        toolBarBean = RCSceneKitEngine.getInstance().getKitConfig(ToolBarBean.class);
-        if (toolBarBean == null) {
+    @Override
+    public void initConfig(ChatRoomKitConfig chatRoomKitConfig) {
+        toolBarConfig = chatRoomKitConfig.getToolBar();
+        if (toolBarConfig == null) {
             VMLog.e(TAG, "initView failed : toolBarBean is null");
             return;
         }
         // content
-        this.setBackgroundColor(toolBarBean.getBackgroundColor().getColor());
-        UiUtils.setPadding(this, toolBarBean.getContentInsets());
+        this.setBackgroundColor(toolBarConfig.getBackgroundColor().getColor());
+        UiUtils.setPadding(this, toolBarConfig.getContentInsets());
         // chat button
-        tvChat.setText(toolBarBean.getChatButtonTitle());
-        llChat.setMinimumHeight(toolBarBean.getChatButtonSize().getHeight());
-        tvChat.setTextColor(toolBarBean.getChatButtonTextColor().getColor());
-        tvChat.setTextSize(toolBarBean.getChatButtonTextSize());
-        llChat.setBackground(UiUtils.createRectangleDrawable(toolBarBean.getChatButtonBackgroundColor().getColor(), 0, 0, dp2px(toolBarBean.getChatButtonBackgroundCorner())));
-        UiUtils.setPadding(llChat, toolBarBean.getChatButtonInsets());
+        tvChat.setText(toolBarConfig.getChatButtonAttributes().getText());
+        tvChat.setTextColor(toolBarConfig.getChatButtonAttributes().getTextColor().getColor());
+        tvChat.setTextSize(toolBarConfig.getChatButtonAttributes().getFont().getSize());
+        UiUtils.setViewSize(llChat, toolBarConfig.getChatButtonAttributes().getSize());
+        UiUtils.setDrawable(llChat, toolBarConfig.getChatButtonAttributes().getDrawable());
+        UiUtils.setPadding(llChat, toolBarConfig.getChatButtonAttributes().getInsets());
+
         // record image
-        if (toolBarBean.getRecordButtonEnable()) {
+        if (toolBarConfig.getRecordButtonEnable()) {
             ivRecord.setVisibility(VISIBLE);
         } else {
             ivRecord.setVisibility(GONE);
         }
         audioRecordManager = new AudioRecordManager();
-        audioRecordManager.setMaxVoiceDuration(toolBarBean.getRecordMaxDuration());
-        ivRecord.setOnTouchListener(onTouchListener);
-        if (toolBarBean.getRecordPosition() != 0) {
+        audioRecordManager.setMaxVoiceDuration(toolBarConfig.getRecordMaxDuration());
+        if (toolBarConfig.getRecordPosition() != 0) {
             UiUtils.reverseChild(llChat);
         }
-        // action recyclerview
-        actionAdapter = new ActionAdapter();
-        rvAction.setAdapter(actionAdapter);
-        actionAdapter.setActionList(toolBarBean.getActionArray());
 
-    }
-
-    private int dp2px(int dp) {
-        return UiUtils.dp2px(getContext(), dp);
+        actionAdapter.setActionList(toolBarConfig.getButtonArray());
     }
 
     public void setOnClickChatButton(View.OnClickListener l) {
@@ -162,8 +169,8 @@ public class ToolBar extends ConstraintLayout {
     }
 
     public List<ActionButton> getActionButtons() {
-        if (toolBarBean != null) {
-            return toolBarBean.getActionArray();
+        if (toolBarConfig != null) {
+            return toolBarConfig.getButtonArray();
         } else {
             return null;
         }
@@ -177,35 +184,6 @@ public class ToolBar extends ConstraintLayout {
 
     public interface OnActionClickListener {
         void onClickAction(int index, String extra);
-    }
-
-    private static class ActionViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView ivAction;
-        private final TextView tvBadge;
-
-        public ActionViewHolder(@NonNull View itemView) {
-            super(itemView);
-            ivAction = (ImageView) itemView.findViewById(R.id.iv_action);
-            tvBadge = (TextView) itemView.findViewById(R.id.tv_badge);
-        }
-
-        public void setActionData(ActionButton actionButton) {
-            if (actionButton.getLocalIcon() != 0) {
-                ivAction.setImageResource(actionButton.getLocalIcon());
-            } else {
-                GlideUtil.loadImage(ivAction, actionButton.getActionIcon());
-            }
-            if (actionButton.hasBadge()) {
-                tvBadge.setVisibility(VISIBLE);
-                if (actionButton.getBadgeNum() > 0) {
-                    tvBadge.setText(String.valueOf(actionButton.getBadgeNum()));
-                } else {
-                    tvBadge.setText("");
-                }
-            } else {
-                tvBadge.setVisibility(GONE);
-            }
-        }
     }
 
     private class ActionAdapter extends RecyclerView.Adapter<ActionViewHolder> {
@@ -237,6 +215,35 @@ public class ToolBar extends ConstraintLayout {
         @Override
         public int getItemCount() {
             return actionButtonList.size();
+        }
+    }
+
+    private static class ActionViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView ivAction;
+        private final TextView tvBadge;
+
+        public ActionViewHolder(@NonNull View itemView) {
+            super(itemView);
+            ivAction = (ImageView) itemView.findViewById(R.id.iv_action);
+            tvBadge = (TextView) itemView.findViewById(R.id.tv_badge);
+        }
+
+        public void setActionData(ActionButton actionButton) {
+            if (actionButton.getLocalIcon() != 0) {
+                ivAction.setImageResource(actionButton.getLocalIcon());
+            } else {
+                GlideUtil.loadImage(ivAction, actionButton.getActionIcon().getUrl(RCChatRoomKit.getInstance().getAssetsPath()));
+            }
+            if (actionButton.hasBadge()) {
+                tvBadge.setVisibility(VISIBLE);
+                if (actionButton.getBadgeNum() > 0) {
+                    tvBadge.setText(String.valueOf(actionButton.getBadgeNum()));
+                } else {
+                    tvBadge.setText("");
+                }
+            } else {
+                tvBadge.setVisibility(GONE);
+            }
         }
     }
 }

@@ -4,24 +4,27 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import cn.rongcloud.corekit.bean.RCImage;
+import cn.rongcloud.corekit.bean.RCNode;
+
 public class ActionButton implements Serializable {
     @SerializedName("icon")
-    private String actionIcon;
+    private RCNode<RCImage> actionIcon;
     @SerializedName("localIcon")
     private int localIcon;
     @SerializedName("hasBadge")
-    private boolean hasBadge;
+    private RCNode<Boolean> hasBadge;
     @SerializedName("extra")
     private String extra;
     @SerializedName("badgeNum")
     private int badgeNum;
 
-    public String getActionIcon() {
-        return actionIcon;
+    public RCImage getActionIcon() {
+        return actionIcon.getValue();
     }
 
-    public void setActionIcon(String actionIcon) {
-        this.actionIcon = actionIcon;
+    public void setActionIcon(RCImage actionIcon) {
+        this.actionIcon.setValue(actionIcon);
     }
 
     public int getLocalIcon() {
@@ -33,11 +36,14 @@ public class ActionButton implements Serializable {
     }
 
     public boolean hasBadge() {
-        return hasBadge;
+        return hasBadge.getValue();
     }
 
     public void setHasBadge(boolean hasBadge) {
-        this.hasBadge = hasBadge;
+        if (this.hasBadge == null) {
+            this.hasBadge = new RCNode<Boolean>();
+        }
+        this.hasBadge.setValue(hasBadge);
     }
 
     public String getExtra() {

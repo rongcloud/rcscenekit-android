@@ -2,33 +2,33 @@ package cn.rongcloud.chatroomkit.api;
 
 import android.text.SpannableStringBuilder;
 
-import cn.rongcloud.corekit.bean.Argb;
-import cn.rongcloud.corekit.bean.Corner;
+import cn.rongcloud.corekit.bean.RCColor;
+import cn.rongcloud.corekit.bean.RCCorner;
 
 /**
- * Created by hugo on 2021/11/18
+ * Created by gyn on 2021/11/18
  */
 public interface IRCChatroomMessage {
     /**
      * 气泡背景色，返回null采用默认背景
      *
-     * @return {@link Argb}颜色
+     * @return {@link RCColor}颜色
      */
-    Argb bubbleColor();
+    RCColor bubbleColor();
 
     /**
      * 气泡背景色，返回null采用默认背景
      *
-     * @return {@link Argb}颜色
+     * @return {@link RCColor}颜色
      */
-    Argb bubbleTextColor();
+    RCColor bubbleTextColor();
 
     /**
      * 气泡圆角，返回null采用默认圆角
      *
-     * @return {@link Corner}圆角
+     * @return {@link RCCorner}圆角
      */
-    Corner bubbleCorner();
+    RCCorner bubbleCorner();
 
     /**
      * 消息内容富文本，可以在富文本中自定义点击事件

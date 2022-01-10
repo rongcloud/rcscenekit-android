@@ -2,44 +2,51 @@ package cn.rongcloud.chatroomkit.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.List;
 
 import cn.rongcloud.chatroomkit.R;
+import cn.rongcloud.chatroomkit.RCChatRoomKit;
 import cn.rongcloud.chatroomkit.api.IRCChatroomMessage;
 import cn.rongcloud.chatroomkit.api.OnMessageContentClickListener;
 import cn.rongcloud.chatroomkit.bean.ActionButton;
+import cn.rongcloud.chatroomkit.bean.ChatRoomKitConfig;
 import cn.rongcloud.chatroomkit.manager.AudioRecordManager;
+import cn.rongcloud.corekit.base.RCLinearLayout;
+import cn.rongcloud.corekit.core.RCKitInit;
 
 /**
- * Created by hugo on 2021/11/17
+ * Created by gyn on 2021/11/17
  */
-public class ChatRoomView extends LinearLayout {
+public class ChatRoomView extends RCLinearLayout<ChatRoomKitConfig> {
     private ToolBar toolbar;
     private InputBarDialog inputBarDialog;
     private MessageView messageView;
     private InputBar.InputBarListener inputBarListener;
 
-    public ChatRoomView(@NonNull Context context) {
-        this(context, null);
+    public ChatRoomView(Context context) {
+        super(context);
     }
 
-    public ChatRoomView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
+    public ChatRoomView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
     }
 
-    public ChatRoomView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        LayoutInflater.from(context).inflate(R.layout.rckit_chat_room, this);
-        initView();
+
+    @Override
+    public int setLayoutId() {
+        return R.layout.rckit_chat_room;
     }
 
-    private void initView() {
+    @Override
+    public RCKitInit<ChatRoomKitConfig> getKitInstance() {
+        return RCChatRoomKit.getInstance();
+    }
+
+    @Override
+    public void initView() {
         this.setOrientation(VERTICAL);
         toolbar = (ToolBar) findViewById(R.id.toolbar);
         toolbar.setOnClickChatButton(v -> {
@@ -47,6 +54,11 @@ public class ChatRoomView extends LinearLayout {
             inputBarDialog.show();
         });
         messageView = (MessageView) findViewById(R.id.message_view);
+    }
+
+    @Override
+    public void initConfig(ChatRoomKitConfig chatRoomKitConfig) {
+
     }
 
     /**
