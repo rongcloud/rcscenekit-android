@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="rckit_text_search_music_hint">搜索歌曲或歌手</string>
-    <string name="rckit_text_music_empty">暂无歌曲，快去添加吧~</string>
-    <string name="rckit_text_add_music">添加歌曲</string>
-</resources>
