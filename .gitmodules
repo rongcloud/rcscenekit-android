@@ -1,0 +1,9 @@
+[submodule "rccorekit-android"]
+	path = rccorekit-android
+	url = https://github.com/rongcloud/rccorekit-android.git
+[submodule "rcmusiccontrolkit-android"]
+	path = rcmusiccontrolkit-android
+	url = https://github.com/rongcloud/rcmusiccontrolkit-android.git
+[submodule "rcchatroomkit-android"]
+	path = rcchatroomkit-android
+	url = https://github.com/rongcloud/rcchatroomkit-android.git

@@ -1,5 +1,5 @@
 rootProject.name = "RCSceneKit"
 include ':app'
-include ':ChatRoomKit'
-include ':CoreKit'
-include ':MusicControlKit'
+include ':rcchatroomkit-android:ChatRoomKit'
+include ':rccorekit-android:CoreKit'
+include ':rcmusiccontrolkit-android:MusicControlKit'
