@@ -1,3 +1,8 @@
+> [!WARNING]
+> ⚠️ **暂停维护说明**
+>
+> 该工程已不再维护，代码仅供学习参考。
+
 # Android Scene Kit 文档
 
 ## Kit项目结构
@@ -52,4 +57,3 @@ public class MyApplication extends Application {
 ## 其他
 
 如有任何疑问请提交issue
-
